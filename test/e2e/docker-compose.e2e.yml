@@ -1,0 +1,30 @@
+# End-to-end overlay for demo/docker-compose.yml: adds code-server with the packaged extension installed.
+# code-server shares the gateway's network namespace, so the extension's default URL (http://localhost:8080) reaches
+# the gateway exactly as it would on a developer machine. The browser reaches code-server on 127.0.0.1 only.
+services:
+  bifrost-meter-gateway:
+    ports:
+      - "127.0.0.1:${CODE_SERVER_PORT:?set CODE_SERVER_PORT}:8443"
+
+  bifrost-meter-code-server:
+    image: codercom/code-server@sha256:09565f9e07f5624554e295e8bab0e2fec4a7c533eb3cff459ed6596a4d3d7c1c # 4.145.2
+    network_mode: "service:bifrost-meter-gateway"
+    entrypoint: ["/bin/sh", "-c"]
+    command:
+      - >-
+        code-server --install-extension /ext/bifrost-meter.vsix &&
+        exec /usr/bin/entrypoint.sh --bind-addr 0.0.0.0:8443 --auth none --disable-telemetry
+        --disable-update-check --disable-workspace-trust --disable-getting-started-override /home/coder
+    volumes:
+      - ${BIFROST_METER_VSIX:?set BIFROST_METER_VSIX}:/ext/bifrost-meter.vsix:ro
+    tmpfs:
+      - /tmp
+    healthcheck:
+      test: ["CMD", "curl", "-fsS", "http://127.0.0.1:8443/healthz"]
+      interval: 2s
+      timeout: 2s
+      retries: 60
+    depends_on:
+      - bifrost-meter-gateway
+    cpus: 1.0
+    mem_limit: 1536m
