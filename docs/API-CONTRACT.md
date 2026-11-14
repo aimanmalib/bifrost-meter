@@ -60,6 +60,10 @@ Five `POST /v1/chat/completions` calls through key `demo-team-a` (model `openai/
 
 Cost is computed by the gateway from its own pricing catalog and the token counts; no real provider is called.
 
+Counters are written asynchronously. In the contract runs they became visible 2 to 6 seconds after the last request, so a
+reading taken right after a request can still show the old value. The extension polls on an interval, which hides this
+lag; the contract test waits up to 30 seconds for the counters to move.
+
 ## When fields are missing
 
 Draft rule, finalised with the core schema module: a missing required top-level field is a named schema error shown to
