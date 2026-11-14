@@ -1,4 +1,4 @@
-# Bifrost quota API contract (draft)
+# Bifrost quota API contract
 
 Bifrost Meter reads exactly one endpoint. This page records what it sends, what it reads, and what was measured on the
 pinned gateway. Fixtures in `test/fixtures/` were recorded from that gateway with `scripts/record-fixtures.mjs`;
@@ -76,6 +76,9 @@ for `gpt-4o` and 0.000198 USD for `gpt-4o-mini` (`test/fixtures/quota-200-after-
 
 ## When fields are missing
 
-Draft rule, finalised with the core schema module: a missing required top-level field is a named schema error shown to
-the user ("unexpected response from gateway"), never a silent zero. Optional parts (`rate_limit: null`, empty `budgets`)
-mean "no limit of that kind".
+- Required: `virtual_key_name` (string), `is_active` (boolean) and `budgets` (array). Inside each budget, `max_limit` and
+  `current_usage` must be numbers. When one is missing or has the wrong type, the meter shows "Unexpected response" and
+  names the field in the tooltip, the panel and the log. It never shows a silent zero.
+- Optional: `rate_limit` may be `null` or absent, `rate_limits`, `provider_configs` and `model_configs` may be absent, and a
+  rate limit field that is `null` means "no limit of that kind". A key with no limit at all shows "No limit".
+- Unknown fields are ignored, so newer gateways that add fields keep working.
