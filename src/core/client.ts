@@ -140,3 +140,30 @@ export async function fetchQuota(req: QuotaRequest): Promise<QuotaResult> {
       return { kind: 'http', status: res.status, ...withMessage };
   }
 }
+
+export const VERSION_PATH = '/api/version';
+const VERSION_RE = /^v?\d+(\.\d+){0,3}([-+][\w.]+)?$/;
+
+/**
+ * Gateway version from `GET /api/version` (measured: a JSON string such as "v2.5.1"). Sends no key and follows no
+ * redirect. Returns undefined when the URL is refused, the call fails or the answer does not look like a version.
+ */
+export async function fetchVersion(
+  baseUrl: string,
+  allowInsecureHttp = false,
+  fetchImpl: typeof fetch = fetch,
+  timeoutMs = DEFAULT_TIMEOUT_MS,
+): Promise<string | undefined> {
+  const checked = quotaUrl(baseUrl, allowInsecureHttp);
+  if (!checked.ok) return undefined;
+  const url = new URL(checked.url.pathname.slice(0, -QUOTA_PATH.length) + VERSION_PATH, checked.url.origin);
+  try {
+    const res = await fetchImpl(url, { method: 'GET', headers: { accept: 'application/json' }, redirect: 'manual', signal: AbortSignal.timeout(timeoutMs) });
+    if (res.status !== 200) return undefined;
+    const body = await readJson(res);
+    const v = typeof body === 'string' ? body : (body as { version?: unknown } | undefined)?.version;
+    return typeof v === 'string' && VERSION_RE.test(v.trim()) ? v.trim() : undefined;
+  } catch {
+    return undefined;
+  }
+}

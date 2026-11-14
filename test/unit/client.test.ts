@@ -1,5 +1,5 @@
 import { describe, expect, it, vi } from 'vitest';
-import { fetchQuota, isPrivateHost, quotaUrl, redactKey, scrubKey } from '../../src/core/client';
+import { fetchQuota, fetchVersion, isPrivateHost, quotaUrl, redactKey, scrubKey } from '../../src/core/client';
 import { fixture } from './fixtures';
 
 const KEY = ['sk', 'bf', 'unit0test0value0abcd1234'].join('-');
@@ -137,4 +137,31 @@ describe('redactKey', () => {
     [KEY, '…1234'],
   ])('%s → %s', (k, want) => expect(redactKey(k)).toBe(want));
   it('scrubs every copy', () => expect(scrubKey(`${KEY} and ${KEY}`, KEY)).toBe('…1234 and …1234'));
+});
+
+describe('fetchVersion', () => {
+  it('reads the measured string answer, keeps a path prefix and sends no key', async () => {
+    const f = fakeFetch(reply(200, JSON.stringify('v2.5.1')));
+    expect(await fetchVersion('http://localhost:8080/gw/', false, f.impl)).toBe('v2.5.1');
+    expect(f.calls[0]?.url).toBe('http://localhost:8080/gw/api/version');
+    expect(JSON.stringify(f.calls[0]?.init.headers)).not.toMatch(/x-bf-vk|authorization/i);
+    expect(f.calls[0]?.init.redirect).toBe('manual');
+  });
+  it('accepts an object with a version field', async () => {
+    expect(await fetchVersion('http://localhost:8080', false, fakeFetch(reply(200, { version: '2.6.0-rc1' })).impl)).toBe('2.6.0-rc1');
+  });
+  it.each([
+    ['not found', reply(404, JSON.stringify('v2.5.1'))],
+    ['redirect', reply(302, '', { location: 'https://elsewhere.example.com' })],
+    ['html', reply(200, '<html>hi</html>')],
+    ['markup in a string', reply(200, JSON.stringify('<b>v1</b>'))],
+    ['network error', new Error('ECONNREFUSED')],
+  ])('gives undefined for %s', async (_n, r) => {
+    expect(await fetchVersion('http://localhost:8080', false, fakeFetch(r).impl)).toBeUndefined();
+  });
+  it('makes no call for a refused URL', async () => {
+    const f = fakeFetch();
+    expect(await fetchVersion('http://gw.example.com', false, f.impl)).toBeUndefined();
+    expect(f.calls).toHaveLength(0);
+  });
 });
