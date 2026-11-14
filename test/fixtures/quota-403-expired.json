@@ -1,0 +1,16 @@
+{
+  "recorded": {
+    "status": 403,
+    "gateway": "v2.5.1"
+  },
+  "body": {
+    "is_bifrost_error": false,
+    "status_code": 403,
+    "error": {
+      "message": "Virtual key has expired"
+    },
+    "extra_fields": {
+      "routing_info": {}
+    }
+  }
+}

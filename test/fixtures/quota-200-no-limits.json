@@ -1,0 +1,15 @@
+{
+  "recorded": {
+    "status": 200,
+    "gateway": "v2.5.1"
+  },
+  "body": {
+    "budgets": [],
+    "is_active": true,
+    "model_configs": [],
+    "provider_configs": [],
+    "rate_limit": null,
+    "rate_limits": [],
+    "virtual_key_name": "fixture-no-limits"
+  }
+}

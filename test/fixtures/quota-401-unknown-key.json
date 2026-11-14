@@ -1,0 +1,16 @@
+{
+  "recorded": {
+    "status": 401,
+    "gateway": "v2.5.1"
+  },
+  "body": {
+    "is_bifrost_error": false,
+    "status_code": 401,
+    "error": {
+      "message": "Virtual key not found"
+    },
+    "extra_fields": {
+      "routing_info": {}
+    }
+  }
+}

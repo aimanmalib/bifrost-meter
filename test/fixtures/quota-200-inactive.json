@@ -1,0 +1,28 @@
+{
+  "recorded": {
+    "status": 200,
+    "gateway": "v2.5.1"
+  },
+  "body": {
+    "budgets": [
+      {
+        "id": "bb1cd07b-c0a0-4a1b-98e2-8db28255f01c",
+        "max_limit": 2,
+        "reset_duration": "1d",
+        "last_reset": "2026-11-14T13:40:03.760854806Z",
+        "current_usage": 0,
+        "model_config_id": "ad02fd5d-a78c-442b-b683-00b05f341160",
+        "config_hash": "",
+        "created_at": "2026-11-14T13:40:03.761091582Z",
+        "updated_at": "2026-11-14T13:40:03.761091582Z",
+        "per_model_usage": []
+      }
+    ],
+    "is_active": false,
+    "model_configs": [],
+    "provider_configs": [],
+    "rate_limit": null,
+    "rate_limits": [],
+    "virtual_key_name": "fixture-inactive"
+  }
+}
