@@ -72,7 +72,7 @@ const version = (await call('GET', '/api/version')).json;
 const before = await quota({ 'x-bf-vk': primary.value });
 await save('quota-200-fresh', before);
 await save('quota-401-missing-key', await quota({}));
-await save('quota-401-unknown-key', await quota({ 'x-bf-vk': 'sk-bf-00000000-0000-0000-0000-000000000000' }));
+await save('quota-401-unknown-key', await quota({ 'x-bf-vk': `sk-bf-${'0'.repeat(32)}` }));
 await save('quota-200-bearer-header', await quota({ authorization: `Bearer ${primary.value}` }));
 
 // Variants that need their own short-lived keys.
