@@ -80,8 +80,11 @@ function chartBlock(r: Reading, input: PanelInput, c: Ctx): string {
   const from = formatClock(first.t, c.lang);
   const to = formatClock(last.t, c.lang);
   const summary = c.t('panel.chart.summary', fmt(first.used), from, fmt(last.used), to);
+  const head = `<section class="usage" aria-labelledby="chart-h"><h2 id="chart-h">${esc(c.t('panel.chart.title', limitLabel(top, c.t)))}</h2>`;
+  // A line along the bottom says nothing; say so in words until the counter moves.
+  if (samples.every((s) => s.used === first.used)) return head + `<p class="muted">${esc(c.t('panel.chart.flat', from))}</p></section>`;
   return (
-    `<section class="usage" aria-labelledby="chart-h"><h2 id="chart-h">${esc(c.t('panel.chart.title', limitLabel(top, c.t)))}</h2>` +
+    head +
     chartSvg(samples, top, esc(summary)) +
     `<div class="row num muted"><span>${esc(from)}</span><span>${esc(c.t('panel.chart.limitLine'))}</span><span>${esc(to)}</span></div>` +
     `</section>`

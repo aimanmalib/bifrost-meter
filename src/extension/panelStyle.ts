@@ -30,6 +30,8 @@ header { padding: 14px 0 10px; border-bottom: 1px solid var(--vscode-widget-bord
 .bar { display: block; width: 100%; height: 14px; margin: 6px 0 4px; overflow: visible; }
 .bar .track { fill: var(--vscode-scrollbarSlider-background); stroke: var(--vscode-contrastBorder, none); stroke-width: 1; }
 .bar .fill { fill: var(--meter); }
+/* High contrast themes give the slider and the fill near-identical colours: keep only the outline for the track. */
+body.vscode-high-contrast .bar .track, body.vscode-high-contrast-light .bar .track { fill: transparent; }
 .bar .notch { stroke: var(--vscode-foreground); stroke-width: 1.5; opacity: .7; }
 .forecast { color: var(--vscode-editorWarning-foreground); }
 .chart { display: block; width: 100%; height: 80px; margin-top: 4px; overflow: visible;

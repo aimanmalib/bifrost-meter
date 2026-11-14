@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import type { Forecast, Series } from '../../src/core';
+import { formatClock, type Forecast, type Series } from '../../src/core';
 import { barSvg, chartPoints, chartSvg } from '../../src/extension/chart';
 import { esc, PANEL_ACTIONS, panelCommand, panelHtml, type PanelInput } from '../../src/extension/panelHtml';
 import type { ErrorResult, MeterState, Reading } from '../../src/extension/state';
@@ -135,6 +135,17 @@ describe('panel html: content', () => {
     expect(html(ready())).toContain('<svg class="chart"');
     const one = { 'budget:a': { cycle: 'c', samples: [{ t: NOW, used: 8.1 }] } };
     expect(html(ready(), 'en', { series: one })).not.toContain('<svg class="chart"');
+  });
+  it('says in words that usage has not moved instead of drawing a flat line', () => {
+    const flat = { 'budget:a': { cycle: 'c', samples: [{ t: NOW - 10 * 60_000, used: 0 }, { t: NOW, used: 0 }] } };
+    for (const lang of ['en', 'ms'] as const) {
+      const h = html(ready(), lang, { series: flat });
+      expect(h).not.toContain('<svg class="chart"');
+      expect(h).toContain(ctx(lang, {}, NOW).t('panel.chart.flat', formatClock(NOW - 10 * 60_000, lang)));
+    }
+  });
+  it('drops the track fill in high contrast themes so the fill stands out', () => {
+    expect(html(ready())).toMatch(/body\.vscode-high-contrast \.bar \.track[^{]*\{ fill: transparent; \}/);
   });
   it('leads a problem state with what happened and the button that fixes it', () => {
     const h = html(error({ kind: 'unauthorized', status: 401 }));

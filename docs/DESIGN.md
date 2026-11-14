@@ -11,11 +11,11 @@ credentials and cannot change the limits.
 One status bar item on the right answers "how close am I to the limit that runs out first?":
 
 ```
-$(dashboard) 62% · $3.80 left · 4h
+$(dashboard) 62% · $3.80 left · resets in 4h
 ```
 
 - The percent comes first because it is the comparison number. The remaining amount follows in its own unit (USD, tokens or
-  requests). The reset countdown is last and is dropped when the reset time cannot be read.
+  requests). The reset countdown ("resets in 4h") is last and is dropped when the reset time cannot be read.
 - The item follows the editor theme. It changes background only at the thresholds: the theme's warning background at `warn`
   (75 % by default), the error background at `critical` (90 %) and when a limit is used up. Colour is never the only signal:
   the icon and the words change too, and the accessibility label spells the whole state out.
@@ -32,9 +32,9 @@ Each state has an icon, a short text and a full accessibility label. Icons are t
 | --- | --- | --- | --- |
 | Not configured | key | Set Bifrost key | none |
 | Loading | loading (spins) | Bifrost… | none |
-| OK | dashboard | 62% · $3.80 left · 4h | none |
-| Warning | warning | 81% · $1.90 left · 4h | warning |
-| Critical | error | 94% · $0.30 left · 4h | error |
+| OK | dashboard | 62% · $3.80 left · resets in 4h | none |
+| Warning | warning | 81% · $1.90 left · resets in 4h | warning |
+| Critical | error | 94% · $0.30 left · resets in 4h | error |
 | Used up | circle-slash | Budget used up · 4h | error |
 | Key inactive | circle-slash | Key inactive | warning |
 | 401 key rejected | lock | Key rejected | error |

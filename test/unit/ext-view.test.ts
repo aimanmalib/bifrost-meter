@@ -64,8 +64,8 @@ describe('status bar view: every state', () => {
 
 describe('status bar text', () => {
   it('reads like the brief: percent, remaining, reset', () => {
-    expect(statusView(ready(), ctx()).text).toBe('62% · $3.80 left · 4h');
-    expect(statusView(ready(), ctx('ms')).text).toMatch(/^62% · baki .*3[.,]80 · 4j?/);
+    expect(statusView(ready(), ctx()).text).toBe('62% · $3.80 left · resets in 4h');
+    expect(statusView(ready(), ctx('ms')).text).toMatch(/^62% · baki .*3[.,]80 · set semula dalam 4j$/);
   });
   it('follows statusBar.format', () => {
     expect(statusView(ready(), ctx('en', { format: 'compact' })).text).toBe('62% · $3.80');
@@ -79,13 +79,13 @@ describe('status bar text', () => {
   });
   it('shows tokens and requests in their own unit', () => {
     const tokens = limit({ id: 'rate:x:tokens', kind: 'tokens', limit: 100_000, used: 90_500 });
-    expect(statusView(ready([tokens]), ctx()).text).toBe('90% · 9.5k tokens left · 4h');
+    expect(statusView(ready([tokens]), ctx()).text).toBe('90% · 9.5k tokens left · resets in 4h');
   });
   it('shows the strictest limit and respects statusBar.metric', () => {
     const budget = limit({ used: 2 });
     const req = limit({ id: 'rate:x:requests', kind: 'requests', limit: 200, used: 150 });
-    expect(statusView(ready([budget, req]), ctx()).text).toBe('75% · 50 requests left · 4h');
-    expect(statusView(ready([budget, req]), ctx('en', { metric: 'budget' })).text).toBe('20% · $8.00 left · 4h');
+    expect(statusView(ready([budget, req]), ctx()).text).toBe('75% · 50 requests left · resets in 4h');
+    expect(statusView(ready([budget, req]), ctx('en', { metric: 'budget' })).text).toBe('20% · $8.00 left · resets in 4h');
   });
   it('names the used-up limit and when it resets', () => {
     expect(statusView(ready([limit({ used: 10 })]), ctx()).text).toBe('Budget used up · 4h');

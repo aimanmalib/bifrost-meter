@@ -68,9 +68,10 @@ describe('summary and notifications', () => {
   });
   it('words each notification', () => {
     const c = ctx();
-    expect(noteText({ kind: 'threshold', level: 'warn', limit: limit({ used: 8 }) }, c)).toBe('Budget is at 80% ($2.00 left).');
-    expect(noteText({ kind: 'threshold', level: 'exhausted', limit: limit({ used: 10 }) }, c)).toMatch(/^Budget is used up\./);
+    expect(noteText({ kind: 'threshold', level: 'warn', limit: limit({ used: 8 }) }, c)).toBe('Budget: 80% used, $2.00 left.');
+    expect(noteText({ kind: 'threshold', level: 'exhausted', limit: limit({ used: 10 }) }, c)).toMatch(/^Budget: used up\./);
+    expect(noteText({ kind: 'threshold', level: 'warn', limit: limit({ kind: 'requests', used: 8 }) }, c)).not.toMatch(/ is at /);
     expect(noteText({ kind: 'forecast', limit: limit(), forecast: rising as Extract<Forecast, { status: 'rising' }> }, c)).toMatch(
-      /^At the current pace, Budget runs out around \d\d:\d\d, 2h before it resets\.$/);
+      /^Budget: at the current pace it runs out around \d\d:\d\d, 2h before the limit resets\.$/);
   });
 });

@@ -180,7 +180,7 @@ test.describe('Bifrost Meter in code-server', () => {
     expect(expected(after).percent).toBeGreaterThanOrEqual(defaults.warn);
     await command(page, nls['command.refresh']);
     await expect(item()).toHaveClass(/warning-kind|has-background-color/, { timeout: 30_000 });
-    await expect(page.locator('.notifications-toasts')).toContainText(' is at ', { timeout: 30_000 });
+    await expect(page.locator('.notifications-toasts')).toContainText(' used, ', { timeout: 30_000 });
     await page.screenshot({ path: join(images, 'e2e-warning.png') });
   });
 
