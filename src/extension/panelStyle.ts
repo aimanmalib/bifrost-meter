@@ -34,7 +34,8 @@ header { padding: 14px 0 10px; border-bottom: 1px solid var(--vscode-widget-bord
 /* High contrast themes give the slider and the fill near-identical colours: keep only the outline for the track. */
 body.vscode-high-contrast .bar .track, body.vscode-high-contrast-light .bar .track { fill: transparent; }
 .bar .notch { stroke: var(--vscode-foreground); stroke-width: 1.5; opacity: .7; }
-.forecast { color: var(--vscode-editorWarning-foreground); }
+/* Text in the foreground colour: the warning colour of light themes is too pale for small text on white. The mark carries the accent. */
+.forecast { color: var(--vscode-foreground); border-left: 2px solid var(--vscode-editorWarning-foreground); padding-left: 6px; }
 .chart { display: block; width: 100%; height: 80px; margin-top: 4px; overflow: visible;
   border-bottom: 1px solid var(--vscode-widget-border, var(--vscode-contrastBorder, transparent)); }
 .chart .usage { fill: none; stroke: var(--vscode-progressBar-background); stroke-width: 2; }

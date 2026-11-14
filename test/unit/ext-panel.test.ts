@@ -144,6 +144,9 @@ describe('panel html: content', () => {
       expect(h).toContain(ctx(lang, {}, NOW).t('panel.chart.flat', formatClock(NOW - 10 * 60_000, lang)));
     }
   });
+  it('keeps forecast text in the foreground colour so it stays readable on light themes', () => {
+    expect(html(ready())).toMatch(/\.forecast \{ color: var\(--vscode-foreground\);/);
+  });
   it('drops the track fill in high contrast themes so the fill stands out', () => {
     expect(html(ready())).toMatch(/body\.vscode-high-contrast \.bar \.track[^{]*\{ fill: transparent; \}/);
   });
