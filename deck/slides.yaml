@@ -34,11 +34,23 @@ slides:
     body:
       - "Bifrost enforces budgets per virtual key. The admin sees them in the dashboard. The developer holding the key sees nothing until a request is refused."
       - "An operator asked for this in the Bifrost tracker (issue 6482, 24 Aug 2026): callers \"need to see their own spend and remaining budget in lightweight clients\"."
-      - "I run coding agents most of the day. What stops them most often is a limit nobody was watching."
+      - "Bifrost already returns a key's own limits to whoever holds the key (since v1.5.0). Nothing in the editor reads it."
+
+  - layout: table
+    title: "Who is affected, and what exists"
+    tag: "Problem and potential impact"
+    columns: ["Where I searched (14 Nov 2026)", "What I found"]
+    widths: [4.4, 7.4]
+    rows:
+      - ["VS Code Marketplace, \"bifrost\"", "10 extensions. None shows usage or budgets."]
+      - ["Open VSX, \"bifrost\"", "4 extensions. None shows usage or budgets."]
+      - ["GitHub, \"bifrost vscode\" and \"bifrost budget\"", "11 and 14 repositories. No editor client."]
+      - ["Existing budget readers", "A web dashboard, an MCP server and the Bifrost CLI. All outside the editor."]
+    note: "Affected: developers who send coding agents through a Bifrost virtual key, and the operators who set its budget."
 
   - layout: stack
     title: "Solution"
-    tag: "User experience"
+    tag: "Innovation"
     body:
       - "One number, where you already look."
       - "Status bar: percent used, amount left, time to reset."
@@ -52,11 +64,11 @@ slides:
 
   - layout: images
     title: "Demo"
-    tag: "Working prototype"
+    tag: "User experience"
     body:
       - "One command starts the official Bifrost image, a mock model and an editor in the browser."
-      - "Paste a demo virtual key. The meter starts moving within a minute."
-      - "Video, 77 seconds: link in the README."
+      - "The meter is already connected. Open the printed link and it is in the status bar."
+      - "GIF in the README. Full 77-second video in the v0.1.0 release."
     image_height: 3.3
     images:
       - {path: deck/assets/video-tooltip.jpg, caption: "Hover: every limit on the key, with a forecast", crop: [0.3, 0.15, 0.04, 0.0]}
@@ -111,27 +123,16 @@ slides:
         at least 2m apart.
 
   - layout: table
-    title: "PS04 requirements"
-    tag: "Problem and potential impact"
-    columns: ["Requirement", "How Bifrost Meter meets it"]
+    title: "Tests and the PS04 requirements"
+    tag: "Technical execution"
+    columns: ["PS04 requirement", "Evidence"]
     widths: [3.4, 8.4]
     rows:
-      - ["Real operator problem", "Issue 6482. Solved from the key to the warning."]
-      - ["Public extension points", "The documented self-service quota endpoint, and MCP for agents."]
-      - ["Reproducible integration", "The unmodified official image, pinned by digest. One command."]
-      - ["Contribution quality", "Unit, contract and end-to-end tests, documentation, Apache-2.0, and a note on how it could move upstream."]
-
-  - layout: table
-    title: "Tests"
-    tag: "Technical execution"
-    columns: ["Suite", "Result", "What it covers"]
-    widths: [2.6, 1.6, 7.6]
-    rows:
-      - ["Unit", "352 passed", "Core, extension states, panel HTML, MCP tool, both languages."]
-      - ["Contract", "10 passed", "Against the official Bifrost image (v2.5.1): 200, 401, 403, counters, overrides, MCP."]
-      - ["End to end", "9 passed", "In a real editor: set the key, read the status bar, send traffic, see the warning."]
-      - ["Cost to the gateway", "p50 6.9 ms", "200 quota reads in a row, p95 12.2 ms."]
-    note: "Every number here comes from docs/TEST-RESULTS.md in the repository."
+      - ["Real operator problem", "Issue 6482. End to end in a real editor: set the key, send traffic, see the warning. 9 tests passed."]
+      - ["Public extension points", "The documented quota endpoint, and MCP for agents. 352 unit tests passed."]
+      - ["Reproducible integration", "Official Bifrost image v2.5.1, unmodified, pinned by digest. 10 contract tests passed."]
+      - ["Contribution quality", "Documentation, Apache-2.0, and a note on how it could move upstream."]
+    note: "Each quota read costs the gateway p50 6.9 ms, p95 12.2 ms (200 reads). Numbers from docs/TEST-RESULTS.md."
 
   - layout: text
     title: "How AI is used"
