@@ -14,7 +14,7 @@ same numbers, so an agent can check before it starts a long task.
 > **Unofficial.** Not affiliated with, endorsed by, or supported by Maxim AI or the Bifrost project. It talks to an unmodified
 > Bifrost gateway through one documented endpoint and changes nothing on it.
 
-Built for the Global AI Hackathon (Geek Room), problem statement PS04, "Open-Source Bifrost Gateway".
+Built for the Global AI Hackathon (Geek Room), problem statement PS04, "Open-Source Bifrost Gateway". Slides: [`docs/deck.pdf`](docs/deck.pdf).
 
 | OK | Warning | Used up |
 | --- | --- | --- |
