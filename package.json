@@ -162,6 +162,7 @@
     "typecheck": "tsc -p tsconfig.json",
     "test": "vitest run",
     "test:unit": "vitest run",
+    "test:contract": "vitest run --config test/contract/vitest.config.mts",
     "build": "node esbuild.mjs --production",
     "gate": "bash scripts/gerbang-ujian.sh",
     "package": "vsce package --no-dependencies --out bifrost-meter.vsix",
