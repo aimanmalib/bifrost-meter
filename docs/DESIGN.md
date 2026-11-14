@@ -53,6 +53,51 @@ Calm and dense. The meter is a passenger in the editor, so it borrows everything
 The one accent is the threshold colour, and it appears only when there is something to act on. Numbers use tabular figures in
 the panel so columns line up as they change. Progress bars always carry their number as text.
 
+## Details panel
+
+Clicking the status bar item (or the Open details command) opens one editor tab. It answers the questions the status bar
+cannot: which limit is closest, how fast it is moving, and what to do when something is wrong.
+
+```
+Bifrost Meter                                  [Refresh]
+team-dev        key ending a1b2        Active
+
+Budget                                           Warning
+$8.10 of $10.00                                      81%
+[############################|####|.......]
+$1.90 left            resets in 4h
+Runs out around 15:40, 2h before the reset
+
+Tokens                                                OK
+...
+
+Usage this cycle (the limit closest to running out)
+[ line of used over time, dashed line at the limit ]
+
+Spend by model
+gpt-4o-mini                                        $0.20
+
+Gateway  http://localhost:8080  (v2.5.1)
+Updated 15:02
+[Set key] [Set gateway URL] [Copy summary] [Show log]
+```
+
+- One column, left aligned, so it reads the same in a narrow side tab and a wide editor. Labels on the left, numbers on the
+  right in tabular figures.
+- The bar is the one strong element. It is drawn in SVG with the theme's progress colour, turns to the warning or error
+  colour at the thresholds, and carries two small notches that mark the `warn` and `critical` settings, so the reader sees
+  how far each limit is from the next step. The percent and the level word sit next to it as text; the bar has a
+  `progressbar` role with its value.
+- Problem states (rejected key, gateway offline, old gateway) lead with one sentence that says what happened and a button
+  that fixes it. When the gateway is offline the last known numbers stay below, marked with their time.
+- The chart shows the samples the forecast uses for the limit closest to running out, with the limit as a dashed line.
+  It has a text summary for screen readers and is left out when there are fewer than two samples.
+- Only theme variables: font, colours, focus ring and borders come from the editor, so dark, light and high contrast
+  themes work without extra rules. High contrast themes get the contrast border on bars.
+- Strict content security policy: nothing loads from outside the extension, the only script is a short click handler with
+  a nonce, and it can only ask for one of the extension's own commands. The key appears only as its last four characters.
+- No motion. Every control is a native button, reachable with Tab and visible focus.
+
 ## Left out on purpose
 
 - No brand colours or logos of the gateway or its maker. The extension icon is a plain gauge drawn for this project.
