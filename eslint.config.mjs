@@ -1,0 +1,21 @@
+import js from '@eslint/js';
+import globals from 'globals';
+import tseslint from 'typescript-eslint';
+
+export default tseslint.config(
+  { ignores: ['dist/**', 'node_modules/**', 'coverage/**'] },
+  js.configs.recommended,
+  ...tseslint.configs.recommended,
+  {
+    files: ['**/*.mjs'],
+    languageOptions: {
+      globals: globals.node,
+    },
+  },
+  {
+    files: ['src/core/**/*.ts'],
+    rules: {
+      'no-restricted-imports': ['error', { paths: [{ name: 'vscode', message: 'src/core must not depend on VS Code.' }] }],
+    },
+  },
+);
