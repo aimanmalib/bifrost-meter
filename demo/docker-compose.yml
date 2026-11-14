@@ -1,0 +1,42 @@
+# Bifrost Meter demo stack: the official, unmodified Bifrost image plus a
+# clearly labelled mock upstream. No real model and no API key is used.
+name: ${COMPOSE_PROJECT_NAME:-bifrost-meter-demo}
+
+services:
+  bifrost-meter-gateway:
+    image: maximhq/bifrost@sha256:5ec9873acaf1687556b6e4dd854b92b539d9debf87a5a683b66338648b84d3c8 # v2.5.1
+    environment:
+      BIFROST_SETUP_TOKEN: ${BIFROST_SETUP_TOKEN:?set BIFROST_SETUP_TOKEN (see demo/.env.example)}
+    ports:
+      - "127.0.0.1:${BIFROST_PORT:-8080}:8080"
+    tmpfs:
+      - /app/data:uid=1000,gid=0,mode=0770
+    cpus: 1.0
+    mem_limit: 768m
+    depends_on:
+      - bifrost-meter-mock-upstream
+
+  bifrost-meter-mock-upstream:
+    image: node@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914 # node:22.23.4-alpine
+    command: ["node", "/srv/server.mjs"]
+    volumes:
+      - ./mock-upstream/server.mjs:/srv/server.mjs:ro
+    environment:
+      MOCK_MODELS: gpt-4o-mini
+    cpus: 0.25
+    mem_limit: 128m
+
+  bifrost-meter-seed:
+    image: node@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914 # node:22.23.4-alpine
+    command: ["node", "/srv/seed/seed.mjs", "--config", "/srv/demo.config.json"]
+    volumes:
+      - ./seed/seed.mjs:/srv/seed/seed.mjs:ro
+      - ./demo.config.json:/srv/demo.config.json:ro
+    environment:
+      BIFROST_URL: http://bifrost-meter-gateway:8080
+      BIFROST_SETUP_TOKEN: ${BIFROST_SETUP_TOKEN:?set BIFROST_SETUP_TOKEN (see demo/.env.example)}
+    depends_on:
+      - bifrost-meter-gateway
+    restart: "no"
+    cpus: 0.25
+    mem_limit: 128m
