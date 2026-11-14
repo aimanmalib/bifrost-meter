@@ -1,0 +1,10 @@
+{
+  "count.millions": "{0}M",
+  "count.thousands": "{0}k",
+  "duration.days": "{0}d",
+  "duration.hours": "{0}h",
+  "duration.lessThanMinute": "<1m",
+  "duration.minutes": "{0}m",
+  "percent.lessThanTenth": "<0.1%",
+  "percent.over": "over limit"
+}
