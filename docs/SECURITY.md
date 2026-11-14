@@ -12,11 +12,16 @@ spend its budget. The meter needs no admin credential and cannot change any limi
 - Fallback for editors without an input box: the `BIFROST_VIRTUAL_KEY` environment variable of the editor process. A key in
   secret storage wins over the variable.
 - **Clear Virtual Key** removes it from secret storage.
+- MCP server (docs/MCP.md): when the editor registers it, the extension passes the key from secret storage into the server
+  process environment only at the moment the editor starts the server. With manual setup, the key sits wherever the MCP
+  client keeps its configuration.
 
 ## Where the key goes
 
 - Only to `bifrostMeter.baseUrl`, in the `x-bf-vk` header of `GET /api/governance/virtual-keys/quota`.
 - The version lookup (`GET /api/version`, shown in the panel) is sent without the key.
+- The MCP server sends the same single request to `BIFROST_BASE_URL`, with the same rules (same-origin redirects only, no
+  plain `http` to public hosts unless allowed).
 - No other network call. No telemetry.
 
 ## Where the key never appears
@@ -25,6 +30,7 @@ spend its budget. The meter needs no admin credential and cannot change any limi
 - Not in the tooltip, the details panel, notifications, error messages, Copy Summary or the log. Where the meter must say
   which key it uses, it shows the last four characters only.
 - Not in the panel HTML, so a screenshot of the panel is safe to share.
+- Not in the MCP tool result or the server's error output; the result carries the last four characters as `key_hint`.
 
 ## Threats and what the meter does about them
 

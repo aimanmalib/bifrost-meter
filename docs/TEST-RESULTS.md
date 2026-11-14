@@ -5,13 +5,13 @@ package) runs on every change; the suites below need Docker and run when the fil
 
 ## Contract (`npm run test:contract`)
 
-Runs the extension's own quota client against the pinned official gateway image and the mock upstream from `demo/`, on a
+Runs the extension's own quota client, and the bundled MCP server through the official SDK client over stdio, against the pinned official gateway image and the mock upstream from `demo/`, on a
 free `127.0.0.1` port, then removes the stack (`docker compose down -v`). Without Docker the suite is skipped with a message.
 
 - Date: 2026-11-14
 - Gateway: `maximhq/bifrost@sha256:5ec9873acaf1687556b6e4dd854b92b539d9debf87a5a683b66338648b84d3c8` (`v2.5.1`)
-- Result: **7 passed, 0 failed**; 71 s in total, of which about 41 s is starting and seeding the gateway
-- Counters and both per-model rows became visible 9.5 s after the last mock request in this run
+- Result: **9 passed, 0 failed**; 67 s in total (run with the MCP server added; the previous run took 71 s, of which about
+  41 s was starting and seeding the gateway)
 
 | Test | Result |
 |---|---|
@@ -22,6 +22,8 @@ free `127.0.0.1` port, then removes the stack (`docker compose down -v`). Withou
 | 403 "expired" for a key past its expiry | passed |
 | Budget, token and request counters move after 3 mock requests; spend per model shows a positive amount for each model used | passed |
 | After an admin override (3 on a budget of 2) the meter's budget limit is the enforced 5, while `max_limit` stays 2 | passed |
+| MCP: `tools/list` shows `get_budget_status`; `tools/call` returns the same limits as the quota endpoint for the same key, without the key in the result | passed |
+| MCP: an unknown key gives a tool error ("Key rejected"), not a crash | passed |
 
 ## End to end (`npm run test:e2e`)
 

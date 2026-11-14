@@ -9,6 +9,12 @@ Built for the Global AI Hackathon (Geek Room), problem statement PS04 "Open-Sour
 
 **Status:** work in progress. Install steps, a one-command demo and test results will be added here as they land.
 
+## For agents
+
+The extension also carries a small MCP server with one read-only tool, `get_budget_status`, so a coding agent can read the
+same budget and limits before a long task. VS Code 1.101 and later list it automatically; other MCP clients can start
+`node dist/mcp.js`. Setup, output and an example `AGENTS.md` snippet: [docs/MCP.md](docs/MCP.md).
+
 ## AI disclosure
 
 AI disclosure: the code, tests and documentation in this repository were written by AI coding agents (Anthropic Claude models)

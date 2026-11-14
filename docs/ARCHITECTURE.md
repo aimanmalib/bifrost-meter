@@ -29,6 +29,17 @@ the result. It reads one endpoint of an unmodified Bifrost gateway and changes n
 | `format.ts` | Percent, money, counts, durations, clock times. Percent used rounds down so "100%" means used up. |
 | `i18n.ts` | Language choice and lookup in `l10n/bundle.l10n*.json` (English and Malay, same keys). |
 
+## src/mcp (MCP server, no VS Code import, enforced by lint)
+
+| Module | Job |
+| --- | --- |
+| `server.ts` | Stdio entry point, bundled as `dist/mcp.js`. |
+| `config.ts` | Reads `BIFROST_*` environment variables with the same defaults and limits as the extension settings. |
+| `tool.ts` | The `get_budget_status` tool: one quota read, output schema, read-only annotations. |
+| `status.ts` | Builds the structured result and text summary from the core's limits and forecast. |
+
+See docs/MCP.md and ADR 0010.
+
 ## src/extension (VS Code)
 
 | Module | Job |
@@ -42,6 +53,7 @@ the result. It reads one endpoint of an unmodified Bifrost gateway and changes n
 | `panel.ts`, `panelHtml.ts`, `panelStyle.ts`, `chart.ts` | The details panel: pure HTML and SVG generation, then a webview with a strict content security policy. |
 | `notifications.ts`, `noteText.ts` | Once per threshold per reset cycle, once per forecast; state kept in the editor's global storage. |
 | `commands.ts` | The seven commands. |
+| `mcpProvider.ts` | Registers `dist/mcp.js` with the editor's MCP server list when the editor has the API (VS Code 1.101 and later). |
 
 Most modules are pure functions of their input; only `extension.ts`, `statusBar.ts`, `panel.ts` and `commands.ts` call the
 VS Code API.
