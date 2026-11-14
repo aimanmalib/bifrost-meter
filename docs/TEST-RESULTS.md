@@ -3,13 +3,23 @@
 Latest recorded run of each suite. The fast gate (`bash scripts/gerbang-ujian.sh`: lint, type check, unit tests, build,
 package) runs on every change; the suites below need Docker and run when the files they cover change.
 
+## Clean clone (v0.1.0 release check)
+
+`git archive HEAD` of the release commit, unpacked into an empty folder, then inside the pinned
+`node@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914` (`node:22.23.4-alpine`, Node v22.23.4)
+container: `npm ci`, lint, type check, unit tests, build, `npm run package`.
+
+- Date: 2026-11-14
+- Result: **all steps passed**; unit **352 passed, 0 failed** in 19 test files; `bifrost-meter.vsix` 244.9 KB (10 files),
+  version 0.1.0. This is the file attached to the v0.1.0 release.
+
 ## Unit (`npm run gate`)
 
 Lint, type check, unit tests (vitest), production build and `.vsix` package, with no Docker and no network. Runs on every
 change.
 
 - Date: 2026-11-14
-- Result: **352 passed, 0 failed** in 19 test files; `bifrost-meter.vsix` 240.8 KB (10 files)
+- Result: **352 passed, 0 failed** in 19 test files; `bifrost-meter.vsix` 244.9 KB (10 files), version 0.1.0
 
 ## Contract (`npm run test:contract`)
 
@@ -18,8 +28,8 @@ free `127.0.0.1` port, then removes the stack (`docker compose down -v`). Withou
 
 - Date: 2026-11-14
 - Gateway: `maximhq/bifrost@sha256:5ec9873acaf1687556b6e4dd854b92b539d9debf87a5a683b66338648b84d3c8` (`v2.5.1`)
-- Result: **10 passed, 0 failed**; 57 s in total, including the 200-read latency test below (earlier runs: 67 s and
-  71 s, of which about 41 s was starting and seeding the gateway)
+- Result: **10 passed, 0 failed**; 64 s in total for the v0.1.0 release check, including the 200-read latency test below
+  (earlier runs: 57 s, 67 s and 71 s, of which about 41 s was starting and seeding the gateway)
 
 | Test | Result |
 |---|---|
@@ -42,9 +52,12 @@ same pinned gateway and host as the contract run above (2026-11-14, a shared bui
 | Reads | p50 | p95 | max |
 |---|---|---|---|
 | 200 | 6.9 ms | 12.2 ms | 96.2 ms |
+| 200 (v0.1.0 release check) | 7.1 ms | 51.3 ms | 151.1 ms |
+
+The median holds steady between runs; the tail depends on other work on the shared host.
 
 The meter makes one such read per editor window every 60 s by default (`bifrostMeter.pollIntervalSeconds`, minimum 15),
-four times less often while the window is not focused. The packaged `.vsix` is 241 KB.
+four times less often while the window is not focused. The packaged `.vsix` is 245 KB.
 
 ## One-command demo (`demo/run.sh`)
 
@@ -65,7 +78,8 @@ extension's own code. The stack is removed afterwards (`docker compose down -v`)
 - Date: 2026-11-14
 - Editor: `codercom/code-server@sha256:09565f9e07f5624554e295e8bab0e2fec4a7c533eb3cff459ed6596a4d3d7c1c` (`4.145.2`)
 - Gateway: the same pinned image as the contract suite
-- Result: **9 passed, 0 failed**; 2.8 min (run after the design review pass of ADR 0009). The extension declares
+- Result: **9 passed, 0 failed**; 1.8 min for the v0.1.0 release check (earlier: 2.8 min after the design review pass
+  of ADR 0009). The extension declares
   `engines.vscode` `^1.90.0` and is compiled against the 1.90 API; this run installs it in code-server 4.145.2
 
 | Test | Result |

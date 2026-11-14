@@ -137,11 +137,12 @@ window every 60 seconds by default, four times less often while the window is no
 
 | Suite | Command | Latest result |
 |---|---|---|
-| Lint, type check, unit tests, build, package | `npm run gate` | 352 passed, `.vsix` 241 KB |
+| Lint, type check, unit tests, build, package | `npm run gate` | 352 passed, `.vsix` 245 KB |
 | Contract, against the pinned gateway in Docker | `npm run test:contract` | 10 passed |
 | End to end, Playwright driving code-server | `npm run test:e2e` | 9 passed |
 
-The contract suite also reads the quota endpoint 200 times in a row: p50 6.9 ms, p95 12.2 ms. What each test checks, with
+The contract suite also reads the quota endpoint 200 times in a row: p50 6.9 ms, p95 12.2 ms. A second run on
+the same shared host, for the v0.1.0 release check, measured p50 7.1 ms, p95 51.3 ms. What each test checks, with
 dates and versions, is in [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md).
 
 ## Limits and honest notes
