@@ -9,6 +9,8 @@ const h = vi.hoisted(() => ({
   inputs: [] as (string | undefined)[],
   clipboard: '',
   fetched: [] as string[],
+  mcp: [] as { id: string; provider: Record<string, (...a: unknown[]) => unknown> }[],
+  fired: 0,
 }));
 
 vi.mock('vscode', () => {
@@ -20,7 +22,22 @@ vi.mock('vscode', () => {
     constructor(public value: string, public supportThemeIcons: boolean) {}
   }
   const disposable = { dispose: () => undefined };
+  class EventEmitter {
+    event = () => disposable;
+    fire() {
+      h.fired++;
+    }
+    dispose() {}
+  }
+  class McpStdioServerDefinition {
+    constructor(public label: string, public command: string, public args: string[], public env: Record<string, unknown>, public version?: string) {}
+  }
   return {
+    EventEmitter,
+    McpStdioServerDefinition,
+    lm: {
+      registerMcpServerDefinitionProvider: (id: string, provider: Record<string, (...a: unknown[]) => unknown>) => (h.mcp.push({ id, provider }), disposable),
+    },
     ThemeColor,
     MarkdownString,
     StatusBarAlignment: { Right: 2 },
@@ -59,6 +76,8 @@ function context() {
   const state = new Map<string, unknown>();
   return {
     subscriptions: [] as { dispose(): void }[],
+    asAbsolutePath: (p: string) => `/ext/${p}`,
+    extension: { packageJSON: { version: '9.8.7' } },
     globalState: { get: (k: string) => state.get(k), update: async (k: string, v: unknown) => void state.set(k, v) },
     secrets: {
       get: async (k: string) => secrets.get(k),
@@ -76,6 +95,8 @@ describe('activate', () => {
     h.commands.clear();
     h.config = {};
     h.fetched = [];
+    h.mcp = [];
+    h.fired = 0;
     vi.stubGlobal('fetch', async (url: string) => {
       h.fetched.push(String(url));
       return new Response(JSON.stringify(body('quota-200-after-traffic')), { status: 200, headers: { 'content-type': 'application/json' } });
@@ -113,6 +134,27 @@ describe('activate', () => {
     await h.commands.get('bifrostMeter.clearKey')!();
     await settle();
     expect(h.item.text).toBe('$(key) Set Bifrost key');
+    ctx.subscriptions.forEach((s) => s.dispose());
+  });
+
+  it('registers the MCP server with the editor and hands it the key only at start', async () => {
+    const ctx = context();
+    activate(ctx as never);
+    await settle();
+    expect(h.mcp.map((m) => m.id)).toEqual(['bifrostMeter.mcp']);
+    const provider = h.mcp[0]!.provider;
+    const [def] = provider.provideMcpServerDefinitions!() as { label: string; command: string; args: string[]; env: Record<string, unknown>; version: string }[];
+    expect(def).toMatchObject({ label: 'Bifrost Meter', command: process.execPath, args: ['/ext/dist/mcp.js'], version: '9.8.7' });
+    expect(def!.env).toMatchObject({ BIFROST_BASE_URL: 'http://localhost:8080', BIFROST_ALLOW_INSECURE_HTTP: '0', ELECTRON_RUN_AS_NODE: '1' });
+    expect(def!.env).not.toHaveProperty('BIFROST_VIRTUAL_KEY');
+    const key = ['sk', 'bf', 'mcp0activate0value0lmno'].join('-');
+    h.inputs.push(key);
+    await h.commands.get('bifrostMeter.setKey')!();
+    await settle();
+    expect(h.fired).toBe(1);
+    const resolved = (await provider.resolveMcpServerDefinition!(def)) as { env: Record<string, unknown> };
+    expect(resolved.env.BIFROST_VIRTUAL_KEY).toBe(key);
+    expect(JSON.stringify(provider.provideMcpServerDefinitions!())).not.toContain(key);
     ctx.subscriptions.forEach((s) => s.dispose());
   });
 });

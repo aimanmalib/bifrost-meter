@@ -10,6 +10,7 @@
   "config.title": "Bifrost Meter",
   "description": "Memaparkan baki bajet dan had kadar kunci maya Bifrost di bar status. Tidak rasmi, tidak bergabung dengan Maxim AI.",
   "displayName": "Bifrost Meter (Tidak Rasmi)",
+  "mcp.provider.label": "Status bajet Bifrost Meter",
   "setting.allowInsecureHttp": "Benarkan http biasa ke hos di luar loopback dan rangkaian persendirian. Kunci kemudian dihantar tanpa sulitan.",
   "setting.baseUrl": "Alamat gateway Bifrost. Bila tidak ditetapkan, pemboleh ubah persekitaran BIFROST_BASE_URL digunakan.",
   "setting.forecast.windowMinutes": "Minit penggunaan terkini yang menjadi asas ramalan habis.",

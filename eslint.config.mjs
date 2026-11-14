@@ -13,9 +13,9 @@ export default tseslint.config(
     },
   },
   {
-    files: ['src/core/**/*.ts'],
+    files: ['src/core/**/*.ts', 'src/mcp/**/*.ts'],
     rules: {
-      'no-restricted-imports': ['error', { paths: [{ name: 'vscode', message: 'src/core must not depend on VS Code.' }] }],
+      'no-restricted-imports': ['error', { paths: [{ name: 'vscode', message: 'src/core and src/mcp must not depend on VS Code.' }] }],
     },
   },
 );

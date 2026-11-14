@@ -10,6 +10,7 @@
   "config.title": "Bifrost Meter",
   "description": "Shows the remaining budget and rate limits of a Bifrost virtual key in the status bar. Unofficial, not affiliated with Maxim AI.",
   "displayName": "Bifrost Meter (Unofficial)",
+  "mcp.provider.label": "Bifrost Meter budget status",
   "setting.allowInsecureHttp": "Allow plain http to hosts outside loopback and private networks. The key is then sent unencrypted.",
   "setting.baseUrl": "Address of the Bifrost gateway. When not set, the BIFROST_BASE_URL environment variable is used.",
   "setting.forecast.windowMinutes": "Minutes of recent usage the run-out forecast is based on.",

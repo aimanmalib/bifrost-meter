@@ -1,5 +1,6 @@
 **
 !dist/extension.js
+!dist/mcp.js
 !media/icon.png
 !package.json
 !package.nls.json

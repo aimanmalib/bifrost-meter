@@ -4,6 +4,7 @@ import * as vscode from 'vscode';
 import { pickLanguage, translator } from '../core';
 import { registerCommands } from './commands';
 import { Meter } from './controller';
+import { registerMcpProvider, type McpHost } from './mcpProvider';
 import { noteText } from './noteText';
 import { DetailsPanel } from './panel';
 import { Poller } from './poller';
@@ -53,6 +54,17 @@ export function activate(context: vscode.ExtensionContext): void {
     log: (line) => log.info(line),
   });
 
+  const mcp = registerMcpProvider(vscode as unknown as McpHost, {
+    label: ctx().t('mcp.server.label'),
+    script: context.asAbsolutePath('dist/mcp.js'),
+    execPath: process.execPath,
+    version: String(context.extension?.packageJSON?.version ?? '0.0.0'),
+    baseUrl,
+    key: async () => resolveKey(await context.secrets.get(SECRET_KEY), process.env).key,
+    options: () => settings(),
+  });
+  if (mcp) log.info('MCP server get_budget_status registered with the editor.');
+
   const poller = new Poller(() => meter.refresh(), () => settings().pollIntervalSeconds);
   meter.showLoading();
   poller.start();
@@ -63,12 +75,16 @@ export function activate(context: vscode.ExtensionContext): void {
     details,
     { dispose: () => poller.stop() },
     ...registerCommands({ context, meter, poller, log, ctx, baseUrl, details }),
+    ...(mcp?.disposables ?? []),
     vscode.window.onDidChangeWindowState((w) => poller.setFocused(w.focused)),
     context.secrets.onDidChange((e) => {
-      if (e.key === SECRET_KEY) void meter.reset().then(() => poller.refreshNow());
+      if (e.key !== SECRET_KEY) return;
+      mcp?.changed();
+      void meter.reset().then(() => poller.refreshNow());
     }),
     vscode.workspace.onDidChangeConfiguration((e) => {
       if (!e.affectsConfiguration(SECTION)) return;
+      mcp?.changed();
       if (e.affectsConfiguration(`${SECTION}.baseUrl`) || e.affectsConfiguration(`${SECTION}.allowInsecureHttp`)) {
         void meter.reset().then(() => poller.refreshNow());
       } else {
