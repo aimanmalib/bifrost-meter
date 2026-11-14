@@ -14,7 +14,8 @@ same numbers, so an agent can check before it starts a long task.
 > **Unofficial.** Not affiliated with, endorsed by, or supported by Maxim AI or the Bifrost project. It talks to an unmodified
 > Bifrost gateway through one documented endpoint and changes nothing on it.
 
-Built for the Global AI Hackathon (Geek Room), problem statement PS04, "Open-Source Bifrost Gateway". Slides: [`docs/deck.pdf`](docs/deck.pdf).
+Built for the Global AI Hackathon (Geek Room), problem statement PS04, "Open-Source Bifrost Gateway". Slides: [`docs/deck.pdf`](docs/deck.pdf). The
+full 77-second demo video is attached to the [v0.1.0 release](https://github.com/aimanmalib/bifrost-meter/releases/tag/v0.1.0).
 
 | OK | Warning | Used up |
 | --- | --- | --- |
@@ -22,7 +23,7 @@ Built for the Global AI Hackathon (Geek Room), problem statement PS04, "Open-Sou
 
 ## Already run Bifrost? Two steps
 
-1. Download `bifrost-meter.vsix` from the Releases page and install it:
+1. Download `bifrost-meter.vsix` from the [Releases page](https://github.com/aimanmalib/bifrost-meter/releases) and install it:
    `code --install-extension bifrost-meter.vsix` (or Extensions view, `...` menu, **Install from VSIX...**).
 2. Run **Bifrost Meter: Set Virtual Key** from the Command Palette and paste your key. If the gateway is not at
    `http://localhost:8080`, also run **Bifrost Meter: Set Gateway URL**.
