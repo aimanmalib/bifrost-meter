@@ -3,6 +3,14 @@
 Latest recorded run of each suite. The fast gate (`bash scripts/gerbang-ujian.sh`: lint, type check, unit tests, build,
 package) runs on every change; the suites below need Docker and run when the files they cover change.
 
+## Unit (`npm run gate`)
+
+Lint, type check, unit tests (vitest), production build and `.vsix` package, with no Docker and no network. Runs on every
+change.
+
+- Date: 2026-11-14
+- Result: **352 passed, 0 failed** in 19 test files; `bifrost-meter.vsix` 240.8 KB (10 files)
+
 ## Contract (`npm run test:contract`)
 
 Runs the extension's own quota client, and the bundled MCP server through the official SDK client over stdio, against the pinned official gateway image and the mock upstream from `demo/`, on a
