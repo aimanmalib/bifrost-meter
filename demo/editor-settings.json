@@ -1,0 +1,10 @@
+{
+  "workbench.startupEditor": "none",
+  "workbench.tips.enabled": false,
+  "telemetry.telemetryLevel": "off",
+  "extensions.ignoreRecommendations": true,
+  "window.commandCenter": false,
+  "workbench.secondarySideBar.defaultVisibility": "hidden",
+  "workbench.colorTheme": "Default Dark Modern",
+  "bifrostMeter.pollIntervalSeconds": 15
+}
