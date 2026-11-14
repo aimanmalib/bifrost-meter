@@ -102,10 +102,14 @@ describe('activate', () => {
     await h.commands.get('bifrostMeter.setKey')!();
     await settle();
     expect(h.fetched[0]).toBe('http://localhost:8080/api/governance/virtual-keys/quota');
-    expect(h.item.text).toMatch(/^\$\(dashboard\) 2% · 195 requests left · /);
+    // Expected text derived from the fixture (the strictest limit is the request rate limit), not copied from it.
+    const rl = (body('quota-200-after-traffic') as { rate_limit: { request_max_limit: number; request_current_usage: number } }).rate_limit;
+    const left = rl.request_max_limit - rl.request_current_usage;
+    const pct = Math.floor((rl.request_current_usage / rl.request_max_limit) * 100);
+    expect(h.item.text).toMatch(new RegExp(`^\\$\\(dashboard\\) ${pct}% · ${left} requests left · `));
     expect(JSON.stringify(h.item)).not.toContain('sk-bf-test-key-1234');
     await h.commands.get('bifrostMeter.copySummary')!();
-    expect(h.clipboard).toContain('Requests, 5 of 200, 2%');
+    expect(h.clipboard).toContain(`Requests, ${rl.request_current_usage} of ${rl.request_max_limit}, ${pct}%`);
     await h.commands.get('bifrostMeter.clearKey')!();
     await settle();
     expect(h.item.text).toBe('$(key) Set Bifrost key');

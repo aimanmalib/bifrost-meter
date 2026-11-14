@@ -22,7 +22,7 @@ services:
     volumes:
       - ./mock-upstream/server.mjs:/srv/server.mjs:ro
     environment:
-      MOCK_MODELS: gpt-4o-mini
+      MOCK_MODELS: gpt-4o-mini,gpt-4o
     cpus: 0.25
     mem_limit: 128m
 

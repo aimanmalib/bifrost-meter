@@ -25,7 +25,8 @@ const t = config.traffic ?? {};
 const keyName = args.key ?? t.keyName ?? config.virtualKeys[0].name;
 const total = Number(args.requests ?? t.requests ?? 0); // 0 = run until stopped
 const intervalMs = Number(args.interval ?? t.intervalSeconds ?? 5) * 1000;
-const model = t.model ?? `${config.provider.name}/${config.provider.models[0]}`;
+// Requests rotate over the listed models so the meter's spend-per-model list has more than one row.
+const models = t.models ?? (t.model ? [t.model] : config.provider.models.map((m) => `${config.provider.name}/${m}`));
 const log = (msg) => console.error(`traffic: ${msg}`);
 const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
 
@@ -53,7 +54,7 @@ while (!stop && (total === 0 || sent + failed < total)) {
   const res = await fetch(`${baseUrl}/v1/chat/completions`, {
     method: 'POST',
     headers: { 'content-type': 'application/json', 'x-bf-vk': key },
-    body: JSON.stringify({ model, messages: [{ role: 'user', content: 'Demo traffic for Bifrost Meter.' }] }),
+    body: JSON.stringify({ model: models[(sent + failed) % models.length], messages: [{ role: 'user', content: 'Demo traffic for Bifrost Meter.' }] }),
   }).catch((e) => ({ ok: false, status: 0, text: async () => e.message }));
   if (res.ok) {
     sent++;

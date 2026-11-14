@@ -80,6 +80,48 @@ describe('normalize', () => {
     expect(s.modelSpend[1]!.usd).toBeCloseTo(0.2, 10);
   });
 
+  it('reads spend per model from total_cost, as the gateway sends it, highest first', () => {
+    type Usage = { model: string; total_cost: number };
+    const raw = fixture('quota-200-after-traffic').body as { budgets: { per_model_usage: Usage[] }[] };
+    const recorded = raw.budgets[0]!.per_model_usage;
+    expect(recorded.length).toBeGreaterThanOrEqual(2);
+    const s = normalize(quota('quota-200-after-traffic'), NOW);
+    const want = [...recorded].sort((a, b) => b.total_cost - a.total_cost).map((u) => ({ model: u.model, usd: u.total_cost }));
+    expect(s.modelSpend).toEqual(want);
+  });
+
+  it('prefers total_cost over the older field names', () => {
+    const s = normalize(
+      quota('quota-200-after-traffic', (b) => {
+        (b.budgets as Record<string, unknown>[])[0]!.per_model_usage = [{ model: 'a', total_cost: 0.5, current_usage: 9 }];
+      }),
+      NOW,
+    );
+    expect(s.modelSpend).toEqual([{ model: 'a', usd: 0.5 }]);
+  });
+
+  it('adds an active admin override to the budget limit (recorded "forever" override)', () => {
+    const raw = fixture('quota-200-override').body as { budgets: { max_limit: number; override_amount: number }[] };
+    const rb = raw.budgets[0]!;
+    expect(rb.override_amount).toBeGreaterThan(0);
+    const spent = rb.max_limit + rb.override_amount / 5;
+    const b = normalize(quota('quota-200-override', (x) => ((x.budgets as Record<string, unknown>[])[0]!.current_usage = spent)), NOW).limits[0]!;
+    expect(b.limit).toBe(rb.max_limit + rb.override_amount);
+    expect(b.remaining).toBeCloseTo(b.limit - spent, 10);
+    expect(b.percent).toBeLessThan(100);
+  });
+
+  it('adds a cycle override only while cycles remain, and ignores unknown modes', () => {
+    const limitWith = (extra: Record<string, unknown>) =>
+      normalize(quota('quota-200-override', (x) => Object.assign((x.budgets as Record<string, unknown>[])[0]!, extra)), NOW).limits[0]!.limit;
+    const base = (fixture('quota-200-override').body as { budgets: { max_limit: number }[] }).budgets[0]!.max_limit;
+    expect(limitWith({ override_amount: 3, override_mode: 'cycles', override_cycles_remaining: 2 })).toBe(base + 3);
+    expect(limitWith({ override_amount: 3, override_mode: 'cycles', override_cycles_remaining: 0 })).toBe(base);
+    expect(limitWith({ override_amount: 3, override_mode: 'other' })).toBe(base);
+    expect(limitWith({ override_amount: 0, override_mode: 'forever' })).toBe(base);
+    expect(limitWith({ override_amount: undefined, override_mode: undefined })).toBe(base);
+  });
+
   it('treats a null or zero rate limit as not set', () => {
     const s = normalize(
       quota('quota-200-after-traffic', (b) => {

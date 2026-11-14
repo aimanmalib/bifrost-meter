@@ -6,16 +6,37 @@
   "body": {
     "budgets": [
       {
-        "id": "2aa12bf9-296a-485b-819f-256f127cb454",
+        "id": "398cb317-dc28-4494-bb7e-0c774afb6dda",
         "max_limit": 5,
         "reset_duration": "1d",
-        "last_reset": "2026-11-14T13:40:01.180382541Z",
-        "current_usage": 0.00033,
-        "model_config_id": "dc8ba888-46ed-4060-adae-d22ae3d47070",
+        "last_reset": "2026-11-14T17:20:32.67936174Z",
+        "current_usage": 0.0034980000000000002,
+        "model_config_id": "f05d5b59-3f4e-4138-bf9b-bc93c17ef69d",
         "config_hash": "",
-        "created_at": "2026-11-14T13:40:01.180382541Z",
-        "updated_at": "2026-11-14T13:40:01.180382541Z",
-        "per_model_usage": []
+        "created_at": "2026-11-14T17:20:32.67936174Z",
+        "updated_at": "2026-11-14T17:20:32.67936174Z",
+        "per_model_usage": [
+          {
+            "model": "gpt-4o",
+            "provider": "openai",
+            "total_requests": 3,
+            "total_tokens": 600,
+            "total_cost": 0.0033,
+            "input_cost": 0.0009000000000000001,
+            "output_cost": 0.0024000000000000002,
+            "additional_cost": 0
+          },
+          {
+            "model": "gpt-4o-mini",
+            "provider": "openai",
+            "total_requests": 3,
+            "total_tokens": 600,
+            "total_cost": 0.00019800000000000002,
+            "input_cost": 0.000054,
+            "output_cost": 0.000144,
+            "additional_cost": 0
+          }
+        ]
       }
     ],
     "is_active": true,
@@ -23,45 +44,46 @@
     "provider_configs": [
       {
         "id": 1,
-        "virtual_key_id": "01ca2fe9-fb52-4f2c-88f7-da9f379d6e7c",
+        "virtual_key_id": "8fb6f887-cff8-41e7-9695-e5778941a286",
         "provider": "openai",
         "weight": 1,
         "allow_all_keys": true,
         "keys": null,
         "allowed_models": [
-          "gpt-4o-mini"
+          "gpt-4o-mini",
+          "gpt-4o"
         ],
         "blacklisted_models": []
       }
     ],
     "rate_limit": {
-      "id": "ffb31b59-3bc6-4008-86d4-afc5abbf737f",
+      "id": "442ee1e4-72e4-451e-a34a-2ca976302e53",
       "token_max_limit": 100000,
       "token_reset_duration": "1h",
-      "token_current_usage": 1000,
-      "token_last_reset": "2026-11-14T13:40:01.174917919Z",
+      "token_current_usage": 1200,
+      "token_last_reset": "2026-11-14T17:20:32.678332881Z",
       "request_max_limit": 200,
       "request_reset_duration": "1h",
-      "request_current_usage": 5,
-      "request_last_reset": "2026-11-14T13:40:01.174917919Z",
+      "request_current_usage": 6,
+      "request_last_reset": "2026-11-14T17:20:32.678332881Z",
       "config_hash": "",
-      "created_at": "2026-11-14T13:40:01.174917919Z",
-      "updated_at": "2026-11-14T13:40:01.174917919Z"
+      "created_at": "2026-11-14T17:20:32.678332881Z",
+      "updated_at": "2026-11-14T17:20:32.678332881Z"
     },
     "rate_limits": [
       {
-        "id": "ffb31b59-3bc6-4008-86d4-afc5abbf737f",
+        "id": "442ee1e4-72e4-451e-a34a-2ca976302e53",
         "token_max_limit": 100000,
         "token_reset_duration": "1h",
-        "token_current_usage": 1000,
-        "token_last_reset": "2026-11-14T13:40:01.174917919Z",
+        "token_current_usage": 1200,
+        "token_last_reset": "2026-11-14T17:20:32.678332881Z",
         "request_max_limit": 200,
         "request_reset_duration": "1h",
-        "request_current_usage": 5,
-        "request_last_reset": "2026-11-14T13:40:01.174917919Z",
+        "request_current_usage": 6,
+        "request_last_reset": "2026-11-14T17:20:32.678332881Z",
         "config_hash": "",
-        "created_at": "2026-11-14T13:40:01.174917919Z",
-        "updated_at": "2026-11-14T13:40:01.174917919Z"
+        "created_at": "2026-11-14T17:20:32.678332881Z",
+        "updated_at": "2026-11-14T17:20:32.678332881Z"
       }
     ],
     "virtual_key_name": "demo-team-a"

@@ -64,9 +64,19 @@ function make(
   };
 }
 
+/**
+ * The limit the gateway enforces: max_limit plus an active admin override. An override is active when its amount is positive
+ * and its mode is "forever", or "cycles" with cycles remaining (the quota response carries no effective limit field).
+ */
+export function effectiveMaxLimit(b: RawBudget): number {
+  const extra = b.override_amount ?? 0;
+  const active = extra > 0 && (b.override_mode === 'forever' || (b.override_mode === 'cycles' && (b.override_cycles_remaining ?? 0) > 0));
+  return active ? b.max_limit + extra : b.max_limit;
+}
+
 function budgets(list: RawBudget[], scope: LimitScope, label: string | undefined, prefix: string, now: number): Limit[] {
   return list.map((b, i) =>
-    make(`${prefix}budget:${b.id ?? i}`, 'budget', scope, label, b.max_limit, b.current_usage, b.reset_duration, b.last_reset, now),
+    make(`${prefix}budget:${b.id ?? i}`, 'budget', scope, label, effectiveMaxLimit(b), b.current_usage, b.reset_duration, b.last_reset, now),
   );
 }
 
@@ -114,7 +124,7 @@ function modelSpend(list: RawBudget[]): { model: string; usd: number }[] {
   for (const b of list) {
     for (const u of b.per_model_usage ?? []) {
       const model = u.model ?? u.model_name;
-      const usd = u.current_usage ?? u.usage;
+      const usd = u.total_cost ?? u.current_usage ?? u.usage;
       if (typeof model !== 'string' || typeof usd !== 'number' || !Number.isFinite(usd)) continue;
       totals.set(model, (totals.get(model) ?? 0) + usd);
     }

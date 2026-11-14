@@ -8,12 +8,23 @@ export interface RawBudget {
   reset_duration?: string;
   last_reset?: string;
   calendar_aligned?: boolean;
+  /** Extra amount an admin granted on top of max_limit (budget override). */
+  override_amount?: number;
+  /** "forever", or "cycles" together with override_cycles_remaining. */
+  override_mode?: string;
+  override_cycles_remaining?: number;
   per_model_usage?: RawModelUsage[];
 }
 
 export interface RawModelUsage {
   model?: string;
   model_name?: string;
+  provider?: string;
+  /** Spend in USD since the budget's last reset; the field the gateway sends. */
+  total_cost?: number;
+  total_requests?: number;
+  total_tokens?: number;
+  /** Older or alternative names, read only when total_cost is absent. */
   current_usage?: number;
   usage?: number;
 }
@@ -78,6 +89,9 @@ function budget(v: unknown, path: string): RawBudget {
     reset_duration: typeof v.reset_duration === 'string' ? v.reset_duration : undefined,
     last_reset: typeof v.last_reset === 'string' ? v.last_reset : undefined,
     calendar_aligned: v.calendar_aligned === true,
+    override_amount: isNum(v.override_amount) ? v.override_amount : undefined,
+    override_mode: typeof v.override_mode === 'string' ? v.override_mode : undefined,
+    override_cycles_remaining: isNum(v.override_cycles_remaining) ? v.override_cycles_remaining : undefined,
     per_model_usage: pmu as RawModelUsage[],
   };
 }

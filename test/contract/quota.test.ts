@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
 import { describe, expect, inject, it } from 'vitest';
-import { fetchQuota, fetchVersion, QUOTA_PATH, type QuotaResponse } from '../../src/core';
+import { fetchQuota, fetchVersion, normalize, QUOTA_PATH, type QuotaResponse } from '../../src/core';
 
 const run = promisify(execFile);
 const stack = inject('contract');
@@ -88,13 +88,32 @@ describe.skipIf(Boolean(stack.skip))('quota API contract on the pinned gateway',
     let after = before;
     while (Date.now() - sentAt < 30_000) {
       after = await quotaOk(key.value);
-      if ((after.rate_limit?.request_current_usage ?? 0) >= want) break;
+      const models = after.budgets[0]?.per_model_usage?.length ?? 0;
+      if ((after.rate_limit?.request_current_usage ?? 0) >= want && models >= Math.min(requests, config.provider.models.length)) break;
       await sleep(500);
     }
     console.warn(`[contract] counters visible ${((Date.now() - sentAt) / 1000).toFixed(1)} s after the last request`);
     expect(after.rate_limit?.request_current_usage).toBe((before.rate_limit?.request_current_usage ?? 0) + requests);
     expect(after.rate_limit?.token_current_usage ?? 0).toBeGreaterThan(before.rate_limit?.token_current_usage ?? 0);
     expect(after.budgets[0]?.current_usage ?? 0).toBeGreaterThan(before.budgets[0]?.current_usage ?? 0);
+    // Spend per model: traffic rotates over the configured models, and the meter reads a positive USD amount for each.
+    const spend = normalize(after, Date.now()).modelSpend;
+    expect(spend.map((m) => m.model).sort()).toEqual([...config.provider.models].slice(0, requests).sort());
+    for (const m of spend) expect(m.usd).toBeGreaterThan(0);
+  });
+
+  it('shows the enforced limit after an admin override on a budget', async () => {
+    const name = `contract-override-${Date.now()}`;
+    const created = await admin('POST', '/api/governance/virtual-keys', { name, budgets: [{ max_limit: 2, reset_duration: '1d' }] });
+    const vk = created.json.virtual_key as { id: string; value: string; budgets?: { id: string }[] };
+    expect(created.status).toBe(200);
+    const listed = await admin('GET', '/api/governance/virtual-keys');
+    const budgetId = (listed.json.virtual_keys as typeof vk[]).find((k) => k.id === vk.id)?.budgets?.[0]?.id ?? '';
+    const put = await admin('PUT', `/api/governance/virtual-keys/${vk.id}/budgets/${budgetId}/override`, { amount: 3, mode: 'forever' });
+    expect(put.status).toBe(200);
+    const q = await quotaOk(vk.value);
+    expect(q.budgets[0]?.max_limit).toBe(2);
+    expect(normalize(q, Date.now()).limits.find((l) => l.kind === 'budget')?.limit).toBe(5);
   });
 });
 

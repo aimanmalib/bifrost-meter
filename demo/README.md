@@ -36,7 +36,8 @@ The gateway listens on `127.0.0.1` only. The demo keys are created fresh on ever
 docker compose --profile traffic up -d   # one mock request every few seconds through a demo key
 ```
 
-The traffic service sends chat requests through the gateway with the key named in `demo.config.json` (`traffic.keyName`).
+The traffic service sends chat requests through the gateway with the key named in `demo.config.json` (`traffic.keyName`),
+rotating over the provider models so the spend per model has more than one row.
 When a budget or rate limit is reached, the gateway blocks the request and the traffic log shows it; that is expected.
 
 To send a fixed number of requests from your own shell instead (Node 22):
@@ -48,7 +49,7 @@ BIFROST_URL=http://127.0.0.1:8080 BIFROST_SETUP_TOKEN=<your token> node traffic/
 ## Change the demo
 
 Everything the demo creates is in `demo.config.json`: provider, model names, virtual key names, budgets
-(`max_limit` in USD, `reset_duration` such as `1h` or `1d`), rate limits, and the traffic settings (key, model, interval,
+(`max_limit` in USD, `reset_duration` such as `1h` or `1d`), rate limits, and the traffic settings (key, optional `models` list, interval,
 number of requests; `0` means run until stopped). No code change is needed.
 
 ## Stop and clean up

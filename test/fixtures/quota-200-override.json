@@ -1,0 +1,30 @@
+{
+  "recorded": {
+    "status": 200,
+    "gateway": "v2.5.1"
+  },
+  "body": {
+    "budgets": [
+      {
+        "id": "3292a343-b9d6-425f-bcea-4a7b17b50b50",
+        "max_limit": 5,
+        "reset_duration": "1d",
+        "last_reset": "2026-11-14T17:20:53.690930381Z",
+        "current_usage": 0,
+        "override_amount": 5,
+        "override_mode": "forever",
+        "model_config_id": "6f5cb9ee-6cc4-484c-9cb5-35e9592a0fb1",
+        "config_hash": "",
+        "created_at": "2026-11-14T17:20:53.690947832Z",
+        "updated_at": "2026-11-14T17:20:53.755862361Z",
+        "per_model_usage": []
+      }
+    ],
+    "is_active": true,
+    "model_configs": [],
+    "provider_configs": [],
+    "rate_limit": null,
+    "rate_limits": [],
+    "virtual_key_name": "fixture-override"
+  }
+}
