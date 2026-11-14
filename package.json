@@ -170,6 +170,7 @@
     "test:unit": "vitest run",
     "test:contract": "vitest run --config test/contract/vitest.config.mts",
     "test:e2e": "npm run --silent build && npm run --silent package && playwright test",
+    "record:demo": "npm run --silent build && npm run --silent package && playwright test -c test/video/playwright.config.ts && node scripts/cut-demo.mjs",
     "preview:states": "esbuild test/preview/state-sheet.ts --bundle --platform=node --format=esm --external:@playwright/test --outfile=out/state-sheet.mjs --log-level=warning && node out/state-sheet.mjs",
     "build": "node esbuild.mjs --production",
     "gate": "bash scripts/gerbang-ujian.sh",

@@ -1,0 +1,71 @@
+{
+  "provider": {
+    "name": "openai",
+    "mockBaseUrl": "http://bifrost-meter-mock-upstream:8787",
+    "models": [
+      "gpt-4o-mini",
+      "gpt-4o"
+    ]
+  },
+  "virtualKeys": [
+    {
+      "name": "demo-recording",
+      "budgets": [
+        {
+          "max_limit": 0.05,
+          "reset_duration": "1d"
+        }
+      ],
+      "rate_limit": {
+        "token_max_limit": 1000000,
+        "token_reset_duration": "1h",
+        "request_max_limit": 1000,
+        "request_reset_duration": "1h"
+      }
+    }
+  ],
+  "traffic": {
+    "keyName": "demo-recording",
+    "models": [
+      "openai/gpt-4o",
+      "openai/gpt-4o",
+      "openai/gpt-4o-mini"
+    ],
+    "intervalSeconds": 1,
+    "requests": 0
+  },
+  "recording": {
+    "viewport": { "width": 1280, "height": 720 },
+    "deviceScaleFactor": 1.5,
+    "output": { "width": 1920, "height": 1080 },
+    "editorSettings": {
+      "workbench.colorTheme": "Default Dark Modern",
+      "workbench.activityBar.location": "hidden",
+      "editor.minimap.enabled": false,
+      "editor.fontSize": 15,
+      "files.exclude": { "**/.*": true },
+      "breadcrumbs.enabled": false,
+      "bifrostMeter.pollIntervalSeconds": 15
+    },
+    "sampleFile": {
+      "name": "summarise.mjs",
+      "text": "// Calls the model through the Bifrost gateway with a virtual key.\nconst res = await fetch('http://localhost:8080/v1/chat/completions', {\n  method: 'POST',\n  headers: { 'content-type': 'application/json', 'x-bf-vk': process.env.BIFROST_VK ?? '' },\n  body: JSON.stringify({ model: 'openai/gpt-4o', messages: [{ role: 'user', content: 'Summarise this file' }] }),\n});\nconsole.log((await res.json()).choices[0].message.content);\n"
+    },
+    "warmup": { "minSeconds": 135, "intervalSeconds": 9 },
+    "steps": { "first": 40, "warn": 78 },
+    "mcpFile": "get_budget_status.json",
+    "maxSeconds": 88,
+    "gif": { "from": "traffic", "seconds": 11, "width": 960, "fps": 10, "maxBytes": 4000000 },
+    "scenes": [
+      { "id": "intro", "seconds": 6, "zoom": { "x": 640, "y": 360, "width": 640, "height": 360 }, "caption": "Bifrost Meter (unofficial) puts your Bifrost budget in the VS Code status bar." },
+      { "id": "setKey", "seconds": 9, "caption": "Set your virtual key once. The input is masked and the key stays in the editor's secret storage." },
+      { "id": "traffic", "seconds": 11, "zoom": { "x": 640, "y": 360, "width": 640, "height": 360 }, "caption": "Mock traffic goes through a real Bifrost gateway. After a refresh, the percent rises and the dollars left fall." },
+      { "id": "tooltip", "seconds": 8, "zoom": { "x": 640, "y": 360, "width": 640, "height": 360 }, "caption": "Hover for every limit: budget, tokens and requests, with reset times and a run-out forecast." },
+      { "id": "panel", "seconds": 8, "caption": "Click for the details panel, including spend by model from the gateway." },
+      { "id": "warning", "seconds": 12, "caption": "Past 75%, the status bar turns to a warning colour and one notification appears." },
+      { "id": "exhausted", "seconds": 9, "caption": "At 100% the gateway refuses requests, and the meter shows the budget as used up." },
+      { "id": "mcp", "seconds": 10, "caption": "Coding agents read the same numbers through the MCP tool get_budget_status (real output)." },
+      { "id": "end", "seconds": 6, "caption": "github.com/aimanmalib/bifrost-meter  ·  Apache-2.0  ·  not affiliated with Maxim AI" }
+    ]
+  }
+}

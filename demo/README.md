@@ -52,6 +52,19 @@ Everything the demo creates is in `demo.config.json`: provider, model names, vir
 (`max_limit` in USD, `reset_duration` such as `1h` or `1d`), rate limits, and the traffic settings (key, optional `models` list, interval,
 number of requests; `0` means run until stopped). No code change is needed.
 
+## Record the demo video
+
+```sh
+npm run record:demo
+```
+
+This starts the same stack with code-server and the packaged extension, seeds one key from `recording.config.json`
+(a small budget, so a few dozen mock requests move it from OK to warning to used up), records the editor in a headless browser,
+then cuts the scenes and burns in the captions with ffmpeg. Scenes are cut, never sped up, and every number on screen comes
+from the running gateway. Scene order, lengths, captions, zoom areas and the GIF slice are in `recording.config.json`.
+Output: `out/recording/bifrost-meter-demo.mp4` (1920x1080, silent), `docs/images/hero.gif` and three screenshots
+(`docs/images/demo-ok.png`, `demo-warning.png`, `demo-exhausted.png`). Needs Docker and ffmpeg; it takes about ten minutes.
+
 ## Stop and clean up
 
 ```sh
