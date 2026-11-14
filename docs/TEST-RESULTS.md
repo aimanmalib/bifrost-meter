@@ -24,4 +24,27 @@ free `127.0.0.1` port, then removes the stack (`docker compose down -v`). Withou
 
 ## End to end (`npm run test:e2e`)
 
-Not recorded yet.
+Builds and packages the extension, then starts the demo gateway, the mock upstream and code-server with the packaged
+`.vsix` installed (`test/e2e/docker-compose.e2e.yml`). code-server shares the gateway's network, so the extension uses its
+default URL, `http://localhost:8080`. Playwright (Chromium) drives the editor the way a user does: the command palette, the
+key prompt, the theme picker and the status bar. Expected numbers are computed from the live quota response with the
+extension's own code. The stack is removed afterwards (`docker compose down -v`).
+
+- Date: 2026-11-14
+- Editor: `codercom/code-server@sha256:09565f9e07f5624554e295e8bab0e2fec4a7c533eb3cff459ed6596a4d3d7c1c` (`4.145.2`)
+- Gateway: the same pinned image as the contract suite
+- Result: **9 passed, 0 failed**; 5.4 min in total, of which 49 s is starting the stack (on a busy shared host)
+
+| Test | Result |
+|---|---|
+| Asks for a key before one is set ("Set Bifrost key") | passed |
+| After Set Virtual Key, the status bar shows the percent and amount left from the quota response | passed |
+| Clicking the status bar opens the details panel | passed |
+| After 3 mock requests and Refresh, the status bar shows the new numbers | passed |
+| Dark, light and high contrast themes picked from the theme picker; screenshots saved | passed |
+| A key pushed past the warning threshold turns the item to the warning colour and shows one notification | passed |
+| An unknown key shows "Key rejected" (401) | passed |
+| An expired key shows "Key expired" (403) | passed |
+| A gateway URL where nothing answers shows "Gateway offline"; setting the URL back recovers | passed |
+
+Screenshots from this run: `docs/images/e2e-dark.png`, `e2e-light.png`, `e2e-high-contrast.png`, `e2e-warning.png`.
