@@ -13,7 +13,10 @@ A VS Code extension that shows the remaining budget and rate limits of your Bifr
 
 Built for the Global AI Hackathon (Geek Room), problem statement PS04 "Open-Source Bifrost Gateway".
 
-**Status:** work in progress. Install steps, a one-command demo and test results will be added here as they land.
+**Try it:** `demo/run.sh` (needs Docker) starts a pinned Bifrost gateway with a labelled mock upstream, demo keys, mock
+traffic and an editor in your browser with the meter already connected. See [demo/README.md](demo/README.md).
+
+**Status:** work in progress. Install steps and test results will be added here as they land.
 
 ## For agents
 

@@ -11,7 +11,22 @@ A local stack for trying Bifrost Meter without a real model provider and without
 | Model replies | **Mock.** `mock-upstream/server.mjs` answers every chat request with a fixed text that starts with `[mock]` and a fixed token count. No real model is called and no API key is used. |
 | Cost per request | Computed by the gateway from its own price list for the model name, using the mock token counts. |
 
-## Run it
+## One command
+
+```sh
+demo/run.sh          # from the repository root; needs Docker only
+```
+
+This creates `demo/.env` with a random setup token if it does not exist, starts the gateway, the mock upstream, the demo keys,
+steady mock traffic and code-server with Bifrost Meter installed, then prints the editor link (`http://127.0.0.1:8443/` by
+default). Open it: the meter is already in the status bar, because the editor gets the demo key and the gateway URL through
+its environment (`BIFROST_VIRTUAL_KEY`, `BIFROST_BASE_URL`). The first run builds the extension in a Node 22 container;
+set `BIFROST_METER_VSIX` to use a package you already have. Ports are `BIFROST_PORT` and `CODE_SERVER_PORT` in `demo/.env`,
+and the editor settings are in `editor-settings.json`. Every port is bound to `127.0.0.1` only.
+
+`demo/run.sh stop` removes every container and all gateway data.
+
+## Run it step by step
 
 You need Docker with the compose plugin.
 

@@ -10,8 +10,8 @@ free `127.0.0.1` port, then removes the stack (`docker compose down -v`). Withou
 
 - Date: 2026-11-14
 - Gateway: `maximhq/bifrost@sha256:5ec9873acaf1687556b6e4dd854b92b539d9debf87a5a683b66338648b84d3c8` (`v2.5.1`)
-- Result: **9 passed, 0 failed**; 67 s in total (run with the MCP server added; the previous run took 71 s, of which about
-  41 s was starting and seeding the gateway)
+- Result: **10 passed, 0 failed**; 57 s in total, including the 200-read latency test below (earlier runs: 67 s and
+  71 s, of which about 41 s was starting and seeding the gateway)
 
 | Test | Result |
 |---|---|
@@ -24,6 +24,27 @@ free `127.0.0.1` port, then removes the stack (`docker compose down -v`). Withou
 | After an admin override (3 on a budget of 2) the meter's budget limit is the enforced 5, while `max_limit` stays 2 | passed |
 | MCP: `tools/list` shows `get_budget_status`; `tools/call` returns the same limits as the quota endpoint for the same key, without the key in the result | passed |
 | MCP: an unknown key gives a tool error ("Key rejected"), not a crash | passed |
+| 200 sequential quota reads all return 200 (latency below) | passed |
+
+### Cost to the gateway
+
+`test/contract/latency.test.ts` reads the quota endpoint 200 times in a row through the extension's own client, on the
+same pinned gateway and host as the contract run above (2026-11-14, a shared build host):
+
+| Reads | p50 | p95 | max |
+|---|---|---|---|
+| 200 | 6.9 ms | 12.2 ms | 96.2 ms |
+
+The meter makes one such read per editor window every 60 s by default (`bifrostMeter.pollIntervalSeconds`, minimum 15),
+four times less often while the window is not focused. The packaged `.vsix` is 241 KB.
+
+## One-command demo (`demo/run.sh`)
+
+Run from a clean `git archive` copy of the repository with only Docker on the path (2026-11-14). The first run built the
+extension in the pinned Node 22 container, started the stack and printed the editor link in about one minute. A Playwright
+check then opened the link without typing anything: the status bar showed the request limit of the traffic key
+(`1% · 197 requests left · resets in 59m`) and moved to `3% · 193 requests left` within 20 seconds of mock traffic.
+`demo/run.sh stop` left no demo containers.
 
 ## End to end (`npm run test:e2e`)
 
