@@ -1,0 +1,17 @@
+{
+  "name": "bifrost-meter",
+  "displayName": "Bifrost Meter (Unofficial)",
+  "description": "Shows the remaining budget and rate limits of a Bifrost virtual key in the VS Code status bar.",
+  "version": "0.0.0",
+  "private": true,
+  "license": "Apache-2.0",
+  "publisher": "aimanmalib",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/aimanmalib/bifrost-meter.git"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {}
+}
