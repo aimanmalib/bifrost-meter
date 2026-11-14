@@ -35,7 +35,7 @@ Each state has an icon, a short text and a full accessibility label. Icons are t
 | OK | dashboard | 62% · $3.80 left · resets in 4h | none |
 | Warning | warning | 81% · $1.90 left · resets in 4h | warning |
 | Critical | error | 94% · $0.30 left · resets in 4h | error |
-| Used up | circle-slash | Budget used up · 4h | error |
+| Used up | circle-slash | Budget used up · resets in 4h | error |
 | Key inactive | circle-slash | Key inactive | warning |
 | 401 key rejected | lock | Key rejected | error |
 | 403 key expired | lock | Key expired | error |

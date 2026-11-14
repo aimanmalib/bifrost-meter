@@ -98,7 +98,7 @@
   "status.exhausted.budget": "Budget used up",
   "status.exhausted.requests": "Requests used up",
   "status.exhausted.tokens": "Tokens used up",
-  "status.exhaustedReset": "{0} · {1}",
+  "status.exhaustedReset": "{0} · resets in {1}",
   "status.full": "{0} · {1} left · resets in {2}",
   "status.noReset": "{0} · {1} left",
   "summary.left": "{0} left",

@@ -1,4 +1,5 @@
-// Stylesheet for the details panel. Only editor theme variables: dark, light and high contrast themes need no extra rules.
+// Stylesheet for the details panel. Only editor theme variables, so dark, light and high contrast themes work; the one theme rule
+// drops the bar track fill in high contrast, where the slider and progress colours are close.
 
 export const PANEL_STYLE = `
 :root { color-scheme: light dark; }

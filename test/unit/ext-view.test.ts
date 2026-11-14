@@ -88,7 +88,7 @@ describe('status bar text', () => {
     expect(statusView(ready([budget, req]), ctx('en', { metric: 'budget' })).text).toBe('20% · $8.00 left · resets in 4h');
   });
   it('names the used-up limit and when it resets', () => {
-    expect(statusView(ready([limit({ used: 10 })]), ctx()).text).toBe('Budget used up · 4h');
+    expect(statusView(ready([limit({ used: 10 })]), ctx()).text).toBe('Budget used up · resets in 4h');
   });
   it('spells the state out for screen readers', () => {
     expect(statusView(ready([limit({ used: 8.1 })]), ctx()).accessibility).toBe(
