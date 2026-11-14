@@ -87,7 +87,9 @@ export default async function setup(): Promise<() => Promise<void>> {
     await compose(env, ['up', '-d', '--wait', 'bifrost-meter-gateway', 'bifrost-meter-mock-upstream', 'bifrost-meter-code-server']);
     const baseUrl = `http://127.0.0.1:${gatewayPort}`;
     const keysFile = join(tmp, 'keys.json');
-    await run(process.execPath, [join(root, 'demo/seed/seed.mjs'), '--out', keysFile, '--quiet'], {
+    // The demo recording seeds its own keys (demo/recording.config.json); the e2e suite uses the default demo config.
+    const seedConfig = process.env.BIFROST_METER_SEED_CONFIG ? ['--config', process.env.BIFROST_METER_SEED_CONFIG] : [];
+    await run(process.execPath, [join(root, 'demo/seed/seed.mjs'), ...seedConfig, '--out', keysFile, '--quiet'], {
       env: { ...env, BIFROST_URL: baseUrl },
       timeout: 200_000,
     });

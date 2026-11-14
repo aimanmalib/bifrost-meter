@@ -2,13 +2,14 @@
 // Expected numbers are computed from the live quota response with the extension's own pure code, so the test checks
 // that the status bar shows what the gateway reports, not fixed demo values.
 import { execFile } from 'node:child_process';
-import { mkdirSync, readFileSync } from 'node:fs';
+import { mkdirSync } from 'node:fs';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
 import { expect, test, type Page } from '@playwright/test';
 import { fetchQuota, formatPercent, normalize, strictest, translator, type QuotaResponse } from '../../src/core';
 import { readSettings } from '../../src/extension/settings';
 import { remainingText } from '../../src/extension/view';
+import { command, nls, setKey } from './editor';
 import { root, type E2eStack } from './stack';
 
 const run = promisify(execFile);
@@ -17,7 +18,6 @@ const env = { ...process.env, ...stack.vars };
 const t = translator('en');
 const defaults = readSettings(() => undefined);
 const images = join(root, 'docs/images');
-const nls = JSON.parse(readFileSync(join(root, 'package.nls.json'), 'utf8')) as Record<string, string>;
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 
 function key(name: string): string {
@@ -58,19 +58,6 @@ async function requestsAtLeast(value: string, count: number): Promise<QuotaRespo
   }
 }
 
-async function palette(page: Page, text: string, row: string): Promise<void> {
-  await page.keyboard.press('Control+Shift+P');
-  const input = page.locator('.quick-input-widget input');
-  await expect(input).toBeVisible();
-  await input.fill(text);
-  await expect(page.locator('.quick-input-list .monaco-list-row').first()).toContainText(row);
-  await page.keyboard.press('Enter');
-}
-
-async function command(page: Page, title: string | undefined): Promise<void> {
-  await palette(page, `>${nls.category}: ${title}`, title ?? '');
-}
-
 /** Picks a colour theme the way a user does: Preferences: Color Theme, then the theme by its label in the picker. */
 async function theme(page: Page, name: string): Promise<void> {
   await page.keyboard.press('Control+Shift+P');
@@ -91,15 +78,6 @@ async function setBaseUrl(page: Page, url: string): Promise<void> {
   await command(page, nls['command.setBaseUrl']);
   const input = page.locator('.quick-input-widget input');
   await input.fill(url);
-  await page.keyboard.press('Enter');
-  await expect(input).toBeHidden();
-}
-
-async function setKey(page: Page, value: string): Promise<void> {
-  await command(page, nls['command.setKey']);
-  const input = page.locator('.quick-input-widget input[type="password"]');
-  await expect(input).toBeVisible();
-  await input.fill(value);
   await page.keyboard.press('Enter');
   await expect(input).toBeHidden();
 }
