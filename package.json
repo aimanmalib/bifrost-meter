@@ -175,7 +175,8 @@
     "build": "node esbuild.mjs --production",
     "gate": "bash scripts/gerbang-ujian.sh",
     "package": "vsce package --no-dependencies --out bifrost-meter.vsix",
-    "vscode:prepublish": "node esbuild.mjs --production"
+    "vscode:prepublish": "node esbuild.mjs --production",
+    "deck": "uv run -q --with python-pptx==1.0.2 --with pyyaml==6.0.2 python deck/build.py && bash deck/render.sh"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",

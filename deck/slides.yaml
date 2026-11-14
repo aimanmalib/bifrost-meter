@@ -1,0 +1,154 @@
+# Content and look of the submission deck. Edit this file, then run `npm run deck`.
+# Every number on a slide must come from docs/TEST-RESULTS.md or the README.
+# Image paths are relative to the repository root.
+
+output: deck/bifrost-meter.pptx
+footer: "Bifrost Meter (Unofficial)"
+
+theme:
+  font: Arial
+  mono: Courier New
+  background: "F7F6F2"
+  ink: "16191F"
+  muted: "5B6270"
+  accent: "B45309"
+  rule: "D9D6CE"
+  panel: "1E1F22"
+  panel_ink: "E6E6E6"
+  tag_fill: "EFE7DA"
+
+slides:
+  - layout: title
+    title: "Bifrost Meter (Unofficial)"
+    subtitle: "Your Bifrost virtual key's budget, in the VS Code status bar."
+    lines:
+      - "Global AI Hackathon, PS04 \"Open-Source Bifrost Gateway\""
+      - "Aiman Malib, solo"
+      - "github.com/aimanmalib/bifrost-meter"
+    image: docs/images/demo-warning.png
+    crop: [0.23, 0.03, 0.0, 0.0]
+
+  - layout: text
+    title: "Problem"
+    tag: "Problem and potential impact"
+    body:
+      - "Bifrost enforces budgets per virtual key. The admin sees them in the dashboard. The developer holding the key sees nothing until a request is refused."
+      - "An operator asked for this in the Bifrost tracker (issue 6482, 24 Aug 2026): callers \"need to see their own spend and remaining budget in lightweight clients\"."
+      - "I run coding agents most of the day. What stops them most often is a limit nobody was watching."
+
+  - layout: stack
+    title: "Solution"
+    tag: "User experience"
+    body:
+      - "One number, where you already look."
+      - "Status bar: percent used, amount left, time to reset."
+      - "Tooltip and panel: every limit on the key, the strictest first."
+      - "One warning at 75% and one at 90%, and an estimate of when the budget runs out."
+    # crop = [left, top, right, bottom] as fractions of the screenshot (here: the status bar item).
+    images:
+      - {path: docs/images/demo-ok.png, caption: "OK", crop: [0.69, 0.955, 0.0, 0.0]}
+      - {path: docs/images/demo-warning.png, caption: "Warning", crop: [0.69, 0.955, 0.0, 0.0]}
+      - {path: docs/images/demo-exhausted.png, caption: "Used up", crop: [0.69, 0.955, 0.0, 0.0]}
+
+  - layout: images
+    title: "Demo"
+    tag: "Working prototype"
+    body:
+      - "One command starts the official Bifrost image, a mock model and an editor in the browser."
+      - "Paste a demo virtual key. The meter starts moving within a minute."
+      - "Video, 77 seconds: link in the README."
+    image_height: 3.3
+    images:
+      - {path: deck/assets/video-tooltip.jpg, caption: "Hover: every limit on the key, with a forecast", crop: [0.3, 0.15, 0.04, 0.0]}
+      - {path: docs/images/demo-exhausted.png, caption: "At 100% the gateway refuses requests; the meter says so", crop: [0.24, 0.09, 0.0, 0.0]}
+
+  - layout: diagram
+    title: "Technical architecture"
+    tag: "Technical execution"
+    body:
+      - "The extension reads one endpoint: GET /api/governance/virtual-keys/quota, with the virtual key in the x-bf-vk header."
+      - "No admin credential. No plugin to load. No change to Bifrost."
+      - "The editor extension and the MCP server share one core: client, shape check, limits, forecast."
+    # Boxes in inches inside the diagram area (right half of the slide).
+    nodes:
+      - {id: ext, label: "VS Code extension\nstatus bar, tooltip, panel", x: 0.0, y: 0.0, w: 2.6, h: 1.0}
+      - {id: mcp, label: "MCP server\nget_budget_status", x: 3.0, y: 0.0, w: 2.6, h: 1.0}
+      - {id: core, label: "Shared core\nclient, schema, model, forecast", x: 0.8, y: 1.9, w: 4.0, h: 1.0, strong: true}
+      - {id: gw, label: "Bifrost gateway, official image\nGET /api/governance/virtual-keys/quota", x: 0.3, y: 3.8, w: 5.0, h: 1.0}
+    edges:
+      - {from: ext, to: core}
+      - {from: mcp, to: core}
+      - {from: core, to: gw, label: "x-bf-vk header"}
+
+  - layout: text
+    title: "Implementation"
+    tag: "Technical execution"
+    body:
+      - "The key stays in the editor's secret storage. Screens and logs show its last 4 characters only."
+      - "The key is sent to one host. Redirects to another host are refused. Plain http to a public host is refused."
+      - "14 display states. Each has one sentence that says what happened and what to do."
+      - "A response without a required field shows an error, not a zero."
+      - "English and Bahasa Melayu."
+
+  - layout: code
+    title: "For agents"
+    tag: "Use of AI"
+    body:
+      - "get_budget_status is an MCP tool that returns the same limits as structured data."
+      - "A coding agent can call it before a long task, then stop or ask when little is left."
+      - "The tool calls no model. It reads the same endpoint with the same key."
+    code_caption: "Real tools/call output (contract test, pinned gateway)"
+    code: |
+      Key demo-team-a (…8280),
+        read at 2026-11-14T18:46:36Z.
+      Budget: $0.0013 of $5.00 used (<0.1%),
+        $4.99 left, resets in 23h 59m.
+      Tokens: 600 of 100k used (0.6%),
+        99.4k tokens left, resets in 59m.
+      Requests: 3 of 200 used (1%),
+        197 requests left, resets in 59m.
+      No forecast yet: it needs two readings
+        at least 2m apart.
+
+  - layout: table
+    title: "PS04 requirements"
+    tag: "Problem and potential impact"
+    columns: ["Requirement", "How Bifrost Meter meets it"]
+    widths: [3.4, 8.4]
+    rows:
+      - ["Real operator problem", "Issue 6482. Solved from the key to the warning."]
+      - ["Public extension points", "The documented self-service quota endpoint, and MCP for agents."]
+      - ["Reproducible integration", "The unmodified official image, pinned by digest. One command."]
+      - ["Contribution quality", "Unit, contract and end-to-end tests, documentation, Apache-2.0, and a note on how it could move upstream."]
+
+  - layout: table
+    title: "Tests"
+    tag: "Technical execution"
+    columns: ["Suite", "Result", "What it covers"]
+    widths: [2.6, 1.6, 7.6]
+    rows:
+      - ["Unit", "352 passed", "Core, extension states, panel HTML, MCP tool, both languages."]
+      - ["Contract", "10 passed", "Against the official Bifrost image (v2.5.1): 200, 401, 403, counters, overrides, MCP."]
+      - ["End to end", "9 passed", "In a real editor: set the key, read the status bar, send traffic, see the warning."]
+      - ["Cost to the gateway", "p50 6.9 ms", "200 quota reads in a row, p95 12.2 ms."]
+    note: "Every number here comes from docs/TEST-RESULTS.md in the repository."
+
+  - layout: text
+    title: "How AI is used"
+    tag: "Use of AI"
+    body:
+      - "In the product: no model calls. The meter serves people and agents who use models through Bifrost. Agents read their own budget through the MCP tool."
+      - "In the build: AI coding agents (Anthropic Claude models) wrote the code, tests, documentation and these slides. I approved the idea and the plan, and I watched the demo before I submitted. I am responsible for it."
+
+  - layout: text
+    title: "Limits and next"
+    tag: "Scalability and potential"
+    body:
+      - "Limits today: budgets on a team or customer above the key are not in the quota response. The meter is a gauge, not an audit log. Tested on one gateway version."
+      - "Next, if the Bifrost team wants it: a Marketplace and Open VSX listing, usage history once the endpoint asked for in issue 6482 exists, and a JetBrains version."
+
+  - layout: end
+    title: "Thank you."
+    lines:
+      - "Repository, release with the .vsix file, and the demo video:"
+      - "github.com/aimanmalib/bifrost-meter"
