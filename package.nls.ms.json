@@ -1,0 +1,23 @@
+{
+  "category": "Bifrost Meter",
+  "command.clearKey": "Kosongkan Kunci Maya",
+  "command.copySummary": "Salin Ringkasan",
+  "command.openDetails": "Buka Butiran",
+  "command.refresh": "Muat Semula",
+  "command.setBaseUrl": "Tetapkan URL Gateway",
+  "command.setKey": "Tetapkan Kunci Maya",
+  "command.showLog": "Papar Log",
+  "config.title": "Bifrost Meter",
+  "description": "Memaparkan baki bajet dan had kadar kunci maya Bifrost di bar status. Tidak rasmi, tidak bergabung dengan Maxim AI.",
+  "displayName": "Bifrost Meter (Tidak Rasmi)",
+  "setting.allowInsecureHttp": "Benarkan http biasa ke hos di luar loopback dan rangkaian persendirian. Kunci kemudian dihantar tanpa sulitan.",
+  "setting.baseUrl": "Alamat gateway Bifrost. Bila tidak ditetapkan, pemboleh ubah persekitaran BIFROST_BASE_URL digunakan.",
+  "setting.forecast.windowMinutes": "Minit penggunaan terkini yang menjadi asas ramalan habis.",
+  "setting.language": "Bahasa meter. auto mengikut bahasa editor.",
+  "setting.notifications.enabled": "Papar pemberitahuan sekali setiap ambang setiap kitaran set semula, dan bila ramalan menunjukkan had habis sebelum set semula.",
+  "setting.pollIntervalSeconds": "Saat antara muat semula (sekurang-kurangnya 15). Lebih perlahan selepas ralat dan bila tetingkap tidak fokus.",
+  "setting.statusBar.format": "Teks bar status: full (peratus, baki, set semula), compact (peratus dan baki) atau percent.",
+  "setting.statusBar.metric": "Had mana yang dipaparkan di bar status. auto memaparkan had yang paling hampir habis.",
+  "setting.thresholds.critical": "Peratus guna yang menukar bar status ke warna ralat dan memaparkan pemberitahuan.",
+  "setting.thresholds.warn": "Peratus guna yang menukar bar status ke warna amaran dan memaparkan pemberitahuan."
+}

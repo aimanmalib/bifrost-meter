@@ -1,0 +1,23 @@
+{
+  "category": "Bifrost Meter",
+  "command.clearKey": "Clear Virtual Key",
+  "command.copySummary": "Copy Summary",
+  "command.openDetails": "Open Details",
+  "command.refresh": "Refresh",
+  "command.setBaseUrl": "Set Gateway URL",
+  "command.setKey": "Set Virtual Key",
+  "command.showLog": "Show Log",
+  "config.title": "Bifrost Meter",
+  "description": "Shows the remaining budget and rate limits of a Bifrost virtual key in the status bar. Unofficial, not affiliated with Maxim AI.",
+  "displayName": "Bifrost Meter (Unofficial)",
+  "setting.allowInsecureHttp": "Allow plain http to hosts outside loopback and private networks. The key is then sent unencrypted.",
+  "setting.baseUrl": "Address of the Bifrost gateway. When not set, the BIFROST_BASE_URL environment variable is used.",
+  "setting.forecast.windowMinutes": "Minutes of recent usage the run-out forecast is based on.",
+  "setting.language": "Language of the meter. auto follows the editor language.",
+  "setting.notifications.enabled": "Show a notification once per threshold per reset cycle, and when the forecast says a limit runs out before it resets.",
+  "setting.pollIntervalSeconds": "Seconds between refreshes (at least 15). Slower after errors and while the window is not focused.",
+  "setting.statusBar.format": "Status bar text: full (percent, remaining, reset), compact (percent and remaining) or percent.",
+  "setting.statusBar.metric": "Which limit the status bar shows. auto shows the one closest to running out.",
+  "setting.thresholds.critical": "Percent used at which the status bar turns to the error colour and a notification is shown.",
+  "setting.thresholds.warn": "Percent used at which the status bar turns to the warning colour and a notification is shown."
+}

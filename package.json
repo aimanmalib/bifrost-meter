@@ -1,17 +1,161 @@
 {
   "name": "bifrost-meter",
-  "displayName": "Bifrost Meter (Unofficial)",
-  "description": "Shows the remaining budget and rate limits of a Bifrost virtual key in the VS Code status bar.",
+  "displayName": "%displayName%",
+  "description": "%description%",
   "version": "0.0.0",
   "private": true,
   "license": "Apache-2.0",
   "publisher": "aimanmalib",
+  "icon": "media/icon.png",
   "repository": {
     "type": "git",
     "url": "https://github.com/aimanmalib/bifrost-meter.git"
   },
   "engines": {
+    "vscode": "^1.145.0",
     "node": ">=22"
+  },
+  "categories": [
+    "Other"
+  ],
+  "keywords": [
+    "bifrost",
+    "llm",
+    "gateway",
+    "budget",
+    "quota",
+    "rate limit"
+  ],
+  "main": "./dist/extension.js",
+  "activationEvents": [
+    "onStartupFinished"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "bifrostMeter.setKey",
+        "title": "%command.setKey%",
+        "category": "%category%"
+      },
+      {
+        "command": "bifrostMeter.clearKey",
+        "title": "%command.clearKey%",
+        "category": "%category%"
+      },
+      {
+        "command": "bifrostMeter.setBaseUrl",
+        "title": "%command.setBaseUrl%",
+        "category": "%category%"
+      },
+      {
+        "command": "bifrostMeter.refresh",
+        "title": "%command.refresh%",
+        "category": "%category%"
+      },
+      {
+        "command": "bifrostMeter.openDetails",
+        "title": "%command.openDetails%",
+        "category": "%category%"
+      },
+      {
+        "command": "bifrostMeter.copySummary",
+        "title": "%command.copySummary%",
+        "category": "%category%"
+      },
+      {
+        "command": "bifrostMeter.showLog",
+        "title": "%command.showLog%",
+        "category": "%category%"
+      }
+    ],
+    "configuration": {
+      "title": "%config.title%",
+      "properties": {
+        "bifrostMeter.baseUrl": {
+          "type": "string",
+          "default": "http://localhost:8080",
+          "description": "%setting.baseUrl%",
+          "scope": "application"
+        },
+        "bifrostMeter.pollIntervalSeconds": {
+          "type": "number",
+          "default": 60,
+          "minimum": 15,
+          "description": "%setting.pollIntervalSeconds%",
+          "scope": "window"
+        },
+        "bifrostMeter.thresholds.warn": {
+          "type": "number",
+          "default": 75,
+          "minimum": 1,
+          "maximum": 100,
+          "description": "%setting.thresholds.warn%",
+          "scope": "window"
+        },
+        "bifrostMeter.thresholds.critical": {
+          "type": "number",
+          "default": 90,
+          "minimum": 1,
+          "maximum": 100,
+          "description": "%setting.thresholds.critical%",
+          "scope": "window"
+        },
+        "bifrostMeter.statusBar.metric": {
+          "type": "string",
+          "default": "auto",
+          "enum": [
+            "auto",
+            "budget",
+            "tokens",
+            "requests"
+          ],
+          "description": "%setting.statusBar.metric%",
+          "scope": "window"
+        },
+        "bifrostMeter.statusBar.format": {
+          "type": "string",
+          "default": "full",
+          "enum": [
+            "full",
+            "compact",
+            "percent"
+          ],
+          "description": "%setting.statusBar.format%",
+          "scope": "window"
+        },
+        "bifrostMeter.notifications.enabled": {
+          "type": "boolean",
+          "default": true,
+          "description": "%setting.notifications.enabled%",
+          "scope": "window"
+        },
+        "bifrostMeter.forecast.windowMinutes": {
+          "type": "number",
+          "default": 30,
+          "minimum": 5,
+          "maximum": 1440,
+          "description": "%setting.forecast.windowMinutes%",
+          "scope": "window"
+        },
+        "bifrostMeter.language": {
+          "type": "string",
+          "default": "auto",
+          "enum": [
+            "auto",
+            "en",
+            "ms"
+          ],
+          "description": "%setting.language%",
+          "scope": "window"
+        },
+        "bifrostMeter.allowInsecureHttp": {
+          "type": "boolean",
+          "default": false,
+          "description": "%setting.allowInsecureHttp%",
+          "scope": "application"
+        }
+      }
+    }
   },
   "scripts": {
     "lint": "eslint .",
@@ -19,11 +163,15 @@
     "test": "vitest run",
     "test:unit": "vitest run",
     "build": "node esbuild.mjs --production",
-    "gate": "bash scripts/gerbang-ujian.sh"
+    "gate": "bash scripts/gerbang-ujian.sh",
+    "package": "vsce package --no-dependencies --out bifrost-meter.vsix",
+    "vscode:prepublish": "node esbuild.mjs --production"
   },
   "devDependencies": {
     "@eslint/js": "9.39.5",
     "@types/node": "22.20.5",
+    "@types/vscode": "1.145.0",
+    "@vscode/vsce": "4.1.1",
     "esbuild": "0.28.2",
     "eslint": "9.39.5",
     "globals": "16.5.0",
