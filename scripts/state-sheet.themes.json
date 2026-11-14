@@ -1,0 +1,42 @@
+{
+  "_note": "Approximations of the editor's default Dark Modern, Light Modern and Dark High Contrast colours, used only for preview sheets. Real-theme screenshots come from the end-to-end tests.",
+  "dark": {
+    "bodyClass": "vscode-dark",
+    "statusBar": { "background": "#181818", "foreground": "#cccccc", "warning": "#7a6400", "error": "#c72e0f", "border": "#2b2b2b" },
+    "vars": {
+      "--vscode-editor-background": "#1f1f1f", "--vscode-foreground": "#cccccc", "--vscode-descriptionForeground": "#9d9d9d",
+      "--vscode-button-background": "#0078d4", "--vscode-button-foreground": "#ffffff", "--vscode-button-hoverBackground": "#026ec1",
+      "--vscode-button-secondaryBackground": "#313131", "--vscode-button-secondaryForeground": "#cccccc",
+      "--vscode-button-secondaryHoverBackground": "#3c3c3c", "--vscode-button-border": "#ffffff12", "--vscode-focusBorder": "#0078d4",
+      "--vscode-progressBar-background": "#0078d4", "--vscode-scrollbarSlider-background": "#79797966",
+      "--vscode-textBlockQuote-background": "#2b2b2b", "--vscode-widget-border": "#313131",
+      "--vscode-editorWarning-foreground": "#cca700", "--vscode-errorForeground": "#f85149"
+    }
+  },
+  "light": {
+    "bodyClass": "vscode-light",
+    "statusBar": { "background": "#f8f8f8", "foreground": "#3b3b3b", "warning": "#725102", "error": "#c72e0f", "border": "#e5e5e5" },
+    "vars": {
+      "--vscode-editor-background": "#ffffff", "--vscode-foreground": "#3b3b3b", "--vscode-descriptionForeground": "#3b3b3b",
+      "--vscode-button-background": "#005fb8", "--vscode-button-foreground": "#ffffff", "--vscode-button-hoverBackground": "#0258a8",
+      "--vscode-button-secondaryBackground": "#e5e5e5", "--vscode-button-secondaryForeground": "#3b3b3b",
+      "--vscode-button-secondaryHoverBackground": "#cccccc", "--vscode-button-border": "#0000001a", "--vscode-focusBorder": "#005fb8",
+      "--vscode-progressBar-background": "#005fb8", "--vscode-scrollbarSlider-background": "#64646466",
+      "--vscode-textBlockQuote-background": "#f8f8f8", "--vscode-widget-border": "#e5e5e5",
+      "--vscode-editorWarning-foreground": "#bf8803", "--vscode-errorForeground": "#e51400"
+    }
+  },
+  "high-contrast": {
+    "bodyClass": "vscode-high-contrast",
+    "statusBar": { "background": "#000000", "foreground": "#ffffff", "warning": "#000000", "error": "#000000", "border": "#6fc3df" },
+    "vars": {
+      "--vscode-editor-background": "#000000", "--vscode-foreground": "#ffffff", "--vscode-descriptionForeground": "#ffffff",
+      "--vscode-button-background": "#000000", "--vscode-button-foreground": "#ffffff", "--vscode-button-hoverBackground": "#000000",
+      "--vscode-button-secondaryBackground": "#000000", "--vscode-button-secondaryForeground": "#ffffff",
+      "--vscode-button-secondaryHoverBackground": "#000000", "--vscode-button-border": "#6fc3df", "--vscode-focusBorder": "#f38518",
+      "--vscode-contrastBorder": "#6fc3df", "--vscode-progressBar-background": "#6fc3df",
+      "--vscode-scrollbarSlider-background": "#6fc3df99", "--vscode-textBlockQuote-background": "#000000",
+      "--vscode-widget-border": "#6fc3df", "--vscode-editorWarning-foreground": "#ffd370", "--vscode-errorForeground": "#f48771"
+    }
+  }
+}
