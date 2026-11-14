@@ -40,7 +40,13 @@ Top level, exactly as returned: `virtual_key_name`, `is_active`, `budgets`, `rat
 `model_configs`.
 
 - `budgets[]`: `max_limit` (USD), `current_usage` (USD), `reset_duration` (for example `1d`, `1h`), `last_reset` (ISO time),
-  `per_model_usage[]`.
+  `override_amount`, `override_mode`, `override_cycles_remaining` (only after an admin override), `per_model_usage[]`.
+- `budgets[].per_model_usage[]`: `model`, `provider`, `total_cost` (USD since the last reset), `total_requests`,
+  `total_tokens`. The meter shows `total_cost` per model, highest first.
+- **Enforced budget limit.** After an admin override the gateway enforces `max_limit + override_amount` when
+  `override_mode` is `forever`, or `cycles` with `override_cycles_remaining` above 0. The quota response has no field
+  for that sum, so the meter computes it. Measured: an override of 5 on a budget of 5 answered `effective_max_limit: 10`
+  on the management call, while the quota response kept `max_limit: 5` with `override_amount: 5`.
 - `rate_limit` (object or `null`): `token_max_limit`, `token_current_usage`, `token_reset_duration`, `token_last_reset`,
   `request_max_limit`, `request_current_usage`, `request_reset_duration`, `request_last_reset`. A limit that is not set is
   absent or `null`.
@@ -56,13 +62,17 @@ Five `POST /v1/chat/completions` calls through key `demo-team-a` (model `openai/
 | `budgets[0].current_usage` (USD) | 0 | 0.00033 |
 | `rate_limit.token_current_usage` | 0 | 1000 |
 | `rate_limit.request_current_usage` | 0 | 5 |
-| `budgets[0].per_model_usage` entries | 0 | 0 |
+| `budgets[0].per_model_usage` entries | 0 | 0 (read too early; see below) |
 
 Cost is computed by the gateway from its own pricing catalog and the token counts; no real provider is called.
 
 Counters are written asynchronously. In the contract runs they became visible 2 to 6 seconds after the last request, so a
 reading taken right after a request can still show the old value. The extension polls on an interval, which hides this
 lag; the contract test waits up to 30 seconds for the counters to move.
+
+`per_model_usage` is filled later than the counters. Re-recorded 15 seconds after six calls rotating over
+`openai/gpt-4o-mini` and `openai/gpt-4o`: two entries, three requests and 600 tokens each, with `total_cost` 0.0033 USD
+for `gpt-4o` and 0.000198 USD for `gpt-4o-mini` (`test/fixtures/quota-200-after-traffic.json`).
 
 ## When fields are missing
 

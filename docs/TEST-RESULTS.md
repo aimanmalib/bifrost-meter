@@ -10,8 +10,8 @@ free `127.0.0.1` port, then removes the stack (`docker compose down -v`). Withou
 
 - Date: 2026-11-14
 - Gateway: `maximhq/bifrost@sha256:5ec9873acaf1687556b6e4dd854b92b539d9debf87a5a683b66338648b84d3c8` (`v2.5.1`)
-- Result: **6 passed, 0 failed**; 59 s in total, of which about 41 s is starting and seeding the gateway
-- Counters became visible 4.5 s after the last mock request in this run
+- Result: **7 passed, 0 failed**; 71 s in total, of which about 41 s is starting and seeding the gateway
+- Counters and both per-model rows became visible 9.5 s after the last mock request in this run
 
 | Test | Result |
 |---|---|
@@ -20,7 +20,8 @@ free `127.0.0.1` port, then removes the stack (`docker compose down -v`). Withou
 | 401 without a key header | passed |
 | 401 for an unknown key | passed |
 | 403 "expired" for a key past its expiry | passed |
-| Budget, token and request counters move after 3 mock requests | passed |
+| Budget, token and request counters move after 3 mock requests; spend per model shows a positive amount for each model used | passed |
+| After an admin override (3 on a budget of 2) the meter's budget limit is the enforced 5, while `max_limit` stays 2 | passed |
 
 ## End to end (`npm run test:e2e`)
 
@@ -33,7 +34,8 @@ extension's own code. The stack is removed afterwards (`docker compose down -v`)
 - Date: 2026-11-14
 - Editor: `codercom/code-server@sha256:09565f9e07f5624554e295e8bab0e2fec4a7c533eb3cff459ed6596a4d3d7c1c` (`4.145.2`)
 - Gateway: the same pinned image as the contract suite
-- Result: **9 passed, 0 failed**; 5.4 min in total, of which 49 s is starting the stack (on a busy shared host)
+- Result: **9 passed, 0 failed**; 4.2 min in total, of which 44 s is starting the stack (on a busy shared host). The
+  extension declares `engines.vscode` `^1.90.0` and is compiled against the 1.90 API; this run installs it in code-server 4.145.2
 
 | Test | Result |
 |---|---|

@@ -10,7 +10,7 @@ notifications. Some behaviours were not fixed by the specification.
 
 ## Decision
 
-- **`engines.vscode` is `^1.145.0`**, the VS Code version inside code-server 4.145.2, the editor the end-to-end test runs in.
+- **`engines.vscode` was `^1.145.0`** (changed to `^1.90.0` in ADR 0008), the VS Code version inside code-server 4.145.2, the editor the end-to-end test runs in.
   The extension uses no API newer than that. If the end-to-end test pins a different code-server, the floor follows it.
 - **`bifrostMeter.baseUrl` and `bifrostMeter.allowInsecureHttp` are application-scoped** (user settings only). A workspace
   `.vscode/settings.json` from a cloned repository could otherwise point the stored key at another host, or allow it to
