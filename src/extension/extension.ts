@@ -5,6 +5,7 @@ import { pickLanguage, translator } from '../core';
 import { registerCommands } from './commands';
 import { Meter } from './controller';
 import { noteText } from './noteText';
+import { DetailsPanel } from './panel';
 import { Poller } from './poller';
 import { resolveBaseUrl, resolveKey, SECRET_KEY } from './secrets';
 import { readSettings } from './settings';
@@ -29,13 +30,18 @@ export function activate(context: vscode.ExtensionContext): void {
     return { t: translator(lang), lang, now: Date.now(), settings: s };
   };
 
+  // The panel reads the meter lazily (only after a render), and the meter's render updates the panel.
+  const details = new DetailsPanel({ state: () => meter.state, key: () => meter.key, store: context.globalState, ctx, baseUrl });
   const meter = new Meter({
     settings,
     baseUrl,
     key: async () => resolveKey(await context.secrets.get(SECRET_KEY), process.env).key,
     store: context.globalState,
     now: Date.now,
-    render: (state, key) => bar.render(state, key, baseUrl(), ctx()),
+    render: (state, key) => {
+      bar.render(state, key, baseUrl(), ctx());
+      details.update();
+    },
     notify: (note) => {
       const c = ctx();
       const open = c.t('action.openDetails');
@@ -54,8 +60,9 @@ export function activate(context: vscode.ExtensionContext): void {
   context.subscriptions.push(
     log,
     bar,
+    details,
     { dispose: () => poller.stop() },
-    ...registerCommands({ context, meter, poller, log, ctx, baseUrl }),
+    ...registerCommands({ context, meter, poller, log, ctx, baseUrl, details }),
     vscode.window.onDidChangeWindowState((w) => poller.setFocused(w.focused)),
     context.secrets.onDidChange((e) => {
       if (e.key === SECRET_KEY) void meter.reset().then(() => poller.refreshNow());
