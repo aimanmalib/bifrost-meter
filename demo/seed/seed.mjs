@@ -66,7 +66,15 @@ async function ensureProvider() {
   return 'created';
 }
 
-async function createVirtualKey(vk) {
+async function existingKeys() {
+  const res = await api('GET', '/api/governance/virtual-keys');
+  if (res.status !== 200) return new Map();
+  return new Map((res.json.virtual_keys ?? []).map((k) => [k.name, k.value]));
+}
+
+async function createVirtualKey(vk, existing) {
+  // Running the seed again reuses keys by name instead of adding duplicates.
+  if (existing.get(vk.name)) return { name: vk.name, value: existing.get(vk.name), reused: true };
   const res = await api('POST', '/api/governance/virtual-keys', {
     name: vk.name,
     budgets: vk.budgets,
@@ -83,9 +91,11 @@ async function createVirtualKey(vk) {
 const waited = await waitForHealth();
 log(`gateway healthy after ${Math.round(waited / 1000)} s`);
 log(`provider ${config.provider.name}: ${await ensureProvider()}`);
+const existing = await existingKeys();
 const keys = [];
-for (const vk of config.virtualKeys) keys.push(await createVirtualKey(vk));
-if (args.out) await writeFile(args.out, JSON.stringify({ baseUrl, keys }, null, 2), { mode: 0o600 });
+for (const vk of config.virtualKeys) keys.push(await createVirtualKey(vk, existing));
+log(`virtual keys: ${keys.filter((k) => !k.reused).length} created, ${keys.filter((k) => k.reused).length} reused`);
+if (args.out) await writeFile(args.out, JSON.stringify({ baseUrl, keys: keys.map(({ name, value }) => ({ name, value })) }, null, 2), { mode: 0o600 });
 for (const k of keys) {
   // Demo keys are generated per run for a local, mock-only gateway.
   console.log(args.quiet ? `${k.name}: …${k.value.slice(-4)}` : `${k.name}: ${k.value}`);
