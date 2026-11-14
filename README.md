@@ -5,7 +5,11 @@ A VS Code extension that shows the remaining budget and rate limits of your Bifr
 > **Unofficial.** This project is not affiliated with, endorsed by, or supported by Maxim AI or the Bifrost project.
 > It reads only the public, documented quota endpoint of an unmodified Bifrost gateway.
 
-![Bifrost Meter in code-server: mock traffic through a Bifrost gateway moves the budget in the status bar to a warning](docs/images/hero.gif)
+![Bifrost Meter in code-server: mock traffic through a Bifrost gateway raises the budget used in the status bar from 22% to 40%](docs/images/hero.gif)
+
+| OK | Warning | Used up |
+| --- | --- | --- |
+| ![Status bar showing 40% of the budget used, $0.02 left](docs/images/demo-ok.png) | ![Panel and status bar at 79% in the warning state, with the threshold notification](docs/images/demo-warning.png) | ![Panel and status bar in red: budget used up](docs/images/demo-exhausted.png) |
 
 Built for the Global AI Hackathon (Geek Room), problem statement PS04 "Open-Source Bifrost Gateway".
 
