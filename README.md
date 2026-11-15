@@ -17,7 +17,8 @@ same numbers, so an agent can check before it starts a long task.
 > Bifrost gateway through one documented endpoint and changes nothing on it.
 
 Built for the Global AI Hackathon (Geek Room), problem statement PS04, "Open-Source Bifrost Gateway". Slides: [`docs/deck.pdf`](docs/deck.pdf). The
-full 87-second narrated demo video is attached to the [latest release](https://github.com/aimanmalib/bifrost-meter/releases/latest).
+full 87-second narrated demo video is on [YouTube](https://youtu.be/WIpad7NQ3_Y) and attached to the
+[latest release](https://github.com/aimanmalib/bifrost-meter/releases/latest).
 
 | OK | Warning | Used up |
 | --- | --- | --- |
