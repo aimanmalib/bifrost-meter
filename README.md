@@ -2,6 +2,8 @@
 
 See what is left on your Bifrost virtual key without leaving the editor.
 
+[![ci](https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml/badge.svg)](https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml)
+
 ![Bifrost Meter in code-server: mock traffic through a Bifrost gateway raises the budget used in the status bar from 22% to 40%](docs/images/hero.gif)
 
 Bifrost enforces budgets and rate limits per virtual key. An admin can watch them in the dashboard. The developer who holds
@@ -148,7 +150,8 @@ window every 60 seconds by default, four times less often while the window is no
 
 The contract suite also reads the quota endpoint 200 times in a row: p50 6.9 ms, p95 12.2 ms. Two more runs on
 the same shared host measured p50 7.1 ms, p95 51.3 ms and p50 6.8 ms, p95 13.0 ms. What each test checks, with
-dates and versions, is in [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md).
+dates and versions, is in [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md). The gate and the contract suite also run on GitHub
+Actions for every push ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
 
 ## Limits and honest notes
 
