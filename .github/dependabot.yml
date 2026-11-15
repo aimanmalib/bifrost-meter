@@ -11,6 +11,8 @@ updates:
     ignore:
       - dependency-name: "*"
         update-types: ["version-update:semver-major"]
+      # Pinned to engines.vscode (^1.90.0): a newer API typing would let code use calls the oldest supported editor lacks.
+      - dependency-name: "@types/vscode"
 
   - package-ecosystem: github-actions
     directory: /
