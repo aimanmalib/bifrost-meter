@@ -1,17 +1,11 @@
-# Bifrost Meter (Unofficial)
+<h1 align="center">Bifrost Meter (Unofficial)</h1>
 
-![Bifrost Meter: a gauge icon, the name, and three status bar readings: 40% with $0.60 left, a warning at 79%, and budget used up](docs/images/banner.png)
+<p align="center"><img src="https://raw.githubusercontent.com/aimanmalib/bifrost-meter/main/docs/images/banner.png" alt="Bifrost Meter: a gauge icon, the name, and three status bar readings: 40% with $0.60 left, a warning at 79%, and budget used up"></p>
 
-**See what is left on your Bifrost virtual key without leaving the editor.**
+<p align="center"><a href="https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml"><img src="https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml/badge.svg" alt="CI"></a> <a href="https://open-vsx.org/extension/aimanmalib/bifrost-meter"><img src="https://img.shields.io/open-vsx/v/aimanmalib/bifrost-meter?label=Open%20VSX" alt="Open VSX"></a> <a href="https://github.com/aimanmalib/bifrost-meter/releases/latest"><img src="https://img.shields.io/github/v/release/aimanmalib/bifrost-meter" alt="Latest release"></a> <a href="https://github.com/aimanmalib/bifrost-meter/blob/main/LICENSE"><img src="https://img.shields.io/github/license/aimanmalib/bifrost-meter" alt="Licence: Apache-2.0"></a></p>
 
-[![ci](https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml/badge.svg)](https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml)
-[![Open VSX](https://img.shields.io/open-vsx/v/aimanmalib/bifrost-meter?label=Open%20VSX)](https://open-vsx.org/extension/aimanmalib/bifrost-meter)
-[![Release](https://img.shields.io/github/v/release/aimanmalib/bifrost-meter)](https://github.com/aimanmalib/bifrost-meter/releases/latest)
-[![License](https://img.shields.io/github/license/aimanmalib/bifrost-meter)](LICENSE)
-
-[Install](#already-run-bifrost-two-steps) · [One-command demo](#no-gateway-yet-one-command) ·
-[Video, 87 s](https://youtu.be/XpW94Z39lG0) · [Slides](docs/deck.pdf) · [Documentation](#documentation) ·
-[Bahasa Melayu](README.ms.md)
+<p align="center"><b>See what is left on your Bifrost virtual key without leaving the editor.</b> · <i>Lihat baki kunci maya Bifrost anda tanpa meninggalkan editor.</i><br>
+<a href="#already-run-bifrost-two-steps">install</a> · <a href="#no-gateway-yet-one-command">one-command demo</a> · <a href="https://youtu.be/XpW94Z39lG0">video, 87 s</a> · <a href="https://github.com/aimanmalib/bifrost-meter/blob/main/docs/deck.pdf">slides</a> · <a href="#documentation">documentation</a> · <a href="https://github.com/aimanmalib/bifrost-meter/blob/main/CHANGELOG.md">changelog</a> · Built in Malaysia by <a href="https://aimanmalib.com">Aiman Malib</a></p>
 
 ![Bifrost Meter in code-server: mock traffic through a Bifrost gateway raises the budget used in the status bar from 22% to 40%](docs/images/hero.gif)
 
@@ -27,6 +21,8 @@ same numbers, so an agent can check before it starts a long task.
 
 Built for the Global AI Hackathon by Geek Room (November 2026), problem statement PS04, "Open-Source Bifrost Gateway".
 The narrated demo video is also attached to the [latest release](https://github.com/aimanmalib/bifrost-meter/releases/latest).
+
+[Bahasa Melayu: README.ms.md](README.ms.md)
 
 | OK | Warning | Used up |
 | --- | --- | --- |
@@ -217,7 +213,10 @@ agent scene in it replays one recorded session of a coding agent (`demo/agent-se
 | [`docs/SECURITY.md`](docs/SECURITY.md) | How the key is stored and what leaves the editor |
 | [`docs/decisions/`](docs/decisions/) | Decision records |
 | [`demo/README.md`](demo/README.md) | The demo stack, step by step |
+| [`CHANGELOG.md`](CHANGELOG.md) | What changed in each release |
+| [`CONTRIBUTING.md`](CONTRIBUTING.md) | How to build, test and send a change |
 
 ## License
 
-Apache-2.0. See [LICENSE](LICENSE).
+Apache-2.0. See [LICENSE](LICENSE). Made by [Aiman Malib](https://aimanmalib.com) in Malaysia. Security issues: see
+[`docs/SECURITY.md`](docs/SECURITY.md).
