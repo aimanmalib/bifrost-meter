@@ -88,6 +88,11 @@ same budget and limits before a long task. VS Code 1.101 and later list it autom
 (`Bifrost 26% · $0.73 left · resets in 3m`) for a status line or tmux. Setup, real output and an example `AGENTS.md`
 snippet: [`docs/MCP.md`](docs/MCP.md).
 
+![A coding agent in a terminal is asked to refactor a payments module, calls get_budget_status, and answers that it would ask first because $0.18 of the $1 hourly budget is left](docs/images/agent-session.png)
+
+A recorded session: the agent calls `get_budget_status` and asks before a long refactor (replayed at reading speed). The
+prompt, the tool result and the reply are in [`demo/agent-session.json`](demo/agent-session.json).
+
 ## How it works
 
 ```
