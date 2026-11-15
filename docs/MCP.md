@@ -180,3 +180,6 @@ Claude Code status line (`~/.claude/settings.json`), as one example of an agent 
 ```
 
 tmux: `set -g status-right '#(node /path/to/dist/cli.js status)'` with `status-interval 60`.
+
+Each call is one gateway read and the command keeps no cache, so cache the output yourself if your status line refreshes
+more often than once a minute.
