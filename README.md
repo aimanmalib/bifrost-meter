@@ -221,7 +221,9 @@ working under my direction. I chose the problem, set the requirements and checke
 
 In detail: the idea is one of the examples in the problem statement. My agents proposed it and wrote the plan. I approved both,
 and I watched the recorded demo before I submitted. The narration in the demo video is an AI clone of my own voice; its music is by Sascha Ende, ende.app (CC BY 4.0). The
-agent scene in it replays one recorded session of a coding agent (`demo/agent-session.json`).
+agent scene in it replays one recorded session of a coding agent (`demo/agent-session.json`). An AI review of this entry
+on 15 November 2026 found the desktop monitors listed above and several wording errors. I decided which of its findings
+to act on.
 
 ## Documentation
 
