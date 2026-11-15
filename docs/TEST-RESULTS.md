@@ -9,6 +9,10 @@ package) runs on every change; the suites below need Docker and run when the fil
 0.1.2. For this version only the fast gate was run (see Unit below); the contract, end-to-end and demo suites were not
 run again; their latest recorded results are below.
 
+The release file was built from a fresh `git clone` of the tagged commit `bba0594` with Node v22.23.1: `npm ci`, then
+`npm run gate`: 383 passed, 0 failed; `bifrost-meter.vsix` 259.7 KB (12 files). That file is attached to the v0.1.3
+release and published on Open VSX.
+
 ## Clean clone (v0.1.2 release check)
 
 `git archive HEAD` of the release commit, unpacked into an empty folder, then inside the pinned
