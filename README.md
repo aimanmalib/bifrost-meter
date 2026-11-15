@@ -75,7 +75,8 @@ status bar without typing anything. The demo key has a $1.00 budget that resets 
 the meter goes from OK to a warning at 75%, critical at 90%, "Budget used up" and back to OK after the reset. No provider
 account and no paid API call. Every port is bound to `127.0.0.1`. If
 8080 or 8443 is taken, as 8080 usually is on a machine that already runs Bifrost, the script uses the next free port and
-prints it. To run the stack step by step with your own editor, see [`demo/README.md`](demo/README.md).
+prints it. The script is bash, so on Windows it needs WSL or Git Bash; I have not run it on Windows. To run the stack
+step by step with your own editor, see [`demo/README.md`](demo/README.md).
 
 ## For agents
 
@@ -162,7 +163,7 @@ Actions for every push ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
 
 | Part | Version |
 |---|---|
-| Bifrost gateway | `v2.5.1`, `maximhq/bifrost@sha256:5ec9873acaf1687556b6e4dd854b92b539d9debf87a5a683b66338648b84d3c8` |
+| Bifrost gateway | `v2.5.1` (the latest release on 15 November 2026), `maximhq/bifrost@sha256:5ec9873acaf1687556b6e4dd854b92b539d9debf87a5a683b66338648b84d3c8` |
 | Editor | code-server `4.145.2` (end to end); compiled against the VS Code 1.90 API (`engines.vscode` `^1.90.0`) |
 | Build | Node.js 22, TypeScript, esbuild, `@vscode/vsce` |
 
@@ -175,6 +176,8 @@ TypeScript SDK, Docker Compose, the official Bifrost image and code-server.
 
 - The quota endpoint reports the key's own budgets and rate limits. It does not report budgets set on a team or customer
   above the key. If one of those runs out first, the meter still shows the key's own numbers.
+- Budgets set on a provider or a model under the key are read and counted. The status bar text does not say which scope
+  the tightest limit belongs to; the tooltip and the panel do.
 - Counters appear a few seconds after a request (2 to 9 seconds in the contract runs), and the meter polls once a minute by
   default. It is a gauge, not an audit log.
 - The quota response has no next reset time and no calendar-aligned flag. The meter derives both from `reset_duration`
@@ -182,6 +185,10 @@ TypeScript SDK, Docker Compose, the official Bifrost image and code-server.
 - The run-out estimate is a straight line through the last 30 minutes of readings. Bursty usage will fool it.
 - Tested end to end on one gateway version (v2.5.1, pinned by digest) and one editor build. Other editors built on VS Code
   should load it. I have not tested them.
+- The Bifrost documentation dates the endpoint to v1.5.0. I ran the meter only against v2.5.1, the latest release on
+  15 November 2026. Older gateways are untested.
+- Not tested behind an HTTP proxy or with a private certificate authority. Any network failure, including a DNS or
+  certificate error, reads "Gateway offline".
 - On [Open VSX](https://open-vsx.org/extension/aimanmalib/bifrost-meter) since 15 November 2026, so VSCodium, Cursor and
   code-server can install it from their extension view. Not on the VS Code Marketplace: there, install from the `.vsix` file.
 - The demo uses a mock model upstream, labelled `[mock]`. The gateway, the keys, the budgets and the counters are real.
