@@ -67,7 +67,7 @@ slides:
     tag: "User experience"
     body:
       - "One command starts the official Bifrost image, a mock model and an editor in the browser."
-      - "The meter is already connected. A $1.00 demo budget resets every 5 minutes, so the whole cycle shows live."
+      - "The meter is already connected, and the demo budget runs a full cycle every 5 minutes."
       - "GIF in the README. Full 77-second video in the latest release."
     image_height: 3.3
     images:
