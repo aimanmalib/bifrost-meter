@@ -38,6 +38,13 @@ the result. It reads one endpoint of an unmodified Bifrost gateway and changes n
 | `tool.ts` | The `get_budget_status` tool: one quota read, output schema, read-only annotations. |
 | `status.ts` | Builds the structured result and text summary from the core's limits and forecast. |
 
+## src/cli (terminal status line, no VS Code import)
+
+| Module | Job |
+| --- | --- |
+| `cli.ts` | Entry point, bundled as `dist/cli.js`: `status` prints one line, `--format json` the structured result. |
+| `line.ts` | Turns one quota reading into the line, with the status bar's own strings and rounding. |
+
 See docs/MCP.md and ADR 0010.
 
 ## src/extension (VS Code)

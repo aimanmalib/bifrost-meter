@@ -19,7 +19,8 @@ dan had ada dalam [README Inggeris](README.md).
 
 ## Sudah ada Bifrost? Dua langkah
 
-1. Muat turun `bifrost-meter.vsix` dari halaman Releases dan pasang:
+1. Dalam editor yang memakai Open VSX (VSCodium, Cursor, code-server), cari "Bifrost Meter" di paparan Extensions
+   ([senarai](https://open-vsx.org/extension/aimanmalib/bifrost-meter)). Dalam VS Code, muat turun `bifrost-meter.vsix` dari halaman Releases dan pasang:
    `code --install-extension bifrost-meter.vsix` (atau paparan Extensions, menu `...`, **Install from VSIX...**).
 2. Jalankan **Bifrost Meter: Set Virtual Key** dari Command Palette dan tampal kunci anda. Jika gateway bukan di
    `http://localhost:8080`, jalankan juga **Bifrost Meter: Set Gateway URL**.
@@ -57,6 +58,9 @@ memilih port bebas seterusnya dan mencetaknya. Langkah demi langkah: [`demo/READ
 Teks antara muka ada dalam bahasa Inggeris dan Melayu. Bahasa mengikut editor, atau tetapkan `bifrostMeter.language` kepada
 `ms`. Tetapan lain (`bifrostMeter.*`: alamat gateway, kekerapan baca, ambang amaran, format bar status, tetingkap ramalan,
 notifikasi) diterangkan dalam [`docs/CONFIGURATION.md`](docs/CONFIGURATION.md).
+
+Untuk ejen yang berjalan di terminal, `node dist/cli.js status` mencetak bacaan yang sama sebagai satu baris
+(`Bifrost 37% · baki $0.62 · set semula dalam 3m`) untuk baris status atau tmux; butiran dalam [`docs/MCP.md`](docs/MCP.md).
 
 Tiada kotak untuk menaip kunci (sesetengah persekitaran jauh)? Tetapkan pemboleh ubah persekitaran `BIFROST_VIRTUAL_KEY` dan
 `BIFROST_BASE_URL` untuk proses editor.

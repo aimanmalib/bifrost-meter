@@ -1,6 +1,8 @@
 # Install
 
-Bifrost Meter is not published to any extension marketplace. You install it from a `.vsix` file.
+Bifrost Meter is listed on [Open VSX](https://open-vsx.org/extension/aimanmalib/bifrost-meter), the registry used by
+VSCodium, Cursor and code-server: search for "Bifrost Meter" in the extension view there. It is not on the VS Code
+Marketplace, so in VS Code you install it from a `.vsix` file.
 
 ## Requirements
 
