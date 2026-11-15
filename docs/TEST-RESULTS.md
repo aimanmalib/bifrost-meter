@@ -3,6 +3,12 @@
 Latest recorded run of each suite. The fast gate (`bash scripts/gerbang-ujian.sh`: lint, type check, unit tests, build,
 package) runs on every change; the suites below need Docker and run when the files they cover change.
 
+## Version 0.1.3 (documentation only)
+
+`git diff v0.1.2..HEAD -- src test demo l10n` is empty, so the extension code, the tests and the demo are the same as in
+0.1.2. For this version only the fast gate was run (see Unit below); the contract, end-to-end and demo suites were not
+run again; their latest recorded results are below.
+
 ## Clean clone (v0.1.2 release check)
 
 `git archive HEAD` of the release commit, unpacked into an empty folder, then inside the pinned
@@ -20,8 +26,8 @@ Lint, type check, unit tests (vitest), production build and `.vsix` package, wit
 change.
 
 - Date: 2026-11-15
-- Result: **383 passed, 0 failed** in 20 test files; `bifrost-meter.vsix` 257.3 KB (11 files), version 0.1.2. The package
-  carries the README, so it grew from the 256.5 KB of the released file when the README header changed; the code is the same.
+- Result: **383 passed, 0 failed** in 20 test files; `bifrost-meter.vsix` 259.7 KB (12 files), version 0.1.3. The package
+  now carries the changelog as well as the README, so it is larger than the 256.5 KB of the 0.1.2 file; the code is the same.
 
 ## Contract (`npm run test:contract`)
 
@@ -66,7 +72,7 @@ The gateway computes spend per model from its request logs on each read, once fo
 cost at production log volume is not measured.
 
 The meter makes one such read per editor window every 60 s by default (`bifrostMeter.pollIntervalSeconds`, minimum 15),
-four times less often while the window is not focused. The packaged `.vsix` is 257 KB.
+four times less often while the window is not focused. The packaged `.vsix` is 260 KB.
 
 ## One-command demo (`demo/run.sh`)
 

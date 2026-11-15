@@ -168,7 +168,7 @@ The hackathon rules list six judging criteria. Each row points to the evidence i
 
 | Suite | Command | Latest result |
 |---|---|---|
-| Lint, type check, unit tests, build, package | `npm run gate` | 383 passed, `.vsix` 257 KB |
+| Lint, type check, unit tests, build, package | `npm run gate` | 383 passed, `.vsix` 260 KB |
 | Contract, against the pinned gateway in Docker | `npm run test:contract` | 11 passed |
 | End to end, Playwright driving code-server | `npm run test:e2e` | 9 passed |
 

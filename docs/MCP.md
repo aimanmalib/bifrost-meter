@@ -38,7 +38,7 @@ On older editors the extension skips this step and works as before; use the manu
 
 Find `dist/mcp.js`: inside the installed extension folder (for example
 `~/.vscode/extensions/aimanmalib.bifrost-meter-<version>/dist/mcp.js`), or in a clone after `npm ci && npm run build`.
-Node.js 20 or later is needed when the client starts it with `node`.
+Node.js 22 or later is needed when the client starts it with `node` (the `engines.node` field in `package.json`).
 
 VS Code without the automatic registration, `.vscode/mcp.json` (the key is asked for once and kept by the editor):
 

@@ -5,6 +5,15 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.3] - 2026-11-15
+
+### Changed
+
+- Documentation only; the extension code is the same as in 0.1.2. The README lists the desktop monitors that read the
+  same quota endpoint, adds limits, the judging criteria table, the three-state strip and a still of the agent session,
+  and links the 79-second version of the narrated video.
+- The package now includes this changelog.
+
 ## [0.1.2] - 2026-11-15
 
 ### Added
@@ -30,7 +39,8 @@ All notable changes to this project are documented here. The format follows
 - First release: the status bar meter, tooltip and details panel, threshold warnings, the run-out estimate, the MCP
   server with `get_budget_status`, English and Malay text, and the one-command demo.
 
-[Unreleased]: https://github.com/aimanmalib/bifrost-meter/compare/v0.1.2...HEAD
+[Unreleased]: https://github.com/aimanmalib/bifrost-meter/compare/v0.1.3...HEAD
+[0.1.3]: https://github.com/aimanmalib/bifrost-meter/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/aimanmalib/bifrost-meter/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/aimanmalib/bifrost-meter/compare/v0.1.0...v0.1.1
 [0.1.0]: https://github.com/aimanmalib/bifrost-meter/releases/tag/v0.1.0
