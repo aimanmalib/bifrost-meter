@@ -158,7 +158,7 @@ The hackathon rules list six judging criteria. Each row points to the evidence i
 | Criterion | Evidence |
 |---|---|
 | Innovation | The budget inside the editor and as an MCP tool for agents ([`docs/MCP.md`](docs/MCP.md)); a run-out forecast; reset dates for calendar-aligned windows, derived and checked against the gateway ([`docs/API-CONTRACT.md`](docs/API-CONTRACT.md)) |
-| Technical execution | 383 unit tests, 11 contract tests on the official image, 9 end-to-end tests in a real editor; CI on every push ([Tests](#tests), [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md)) |
+| Technical execution | 391 unit tests, 11 contract tests on the official image, 9 end-to-end tests in a real editor; CI on every push ([Tests](#tests), [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md)) |
 | Problem and potential impact | [Issue 6482](https://github.com/maximhq/bifrost/issues/6482) from an operator; desktop monitors already read this endpoint, so the need is real ([prior art](#what-bifrost-already-has-and-prior-art)); [pull request 10044](https://github.com/maximhq/bifrost/pull/10044) |
 | Use of AI | `get_budget_status` lets a coding agent check its budget before a long task ([For agents](#for-agents), and a recorded session in the video); [AI disclosure](#ai-disclosure) |
 | User experience | [One-command demo](#no-gateway-yet-one-command); status bar, tooltip, panel, and warnings at 75% and 90%; English and Malay; three themes |
@@ -168,7 +168,7 @@ The hackathon rules list six judging criteria. Each row points to the evidence i
 
 | Suite | Command | Latest result |
 |---|---|---|
-| Lint, type check, unit tests, build, package | `npm run gate` | 383 passed, `.vsix` 260 KB |
+| Lint, type check, unit tests, build, package | `npm run gate` | 391 passed, `.vsix` 260 KB |
 | Contract, against the pinned gateway in Docker | `npm run test:contract` | 11 passed |
 | End to end, Playwright driving code-server | `npm run test:e2e` | 9 passed |
 

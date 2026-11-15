@@ -29,9 +29,11 @@ container: `npm ci`, lint, type check, unit tests, build, `npm run package`.
 Lint, type check, unit tests (vitest), production build and `.vsix` package, with no Docker and no network. Runs on every
 change.
 
-- Date: 2026-11-15
-- Result: **383 passed, 0 failed** in 20 test files; `bifrost-meter.vsix` 259.7 KB (12 files), version 0.1.3. The package
-  now carries the changelog as well as the README, so it is larger than the 256.5 KB of the 0.1.2 file; the code is the same.
+- Date: 2026-11-15, after the scoped status text change (unreleased, still version 0.1.3 in `package.json`)
+- Result: **391 passed, 0 failed** in 20 test files; `bifrost-meter.vsix` 260.0 KB (12 files), Node v22.23.1. The eight new
+  tests cover provider and model limits in each status format, the used-up text, Malay and the terminal line. The
+  contract, end-to-end and demo suites were not run for this change; their latest recorded results are below.
+- Previous entry, same day: 383 passed, 259.7 KB, for the v0.1.3 release.
 
 ## Contract (`npm run test:contract`)
 
