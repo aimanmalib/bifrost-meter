@@ -5,7 +5,7 @@
 **Lihat baki kunci maya Bifrost anda tanpa meninggalkan editor.**
 
 [Pasang](#sudah-ada-bifrost-dua-langkah) · [Demo satu arahan](#belum-ada-gateway-satu-arahan) ·
-[Video, 87 s](https://youtu.be/XpW94Z39lG0) · [Slaid, 12](https://aimanmalib.github.io/bifrost-meter/deck.pdf) · [English](README.md)
+[Video, 79 s](https://youtu.be/AMicG3lfCZc) · [Slaid, 12](https://aimanmalib.github.io/bifrost-meter/deck.pdf) · [English](README.md)
 
 ![Bifrost Meter dalam code-server: trafik tiruan melalui gateway Bifrost menaikkan bajet terpakai di bar status dari 22% ke 40%](docs/images/hero.gif)
 

@@ -27,3 +27,8 @@ fraction of a cent, so the budget would not move during a short video.
 
 The video is about 77 seconds, under the 90-second limit. It is not tracked in git; it goes with the release. Recording
 again takes about ten minutes and needs Docker and ffmpeg. Scenes, captions and zoom areas change in the config file.
+
+## Note, 2026-11-15
+
+The linked video was recomposed from high-resolution captures of the same recorded states, with the same narration
+voice and a label for the demo stack. It is 79 seconds.

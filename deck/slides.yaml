@@ -8,7 +8,7 @@ footer: "Bifrost Meter (Unofficial)"
 # Phrases on the slides that become clickable links. The text stays as written; only the link is added.
 links:
   "github.com/aimanmalib/bifrost-meter": "https://github.com/aimanmalib/bifrost-meter"
-  "youtu.be/XpW94Z39lG0": "https://youtu.be/XpW94Z39lG0"
+  "youtu.be/AMicG3lfCZc": "https://youtu.be/AMicG3lfCZc"
   "pull request 10044": "https://github.com/maximhq/bifrost/pull/10044"
   "Open VSX (aimanmalib.bifrost-meter)": "https://open-vsx.org/extension/aimanmalib/bifrost-meter"
 
@@ -76,7 +76,7 @@ slides:
     body:
       - "One command starts the official Bifrost image, a mock model and an editor in the browser."
       - "The meter is already connected, and the demo budget runs a full cycle every 5 minutes."
-      - "Narrated video, 87 seconds: youtu.be/XpW94Z39lG0. GIF in the README."
+      - "Narrated video, 79 seconds: youtu.be/AMicG3lfCZc. GIF in the README."
     image_height: 3.3
     images:
       - {path: deck/assets/video-tooltip.jpg, caption: "Hover: every limit on the key, with a forecast", crop: [0.3, 0.15, 0.04, 0.0]}
