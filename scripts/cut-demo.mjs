@@ -52,13 +52,13 @@ const ass = [
   '',
   '[V4+ Styles]',
   'Format: Name, Fontname, Fontsize, PrimaryColour, SecondaryColour, OutlineColour, BackColour, Bold, Italic, Underline, StrikeOut, ScaleX, ScaleY, Spacing, Angle, BorderStyle, Outline, Shadow, Alignment, MarginL, MarginR, MarginV, Encoding',
-  'Style: Caption,DejaVu Sans,38,&H00FFFFFF,&H00FFFFFF,&H20101010,&H00000000,0,0,0,0,100,100,0,0,3,14,0,8,160,160,36,1',
-  'Style: Card,DejaVu Sans,52,&H00FFFFFF,&H00FFFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,120,120,0,1',
+  'Style: Caption,DejaVu Sans,42,&H00FFFFFF,&H00FFFFFF,&H18080808,&H00000000,-1,0,0,0,100,100,0,0,3,16,0,8,150,150,34,1',
+  'Style: Card,DejaVu Sans,46,&H00E6E6E6,&H00FFFFFF,&H00000000,&H00000000,0,0,0,0,100,100,0,0,1,0,0,5,140,140,0,1',
   '',
   '[Events]',
   'Format: Layer, Start, End, Style, Name, MarginL, MarginR, MarginV, Effect, Text',
   ...timeline.map(
-    (s) => `Dialogue: 0,${clock(s.at)},${clock(s.at + s.length)},${s.mark || s.clip ? 'Caption' : 'Card'},,0,0,0,,${s.caption.replace(/\n/g, '\\N')}`,
+    (s) => `Dialogue: 0,${clock(s.at)},${clock(s.at + s.length)},${s.mark || s.clip ? 'Caption' : 'Card'},,0,0,0,,${s.mark || s.clip ? s.caption.replace(/\n/g, '\\N') : s.caption.replace(/^([^\n]*)/, '{\\b1\\fs64\\c&HFFFFFF&}$1{\\b0\\fs40\\c&HB4B4B4&}').replace(/\n/g, '\\N\\N')}`,
   ),
 ].join('\n');
 const assFile = join(out, 'captions.ass');
@@ -106,8 +106,8 @@ const sound = spoken.length
         const ms = Math.round((v.s.at + (voice.offsetSeconds ?? 0.4)) * 1000);
         return `[${v.input}:a]aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo,adelay=${ms}:all=1[a${i}]`;
       }),
-      `${spoken.map((_, i) => `[a${i}]`).join('')}amix=inputs=${spoken.length}:normalize=0:duration=longest,apad=whole_dur=${at.toFixed(2)},atrim=0:${at.toFixed(2)},loudnorm=I=${voice.lufs ?? -16}:TP=-1.5:LRA=11[voice]`,
-      bed.length ? '[voice][bed]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.7:level=false[aud]' : '[voice]anull[aud]',
+      `${spoken.map((_, i) => `[a${i}]`).join('')}amix=inputs=${spoken.length}:normalize=0:duration=longest,apad=pad_dur=4,loudnorm=I=${voice.lufs ?? -16}:TP=-1.5:LRA=11,apad=whole_dur=${at.toFixed(2)},atrim=0:${at.toFixed(2)}[voice]`,
+      bed.length ? `[voice][bed]amix=inputs=2:normalize=0:duration=longest,alimiter=limit=0.7:level=false,apad=whole_dur=${at.toFixed(2)},atrim=0:${at.toFixed(2)}[aud]` : '[voice]anull[aud]',
     ]
   : [];
 const graph = [

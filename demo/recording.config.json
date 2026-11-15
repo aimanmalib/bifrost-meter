@@ -68,7 +68,7 @@
       { "id": "warning", "seconds": 11, "caption": "Past 75%, the status bar turns to a warning colour and one notification appears." },
       { "id": "exhausted", "seconds": 9, "caption": "At 100% the gateway refuses requests, and the meter shows the budget as used up." },
       { "id": "agent", "seconds": 13, "clip": "out/recording/agent.mp4", "caption": "A coding agent reads the same numbers through the MCP tool get_budget_status. Real session, replayed." },
-      { "id": "end", "seconds": 7, "caption": "github.com/aimanmalib/bifrost-meter  ·  Apache-2.0  ·  not affiliated with Maxim AI\nNarration: an AI clone of the author's voice\nMusic: Sascha Ende, ende.app (CC BY 4.0)" }
+      { "id": "end", "seconds": 7, "caption": "github.com/aimanmalib/bifrost-meter\nApache-2.0  ·  unofficial, not affiliated with Maxim AI\nNarration: an AI clone of the author's voice  ·  Music: Sascha Ende, ende.app (CC BY 4.0)" }
     ]
   }
 }

@@ -24,3 +24,4 @@ One line per step.
 - 2026-11-15: Repository public. Checked without signing in: the repository page and README return 200, the v0.1.1 release lists the .vsix, deck and video, and the CI workflow passed on the last two pushes.
 - 2026-11-15: Terminal status line: `node dist/cli.js status` prints the limit closest to running out as one line for an agent's status line or tmux, from the shared core; measured on the demo gateway; version 0.1.2 (ADR 0015).
 - 2026-11-15: Version 0.1.2 published on Open VSX as `aimanmalib.bifrost-meter` (the same file as the release); README says where to install it.
+- 2026-11-15: Video audio fixed (the narration track was 3 s shorter than the picture, which cut the last sentence), captions restyled, new upload linked; README banner and a social preview image.
