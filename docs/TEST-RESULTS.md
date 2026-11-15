@@ -3,6 +3,12 @@
 Latest recorded run of each suite. The fast gate (`bash scripts/gerbang-ujian.sh`: lint, type check, unit tests, build,
 package) runs on every change; the suites below need Docker and run when the files they cover change.
 
+## Version 0.1.4
+
+`git diff v0.1.3..HEAD -- src test demo l10n` holds the scoped status text change (two source files, one new text in
+each language bundle) and its eight new unit tests; `demo` is unchanged. For this version only the fast gate was run (see Unit below); the contract, end-to-end and demo suites
+were not run again; their latest recorded results are below.
+
 ## Version 0.1.3 (documentation only)
 
 `git diff v0.1.2..HEAD -- src test demo l10n` is empty, so the extension code, the tests and the demo are the same as in
@@ -29,11 +35,12 @@ container: `npm ci`, lint, type check, unit tests, build, `npm run package`.
 Lint, type check, unit tests (vitest), production build and `.vsix` package, with no Docker and no network. Runs on every
 change.
 
-- Date: 2026-11-15, after the scoped status text change (unreleased, still version 0.1.3 in `package.json`)
-- Result: **391 passed, 0 failed** in 20 test files; `bifrost-meter.vsix` 260.0 KB (12 files), Node v22.23.1. The eight new
+- Date: 2026-11-15, version 0.1.4
+- Result: **391 passed, 0 failed** in 20 test files; `bifrost-meter.vsix` 260.1 KB (12 files), Node v22.23.1. The eight new
   tests cover provider and model limits in each status format, the used-up text, Malay and the terminal line. The
   contract, end-to-end and demo suites were not run for this change; their latest recorded results are below.
-- Previous entry, same day: 383 passed, 259.7 KB, for the v0.1.3 release.
+- Previous entries, same day: 391 passed, 260.0 KB, before the version change; 383 passed, 259.7 KB, for the v0.1.3
+  release.
 
 ## Contract (`npm run test:contract`)
 

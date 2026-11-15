@@ -5,11 +5,15 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-11-15
+
 ### Changed
 
 - When the limit closest to running out belongs to a provider or a model under the key, the status bar text and
   `node dist/cli.js status` now end with that provider or model name, for example `Budget used up · resets in 23h ·
-  openai`. Limits set on the key itself look the same as before.
+  openai`. Limits set on the key itself look the same as before. Eight new unit tests cover it.
+- The README links the re-uploaded demo video (the same 79-second film), and the deck shows the new link and the
+  current unit test count.
 
 ## [0.1.3] - 2026-11-15
 
@@ -45,7 +49,8 @@ All notable changes to this project are documented here. The format follows
 - First release: the status bar meter, tooltip and details panel, threshold warnings, the run-out estimate, the MCP
   server with `get_budget_status`, English and Malay text, and the one-command demo.
 
-[Unreleased]: https://github.com/aimanmalib/bifrost-meter/compare/v0.1.3...HEAD
+[Unreleased]: https://github.com/aimanmalib/bifrost-meter/compare/v0.1.4...HEAD
+[0.1.4]: https://github.com/aimanmalib/bifrost-meter/compare/v0.1.3...v0.1.4
 [0.1.3]: https://github.com/aimanmalib/bifrost-meter/compare/v0.1.2...v0.1.3
 [0.1.2]: https://github.com/aimanmalib/bifrost-meter/compare/v0.1.1...v0.1.2
 [0.1.1]: https://github.com/aimanmalib/bifrost-meter/compare/v0.1.0...v0.1.1
