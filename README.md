@@ -152,7 +152,9 @@ and "bifrost budget" (14 results) found no editor client, and code search for `"
 | End to end, Playwright driving code-server | `npm run test:e2e` | 9 passed |
 
 The contract suite also reads the quota endpoint 200 times in a row: p50 6.9 ms, p95 12.2 ms. Two more runs on
-the same shared host measured p50 7.1 ms, p95 51.3 ms and p50 6.8 ms, p95 13.0 ms. What each test checks, with
+the same shared host measured p50 7.1 ms, p95 51.3 ms and p50 6.8 ms, p95 13.0 ms. These are readings on the demo stack,
+whose request log is nearly empty. The gateway computes spend per model from its request logs on each read, so the cost at
+production log volume is not measured. What each test checks, with
 dates and versions, is in [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md). The gate and the contract suite also run on GitHub
 Actions for every push ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
 

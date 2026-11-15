@@ -60,6 +60,11 @@ same pinned gateway and host as the contract run above (2026-11-14, a shared bui
 
 The median holds steady between runs; the tail depends on other work on the shared host.
 
+These are readings on the demo stack, whose request log is nearly empty: at most the few mock requests the suite sends.
+The gateway computes spend per model from its request logs on each read, once for every budget on the key
+(`buildBudgetsWithUsage` in `transports/bifrost-http/handlers/governance.go`, read at the tag `transports/v2.5.1`). The
+cost at production log volume is not measured.
+
 The meter makes one such read per editor window every 60 s by default (`bifrostMeter.pollIntervalSeconds`, minimum 15),
 four times less often while the window is not focused. The packaged `.vsix` is 257 KB.
 
