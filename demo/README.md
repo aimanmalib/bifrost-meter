@@ -86,7 +86,8 @@ This starts the same stack with code-server and the packaged extension, seeds on
 then cuts the scenes and burns in the captions with ffmpeg. Scenes are cut, never sped up, and every number on screen comes
 from the running gateway. Scene order, lengths, captions, zoom areas and the GIF slice are in `recording.config.json`.
 The agent scene is drawn from `agent-session.json`, one recorded session of a coding agent calling the MCP tool. Narration
-is optional: the released video carries an AI clone of the author's voice, and those audio files are not in the repository.
+is optional: the released video carries an AI clone of the author's voice over quiet music (Sascha Ende, ende.app, CC BY 4.0),
+and those audio files are not in the repository.
 Output: `out/recording/bifrost-meter-demo.mp4` (1920x1080, silent without narration files), `docs/images/hero.gif` and three screenshots
 (`docs/images/demo-ok.png`, `demo-warning.png`, `demo-exhausted.png`). Needs Docker and ffmpeg; it takes about ten minutes.
 

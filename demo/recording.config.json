@@ -56,18 +56,19 @@
     "mcpFile": "get_budget_status.json",
     "maxSeconds": 88,
     "agentScene": { "fps": 10, "promptAt": 0.3, "promptCharsPerSecond": 160, "toolAt": 2.4, "resultAt": 3.2, "replyAt": 5.6, "replyCharsPerSecond": 70 },
-    "voice": { "dir": "out/recording/voice", "offsetSeconds": 0.4, "lufs": -16 },
+    "voice": { "dir": "out/recording/voice", "offsetSeconds": 0.4, "lufs": -16, "music": "out/recording/music.mp3", "musicDb": -10 },
     "gif": { "from": "traffic", "seconds": 11, "width": 960, "fps": 10, "maxBytes": 4000000 },
     "scenes": [
+      { "id": "hook", "seconds": 6.5, "caption": "A Bifrost budget runs out in the middle of a task.\nYou find out when a request is refused." },
       { "id": "intro", "seconds": 6.5, "zoom": { "x": 640, "y": 360, "width": 640, "height": 360 }, "caption": "Bifrost Meter (unofficial) puts your Bifrost budget in the VS Code status bar." },
       { "id": "setKey", "seconds": 9, "caption": "Set your virtual key once. The input is masked and the key stays in the editor's secret storage." },
       { "id": "traffic", "seconds": 11, "zoom": { "x": 640, "y": 360, "width": 640, "height": 360 }, "caption": "Mock traffic goes through a real Bifrost gateway. After a refresh, the percentage goes up and the dollars left go down." },
       { "id": "tooltip", "seconds": 8, "zoom": { "x": 640, "y": 360, "width": 640, "height": 360 }, "caption": "Hover for every limit: budget, tokens and requests, with reset times and a forecast of when it runs out." },
       { "id": "panel", "seconds": 8, "caption": "Click for the details panel, including spend by model from the gateway." },
-      { "id": "warning", "seconds": 12, "caption": "Past 75%, the status bar turns to a warning colour and one notification appears." },
+      { "id": "warning", "seconds": 11, "caption": "Past 75%, the status bar turns to a warning colour and one notification appears." },
       { "id": "exhausted", "seconds": 9, "caption": "At 100% the gateway refuses requests, and the meter shows the budget as used up." },
       { "id": "agent", "seconds": 13, "clip": "out/recording/agent.mp4", "caption": "A coding agent reads the same numbers through the MCP tool get_budget_status. Real session, replayed." },
-      { "id": "end", "seconds": 7, "caption": "github.com/aimanmalib/bifrost-meter  ·  Apache-2.0  ·  not affiliated with Maxim AI\nNarration: an AI clone of the author's voice" }
+      { "id": "end", "seconds": 7, "caption": "github.com/aimanmalib/bifrost-meter  ·  Apache-2.0  ·  not affiliated with Maxim AI\nNarration: an AI clone of the author's voice\nMusic: Sascha Ende, ende.app (CC BY 4.0)" }
     ]
   }
 }

@@ -7,7 +7,7 @@
 // pixels) and scaled to the output size.
 // Narration is optional: one audio file per scene, named <scene id>.mp3, in the folder set by "voice.dir". The files
 // are not part of the repository (the released video is narrated with an AI clone of the author's voice). Without
-// them the video is silent, with the same captions.
+// them the video is silent, with the same captions. "voice.music" may name a music file to play quietly underneath.
 // Output: out/recording/bifrost-meter-demo.mp4 (1920x1080) and docs/images/hero.gif.
 // Usage: node scripts/cut-demo.mjs   (needs ffmpeg and ffprobe on PATH)
 import { execFileSync } from 'node:child_process';
@@ -90,13 +90,22 @@ const parts = timeline.map((s, i) => {
   return `color=c=0x1f1f1f:s=${W}x${H}:r=30:d=${s.length.toFixed(2)},format=yuv420p,setsar=1[v${i}]`;
 });
 // Narration: each line starts shortly after its scene, the mix is padded to the video length and set to one loudness.
+// Optional music bed under the narration, faded in and out, well below the voice.
+let musicInput = -1;
+if (spoken.length && voice.music && existsSync(join(root, voice.music))) {
+  inputs.push('-i', join(root, voice.music));
+  musicInput = next++;
+}
+const bed = musicInput < 0 ? [] : [`[${musicInput}:a]aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo,atrim=0:${at.toFixed(2)},volume=${voice.musicDb ?? -25}dB,afade=t=in:d=1.5,afade=t=out:st=${(at - 3).toFixed(2)}:d=3[bed]`];
 const sound = spoken.length
   ? [
+      ...bed,
       ...spoken.map((v, i) => {
         const ms = Math.round((v.s.at + (voice.offsetSeconds ?? 0.4)) * 1000);
         return `[${v.input}:a]aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo,adelay=${ms}:all=1[a${i}]`;
       }),
-      `${spoken.map((_, i) => `[a${i}]`).join('')}amix=inputs=${spoken.length}:normalize=0:duration=longest,apad=whole_dur=${at.toFixed(2)},atrim=0:${at.toFixed(2)},loudnorm=I=${voice.lufs ?? -16}:TP=-1.5:LRA=11[aud]`,
+      `${spoken.map((_, i) => `[a${i}]`).join('')}amix=inputs=${spoken.length}:normalize=0:duration=longest,apad=whole_dur=${at.toFixed(2)},atrim=0:${at.toFixed(2)},loudnorm=I=${voice.lufs ?? -16}:TP=-1.5:LRA=11[voice]`,
+      bed.length ? '[voice][bed]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.7[aud]' : '[voice]anull[aud]',
     ]
   : [];
 const graph = [

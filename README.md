@@ -17,7 +17,7 @@ same numbers, so an agent can check before it starts a long task.
 > Bifrost gateway through one documented endpoint and changes nothing on it.
 
 Built for the Global AI Hackathon (Geek Room), problem statement PS04, "Open-Source Bifrost Gateway". Slides: [`docs/deck.pdf`](docs/deck.pdf). The
-full 81-second narrated demo video is attached to the [latest release](https://github.com/aimanmalib/bifrost-meter/releases/latest).
+full 87-second narrated demo video is attached to the [latest release](https://github.com/aimanmalib/bifrost-meter/releases/latest).
 
 | OK | Warning | Used up |
 | --- | --- | --- |
@@ -186,7 +186,7 @@ AI disclosure: the code, tests and documentation in this repository were written
 working under my direction. I chose the problem, set the requirements and checked the result in the demo. I am responsible for it.
 
 In detail: the idea is one of the examples in the problem statement. My agents proposed it and wrote the plan. I approved both,
-and I watched the recorded demo before I submitted. The narration in the demo video is an AI clone of my own voice. The
+and I watched the recorded demo before I submitted. The narration in the demo video is an AI clone of my own voice; its music is by Sascha Ende, ende.app (CC BY 4.0). The
 agent scene in it replays one recorded session of a coding agent (`demo/agent-session.json`).
 
 ## Event
