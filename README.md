@@ -5,7 +5,7 @@
 <p align="center"><a href="https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml"><img src="https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml/badge.svg" alt="CI"></a> <a href="https://open-vsx.org/extension/aimanmalib/bifrost-meter"><img src="https://img.shields.io/open-vsx/v/aimanmalib/bifrost-meter?label=Open%20VSX" alt="Open VSX"></a> <a href="https://github.com/aimanmalib/bifrost-meter/releases/latest"><img src="https://img.shields.io/github/v/release/aimanmalib/bifrost-meter" alt="Latest release"></a> <a href="https://github.com/aimanmalib/bifrost-meter/blob/main/LICENSE"><img src="https://img.shields.io/github/license/aimanmalib/bifrost-meter" alt="Licence: Apache-2.0"></a></p>
 
 <p align="center"><b>See what is left on your Bifrost virtual key without leaving the editor.</b> · <i>Lihat baki kunci maya Bifrost anda tanpa meninggalkan editor.</i><br>
-<a href="#already-run-bifrost-two-steps">install</a> · <a href="#no-gateway-yet-one-command">one-command demo</a> · <a href="https://youtu.be/XpW94Z39lG0">video, 87 s</a> · <a href="https://github.com/aimanmalib/bifrost-meter/blob/main/docs/deck.pdf">slides</a> · <a href="#documentation">documentation</a> · <a href="https://github.com/aimanmalib/bifrost-meter/blob/main/CHANGELOG.md">changelog</a> · Built in Malaysia by <a href="https://aimanmalib.com">Aiman Malib</a></p>
+<a href="#already-run-bifrost-two-steps">install</a> · <a href="#no-gateway-yet-one-command">one-command demo</a> · <a href="https://youtu.be/XpW94Z39lG0">video, 87 s</a> · <a href="https://aimanmalib.github.io/bifrost-meter/deck.pdf">slides, 12</a> · <a href="#documentation">documentation</a> · <a href="https://github.com/aimanmalib/bifrost-meter/blob/main/CHANGELOG.md">changelog</a> · Built in Malaysia by <a href="https://aimanmalib.com">Aiman Malib</a></p>
 
 ![Bifrost Meter in code-server: mock traffic through a Bifrost gateway raises the budget used in the status bar from 22% to 40%](docs/images/hero.gif)
 
@@ -21,6 +21,7 @@ same numbers, so an agent can check before it starts a long task.
 
 Built for the Global AI Hackathon by Geek Room (November 2026), problem statement PS04, "Open-Source Bifrost Gateway".
 The narrated demo video is also attached to the [latest release](https://github.com/aimanmalib/bifrost-meter/releases/latest).
+Slide deck, 12 slides: <https://aimanmalib.github.io/bifrost-meter/deck.pdf> (the same file as `docs/deck.pdf` in this repository).
 
 [Bahasa Melayu: README.ms.md](README.ms.md)
 
