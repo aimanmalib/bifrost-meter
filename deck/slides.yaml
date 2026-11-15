@@ -8,14 +8,15 @@ footer: "Bifrost Meter (Unofficial)"
 theme:
   font: Arial
   mono: Courier New
-  background: "F7F6F2"
-  ink: "16191F"
-  muted: "5B6270"
-  accent: "B45309"
-  rule: "D9D6CE"
-  panel: "1E1F22"
-  panel_ink: "E6E6E6"
-  tag_fill: "EFE7DA"
+  background: "0F1216"
+  ink: "ECEFF3"
+  muted: "9BA5B4"
+  accent: "3DD6A3"
+  rule: "2B313B"
+  card: "171B21"
+  panel: "0A0C0F"
+  panel_ink: "DCE3EC"
+  tag_fill: "16302A"
 
 slides:
   - layout: title
@@ -68,7 +69,7 @@ slides:
     body:
       - "One command starts the official Bifrost image, a mock model and an editor in the browser."
       - "The meter is already connected, and the demo budget runs a full cycle every 5 minutes."
-      - "GIF in the README. Full 77-second video in the latest release."
+      - "GIF in the README. Full 81-second narrated video in the latest release."
     image_height: 3.3
     images:
       - {path: deck/assets/video-tooltip.jpg, caption: "Hover: every limit on the key, with a forecast", crop: [0.3, 0.15, 0.04, 0.0]}
@@ -99,8 +100,13 @@ slides:
       - "The key stays in the editor's secret storage. Screens and logs show its last 4 characters only."
       - "The key is sent to one host. Redirects to another host are refused. Plain http to a public host is refused."
       - "14 display states. Each has one sentence that says what happened and what to do."
-      - "A response without a required field shows an error, not a zero."
-      - "English and Bahasa Melayu."
+      - "A response without a required field shows an error, not a zero. English and Bahasa Melayu."
+    size: 18
+    stats:
+      - {value: "378", label: "unit tests passed"}
+      - {value: "11", label: "contract tests, official image"}
+      - {value: "9", label: "end-to-end tests in a real editor"}
+      - {value: "6.9 ms", label: "median cost of one quota read"}
 
   - layout: code
     title: "For agents"

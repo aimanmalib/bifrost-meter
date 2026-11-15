@@ -105,6 +105,10 @@ class Deck:
                                           Inches(SLIDE_W - MARGIN), Inches(1.3))
         line.line.color.rgb = self.rgb("rule")
         line.line.width = Pt(1)
+        mark = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(MARGIN), Inches(1.27), Inches(1.1), Inches(0.06))
+        mark.fill.solid()
+        mark.fill.fore_color.rgb = self.rgb("accent")
+        mark.line.fill.background()
         if number:
             self.footer(slide, number)
 
@@ -117,7 +121,7 @@ class Deck:
         shape = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(x), Inches(y), Inches(w), Inches(h))
         shape.adjustments[0] = 0.12
         shape.fill.solid()
-        shape.fill.fore_color.rgb = self.rgb("tag_fill" if strong else "background")
+        shape.fill.fore_color.rgb = self.rgb("tag_fill" if strong else "card")
         shape.line.color.rgb = self.rgb("accent" if strong else "muted")
         shape.line.width = Pt(1.5)
         tf = shape.text_frame
@@ -134,6 +138,43 @@ class Deck:
             run.font.color.rgb = self.rgb("ink" if i == 0 else "muted")
         return shape
 
+    def card(self, slide, x, y, w, h, fill="card", marker=True):
+        """A rounded panel; with a marker it carries a thin accent bar on its left edge."""
+        shape = slide.shapes.add_shape(MSO_SHAPE.ROUNDED_RECTANGLE, Inches(x), Inches(y), Inches(w), Inches(h))
+        shape.adjustments[0] = min(0.12, 0.08 / h)
+        shape.fill.solid()
+        shape.fill.fore_color.rgb = self.rgb(fill)
+        shape.line.color.rgb = self.rgb("rule")
+        shape.line.width = Pt(0.75)
+        if marker:
+            bar = slide.shapes.add_shape(MSO_SHAPE.RECTANGLE, Inches(x + 0.16), Inches(y + 0.2), Inches(0.05), Inches(h - 0.4))
+            bar.fill.solid()
+            bar.fill.fore_color.rgb = self.rgb("accent")
+            bar.line.fill.background()
+        return shape
+
+    def cards(self, slide, paras, x, y, w, size=20, per_line=None, gap=0.14):
+        """One card per paragraph, stacked; the height follows the estimated number of lines."""
+        per_line = per_line or int((w - 0.9) * 72 / (size * 0.46))
+        line_h = size * 1.28 / 72
+        for para in paras:
+            lines = -(-len(para) // per_line)
+            h = 0.42 + lines * line_h
+            self.card(slide, x, y, w, h)
+            self.text(slide, x + 0.42, y + 0.2, w - 0.7, h - 0.3, para, size=size, space_after=0)
+            y += h + gap
+        return y
+
+    def stats(self, slide, items, y, h=1.05):
+        """A row of tiles: a large value with a small label under it."""
+        gap = 0.2
+        w = (SLIDE_W - 2 * MARGIN - gap * (len(items) - 1)) / len(items)
+        for i, item in enumerate(items):
+            x = MARGIN + i * (w + gap)
+            self.card(slide, x, y, w, h, marker=False)
+            self.text(slide, x + 0.25, y + 0.14, w - 0.5, 0.5, item["value"], size=26, bold=True, color="accent")
+            self.text(slide, x + 0.25, y + 0.66, w - 0.5, 0.3, item["label"], size=12, color="muted")
+
     # ---- layouts ----------------------------------------------------------
     def layout_title(self, s, n):
         slide = self.new_slide()
@@ -149,7 +190,9 @@ class Deck:
     def layout_text(self, s, n):
         slide = self.new_slide()
         self.header(slide, s["title"], s.get("tag"), n)
-        self.text(slide, MARGIN, 1.75, 10.6, 5.0, s["body"], size=24, space_after=22)
+        end = self.cards(slide, s["body"], MARGIN, 1.7, SLIDE_W - 2 * MARGIN, size=s.get("size", 21))
+        if s.get("stats"):
+            self.stats(slide, s["stats"], end + 0.08, h=0.98)
 
     def layout_images(self, s, n):
         """Body on top, a row of images of equal height below, centred."""
@@ -238,7 +281,7 @@ class Deck:
             for c in range(cols):
                 cell = table.cell(r, c)
                 cell.fill.solid()
-                cell.fill.fore_color.rgb = self.rgb("tag_fill" if r == 0 else "background")
+                cell.fill.fore_color.rgb = self.rgb("tag_fill" if r == 0 else "card")
                 cell.vertical_anchor = MSO_ANCHOR.MIDDLE
                 cell.margin_left = cell.margin_right = Inches(0.15)
                 tf = cell.text_frame
