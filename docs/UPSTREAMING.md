@@ -1,7 +1,7 @@
 # Moving this upstream
 
 Bifrost Meter is built so the Bifrost maintainers could adopt it if they want to. This page lists what that would take.
-Nothing here has been proposed to them yet.
+The extension itself has not been proposed to them; one small gateway change has (see below).
 
 ## Where it could live
 
@@ -65,10 +65,12 @@ The first field is ready as a patch against the gateway's `dev` branch (commit `
 it, the 86 handler tests matching `TestGetVirtualKeyQuota|Override|Budget` pass in the `golang:1.27.3` image; without the
 handler change the new test fails. The full suite and the generated `openapi.json` were not run or rebuilt.
 
-As of 15 November 2026 none of this has been filed upstream; see the next section.
+On 15 November 2026 this first field was proposed upstream as
+[issue 10043](https://github.com/maximhq/bifrost/issues/10043) and
+[pull request 10044](https://github.com/maximhq/bifrost/pull/10044). The other two fields have not been filed.
 
 ## Contributor agreement
 
-Opening a pull request to the Bifrost repositories may require signing their contributor license agreement. Whether to
-sign it is the copyright holder's decision and has not been made. Until then, this repository stays the only home of the
-code, and anyone may fork it under Apache-2.0.
+Pull requests to the Bifrost repositories fall under their contributor license agreement, and pull request 10044 is
+subject to it. Moving the extension itself there would be a separate decision by the copyright holder. Until then, this
+repository stays the home of the extension, and anyone may fork it under Apache-2.0.
