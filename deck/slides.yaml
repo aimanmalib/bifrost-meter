@@ -103,7 +103,7 @@ slides:
       - "A response without a required field shows an error, not a zero. English and Bahasa Melayu."
     size: 18
     stats:
-      - {value: "378", label: "unit tests passed"}
+      - {value: "383", label: "unit tests passed"}
       - {value: "11", label: "contract tests, official image"}
       - {value: "9", label: "end-to-end tests in a real editor"}
       - {value: "6.9 ms", label: "median cost of one quota read"}
@@ -114,7 +114,7 @@ slides:
     body:
       - "get_budget_status is an MCP tool that returns the same limits as structured data."
       - "A coding agent can call it before a long task, then stop or ask when little is left."
-      - "The tool calls no model. It reads the same endpoint with the same key."
+      - "For agents in a terminal, one line: Bifrost 26% · $0.73 left · resets in 3m."
     code_caption: "Real tools/call output (contract test, pinned gateway)"
     code: |
       Key demo-team-a (…8280),
@@ -135,7 +135,7 @@ slides:
     widths: [3.4, 8.4]
     rows:
       - ["Real operator problem", "Issue 6482. End to end in a real editor: set the key, send traffic, see the warning. 9 tests passed."]
-      - ["Public extension points", "The documented quota endpoint, and MCP for agents. 378 unit tests passed."]
+      - ["Public extension points", "The documented quota endpoint, and MCP for agents. 383 unit tests passed."]
       - ["Reproducible integration", "Official Bifrost image v2.5.1, unmodified, pinned by digest. 11 contract tests passed."]
       - ["Contribution quality", "A tested gateway change is open upstream as pull request 10044 (the quota response reports the enforced limit). Docs, Apache-2.0, and two more fields proposed."]
     note: "Each quota read costs the gateway p50 6.9 ms, p95 12.2 ms (200 reads). Numbers from docs/TEST-RESULTS.md."
