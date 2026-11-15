@@ -9,6 +9,10 @@ package) runs on every change; the suites below need Docker and run when the fil
 each language bundle) and its eight new unit tests; `demo` is unchanged. For this version only the fast gate was run (see Unit below); the contract, end-to-end and demo suites
 were not run again; their latest recorded results are below.
 
+The release file was built from a fresh `git clone` of the tagged commit `88a070f` with Node v22.23.1: `npm ci`, then
+`npm run gate`: 391 passed, 0 failed; `bifrost-meter.vsix` 260.1 KB (12 files). That file is attached to the v0.1.4
+release and published on Open VSX.
+
 ## Version 0.1.3 (documentation only)
 
 `git diff v0.1.2..HEAD -- src test demo l10n` is empty, so the extension code, the tests and the demo are the same as in
