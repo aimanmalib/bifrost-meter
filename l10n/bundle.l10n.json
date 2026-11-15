@@ -115,6 +115,7 @@
   "status.exhaustedReset": "{0} · resets in {1}",
   "status.full": "{0} · {1} left · resets in {2}",
   "status.noReset": "{0} · {1} left",
+  "status.scoped": "{0} · {1}",
   "summary.left": "{0} left",
   "summary.reset": "resets in {0}",
   "tooltip.gateway": "Gateway: {0}",

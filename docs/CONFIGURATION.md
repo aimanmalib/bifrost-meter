@@ -10,7 +10,7 @@ secret storage (see [SECURITY.md](SECURITY.md)).
 | `bifrostMeter.thresholds.warn` | `75` | Percent used at which the status bar turns to the warning colour and a notification is shown. |
 | `bifrostMeter.thresholds.critical` | `90` | Percent used at which the status bar turns to the error colour and a notification is shown. |
 | `bifrostMeter.statusBar.metric` | `auto` | Which limit the status bar shows: `auto` (the one closest to running out), `budget`, `tokens` or `requests`. |
-| `bifrostMeter.statusBar.format` | `full` | `full` (percent, remaining, reset), `compact` (percent and remaining) or `percent`. |
+| `bifrostMeter.statusBar.format` | `full` | `full` (percent, remaining, reset), `compact` (percent and remaining) or `percent`. In every format, a provider or model limit adds its name at the end. |
 | `bifrostMeter.notifications.enabled` | `true` | One notification per threshold per reset cycle, and one when the forecast says a limit runs out before it resets. |
 | `bifrostMeter.forecast.windowMinutes` | `30` (5 to 1440) | Minutes of recent usage the run-out forecast is based on. |
 | `bifrostMeter.language` | `auto` | `auto` follows the editor language; `en` or `ms` force English or Malay. |

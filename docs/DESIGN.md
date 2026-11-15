@@ -16,6 +16,10 @@ $(dashboard) 62% · $3.80 left · resets in 4h
 
 - The percent comes first because it is the comparison number. The remaining amount follows in its own unit (USD, tokens or
   requests). The reset countdown ("resets in 4h") is last and is dropped when the reset time cannot be read.
+- When the limit shown belongs to a provider or a model under the key, its name comes after everything else
+  (`60% · $4.00 left · resets in 4h · openai`), in every format and when the limit is used up. A model name keeps the part
+  after the last `/` and is cut to 20 characters. Limits on the key itself carry no name, so the usual text stays as short
+  as before.
 - The item follows the editor theme. It changes background only at the thresholds: the theme's warning background at `warn`
   (75 % by default), the error background at `critical` (90 %) and when a limit is used up. Colour is never the only signal:
   the icon and the words change too, and the accessibility label spells the whole state out.

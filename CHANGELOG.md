@@ -5,6 +5,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Changed
+
+- When the limit closest to running out belongs to a provider or a model under the key, the status bar text and
+  `node dist/cli.js status` now end with that provider or model name, for example `Budget used up · resets in 23h ·
+  openai`. Limits set on the key itself look the same as before.
+
 ## [0.1.3] - 2026-11-15
 
 ### Changed

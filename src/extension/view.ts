@@ -83,6 +83,19 @@ export function limitLabel(l: Limit, t: Translate): string {
   return l.scope === 'key' || !l.scopeLabel ? kind : t(`scope.${l.scope}`, kind, l.scopeLabel);
 }
 
+const SCOPE_MAX = 20;
+
+/** Provider or model name short enough for a status line: the part after the last "/", cut to SCOPE_MAX characters. */
+export function shortScope(label: string): string {
+  const name = label.slice(label.lastIndexOf('/') + 1) || label;
+  return name.length > SCOPE_MAX ? `${name.slice(0, SCOPE_MAX - 1)}…` : name;
+}
+
+/** Adds the provider or model name to a status text when the limit is not the key's own; key limits are left as they are. */
+export function withScope(text: string, l: Limit, t: Translate): string {
+  return l.scope === 'key' || !l.scopeLabel ? text : t('status.scoped', text, shortScope(l.scopeLabel));
+}
+
 function limitView(id: StateId, l: Limit, c: Ctx): { text: string; accessibility: string } {
   const pct = formatPercent(l.percent, c.lang, c.t);
   const left = remainingText(l, c);
@@ -100,7 +113,7 @@ function limitView(id: StateId, l: Limit, c: Ctx): { text: string; accessibility
   }
   const level = c.t(`level.${id}`);
   const detail = reset ? c.t('a11y.limitReset', label, pct, left, reset) : c.t('a11y.limit', label, pct, left);
-  return { text, accessibility: c.t('a11y.prefix', `${level}. ${detail}`) };
+  return { text: withScope(text, l, c.t), accessibility: c.t('a11y.prefix', `${level}. ${detail}`) };
 }
 
 export function statusView(state: MeterState, c: Ctx): StatusView {

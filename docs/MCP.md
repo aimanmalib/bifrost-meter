@@ -169,7 +169,9 @@ Bifrost 37% · $0.62 left · resets in 3m
 Bifrost Key rejected
 ```
 
-It prints the limit closest to running out, with the same words and rounding as the editor status bar. The exit code is
+It prints the limit closest to running out, with the same words and rounding as the editor status bar, including the
+provider or model name at the end when that limit is not the key's own (`Bifrost Budget used up · resets in 23h · openai`).
+The exit code is
 0 after a reading and 1 when the gateway could not be read or no key is set. `--format json` prints the structured result
 of `get_budget_status` instead. The key is never printed.
 

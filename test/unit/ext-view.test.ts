@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 import { BUNDLES, normalize, parseQuota, type Language, type QuotaResponse } from '../../src/core';
 import type { ErrorResult, MeterState, StateId } from '../../src/extension/state';
-import { statusView } from '../../src/extension/view';
+import { shortScope, statusView } from '../../src/extension/view';
 import { ctx, HOUR, limit, NOW } from './ext-helpers';
 import { body } from './fixtures';
 
@@ -105,5 +105,45 @@ describe('status bar text', () => {
   });
   it('a reset time in the past shows no countdown', () => {
     expect(statusView(ready([limit({ nextReset: NOW - HOUR })]), ctx()).text).toBe('62% · $3.80 left');
+  });
+});
+
+describe('status bar text for a provider or model limit', () => {
+  const provider = limit({ id: 'provider:openai:budget:0', scope: 'provider', scopeLabel: 'openai', used: 6 });
+  const model = limit({ id: 'model:gpt-4o-mini:requests', kind: 'requests', scope: 'model', scopeLabel: 'gpt-4o-mini', limit: 200, used: 150 });
+
+  it('names the provider in every format', () => {
+    expect(statusView(ready([provider]), ctx()).text).toBe('60% · $4.00 left · resets in 4h · openai');
+    expect(statusView(ready([provider]), ctx('en', { format: 'compact' })).text).toBe('60% · $4.00 · openai');
+    expect(statusView(ready([provider]), ctx('en', { format: 'percent' })).text).toBe('60% · openai');
+    expect(statusView(ready([limit({ ...provider, nextReset: null })]), ctx()).text).toBe('60% · $4.00 left · openai');
+  });
+  it('names the model in every format', () => {
+    expect(statusView(ready([model]), ctx()).text).toBe('75% · 50 requests left · resets in 4h · gpt-4o-mini');
+    expect(statusView(ready([model]), ctx('en', { format: 'compact' })).text).toBe('75% · 50 requests · gpt-4o-mini');
+    expect(statusView(ready([model]), ctx('en', { format: 'percent' })).text).toBe('75% · gpt-4o-mini');
+  });
+  it('names the scope of a used-up limit, even when the key budget has room', () => {
+    const spent = limit({ ...model, used: 200, remaining: 0, percent: 100 });
+    expect(statusView(ready([limit(), spent]), ctx()).text).toBe('Requests used up · resets in 4h · gpt-4o-mini');
+    expect(statusView(ready([limit({ ...spent, nextReset: null })]), ctx()).text).toBe('Requests used up · gpt-4o-mini');
+  });
+  it('names the scope in Malay', () => {
+    expect(statusView(ready([provider]), ctx('ms')).text).toMatch(/^60% · baki .*4[.,]00 · set semula dalam 4j · openai$/);
+    expect(statusView(ready([limit({ ...provider, used: 10, remaining: 0, percent: 100 })]), ctx('ms')).text).toBe('Bajet habis · set semula dalam 4j · openai');
+  });
+  it('keeps the scope in the screen reader label, said once', () => {
+    expect(statusView(ready([provider]), ctx()).accessibility).toBe(
+      'Bifrost Meter. OK. Budget (provider openai): 60% used, $4.00 left, resets in 4h');
+  });
+  it('leaves a key limit without a name, even when other limits are scoped', () => {
+    expect(statusView(ready([limit({ used: 9 }), provider]), ctx()).text).toBe('90% · $1.00 left · resets in 4h');
+  });
+  it('shortens long model names', () => {
+    expect(shortScope('openai')).toBe('openai');
+    expect(shortScope('anthropic/claude-sonnet-4')).toBe('claude-sonnet-4');
+    expect(shortScope('claude-3-5-sonnet-20241022')).toBe('claude-3-5-sonnet-2…');
+    expect(shortScope('claude-3-5-sonnet-20241022').length).toBe(20);
+    expect(shortScope('trailing/')).toBe('trailing/');
   });
 });

@@ -196,8 +196,9 @@ TypeScript SDK, Docker Compose, the official Bifrost image and code-server.
 
 - The quota endpoint reports the key's own budgets and rate limits. It does not report budgets set on a team or customer
   above the key. If one of those runs out first, the meter still shows the key's own numbers.
-- Budgets set on a provider or a model under the key are read and counted. The status bar text does not say which scope
-  the tightest limit belongs to; the tooltip and the panel do.
+- Budgets set on a provider or a model under the key are read and counted. When the tightest limit is one of those, the
+  status bar text and the terminal line end with its provider or model name (`40% · $0.02 left · resets in 23h · openai`);
+  a long model name is cut to 20 characters. The tooltip and the panel show the full name.
 - Counters appear a few seconds after a request (2 to 9 seconds in the contract runs), and the meter polls once a minute by
   default. It is a gauge, not an audit log.
 - The quota response has no next reset time and no calendar-aligned flag. The meter derives both from `reset_duration`

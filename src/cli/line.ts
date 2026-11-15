@@ -3,7 +3,7 @@
 
 import { formatPercent, normalize, strictest, type Language, type QuotaResult, type Translate } from '../core';
 import { errorStateId } from '../extension/state';
-import { remainingText, resetIn } from '../extension/view';
+import { remainingText, resetIn, withScope } from '../extension/view';
 
 export interface Line {
   text: string;
@@ -21,9 +21,10 @@ export function statusLine(result: QuotaResult, now: number, t: Translate, lang:
   const reset = resetIn(top, { t, now });
   if (top.remaining <= 0 || top.percent >= 100) {
     const used = t(`status.exhausted.${top.kind}`);
-    return { text: t('cli.line', reset ? t('status.exhaustedReset', used, reset) : used), ok: true };
+    return { text: t('cli.line', withScope(reset ? t('status.exhaustedReset', used, reset) : used, top, t)), ok: true };
   }
   const pct = formatPercent(top.percent, lang, t);
   const left = remainingText(top, { t, lang });
-  return { text: t('cli.line', reset ? t('status.full', pct, left, reset) : t('status.noReset', pct, left)), ok: true };
+  const text = reset ? t('status.full', pct, left, reset) : t('status.noReset', pct, left);
+  return { text: t('cli.line', withScope(text, top, t)), ok: true };
 }
