@@ -1,7 +1,9 @@
 # Moving this upstream
 
 Bifrost Meter is built so the Bifrost maintainers could adopt it if they want to. This page lists what that would take.
-The extension itself has not been proposed to them; one small gateway change has (see below).
+If the Bifrost team wants the extension itself, the repository can move under their organisation. It is Apache-2.0, like
+Bifrost. As of 15 November 2026 the offer has not been sent to them directly; one small gateway change has been proposed
+(see below).
 
 ## Where it could live
 
@@ -28,7 +30,7 @@ works with, and the display name carries "(Unofficial)". If the maintainers adop
 | What | Now | Change when adopted |
 | --- | --- | --- |
 | Display name | Bifrost Meter (Unofficial) | Their choice; drop "(Unofficial)" |
-| Extension id and publisher | `bifrost-meter`, publisher used for file names only | Their marketplace publisher id |
+| Extension id and publisher | `bifrost-meter`, publisher `aimanmalib` on Open VSX | Their marketplace publisher id |
 | Icon | A plain gauge drawn for this project | Their icon, if they want one |
 | README notice | "Not affiliated with Maxim AI" | Remove |
 | Repository links in `package.json` | This repository | The new location |
@@ -36,7 +38,8 @@ works with, and the display name carries "(Unofficial)". If the maintainers adop
 
 ## What else moves with it
 
-- `src/core` has no VS Code import. The same code could serve other editors, a command-line status line or an MCP tool.
+- `src/core` has no VS Code import. The same code already serves a command-line status line and an MCP tool, and could
+  serve other editors.
 - Fixtures in `test/fixtures` were recorded from a pinned gateway image (`docs/API-CONTRACT.md`). The contract tests in
   `test/contract` start that image with a mock upstream, so they could run in the gateway's own CI to catch a quota
   response change before release.
@@ -72,5 +75,5 @@ On 15 November 2026 this first field was proposed upstream as
 ## Contributor agreement
 
 Pull requests to the Bifrost repositories fall under their contributor license agreement, and pull request 10044 is
-subject to it. Moving the extension itself there would be a separate decision by the copyright holder. Until then, this
-repository stays the home of the extension, and anyone may fork it under Apache-2.0.
+subject to it. Moving the extension itself there is a separate step, offered at the top of this page. Until it happens,
+this repository stays the home of the extension, and anyone may fork it under Apache-2.0.
