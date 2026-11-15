@@ -52,5 +52,6 @@ spend its budget. The meter needs no admin credential and cannot change any limi
 
 ## Reporting a problem
 
-Please report a security problem privately, not in a public issue: use GitHub's private vulnerability reporting on this
-repository (**Security** tab) when it is available, or contact the repository owner through their GitHub profile.
+Please report a security problem privately, not in a public issue: use GitHub's
+[private vulnerability reporting](https://github.com/aimanmalib/bifrost-meter/security/advisories/new) on this repository
+(**Security** tab), or contact the repository owner through their GitHub profile.

@@ -1,0 +1,40 @@
+name: Bug report
+description: Something in the extension, the MCP server or the demo doesn't work
+labels: [bug]
+body:
+  - type: textarea
+    id: what
+    attributes:
+      label: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+    validations:
+      required: true
+  - type: input
+    id: meter
+    attributes:
+      label: Bifrost Meter version (Extensions view)
+    validations:
+      required: true
+  - type: input
+    id: bifrost
+    attributes:
+      label: Bifrost gateway version (shown in the details panel)
+    validations:
+      required: true
+  - type: dropdown
+    id: where
+    attributes:
+      label: Where
+      options: [VS Code, VSCodium, Cursor, code-server, MCP server, Terminal status line, One-command demo]
+    validations:
+      required: true
+  - type: textarea
+    id: logs
+    attributes:
+      label: "Output of Bifrost Meter: Show Log (remove keys and private host names first)"
+      render: text

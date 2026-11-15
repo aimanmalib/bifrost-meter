@@ -1,6 +1,6 @@
-# Bifrost Meter (Tidak Rasmi)
+<p align="center"><img src="https://raw.githubusercontent.com/aimanmalib/bifrost-meter/main/brand/logo-512.png" width="112" height="112" alt="Bifrost Meter"></p>
 
-![Bifrost Meter: ikon tolok, nama, dan tiga bacaan bar status: 40% dengan baki $0.60, amaran pada 79%, dan bajet habis](docs/images/banner.png)
+<h1 align="center">Bifrost Meter (Tidak Rasmi)</h1>
 
 **Lihat baki kunci maya Bifrost anda tanpa meninggalkan editor.**
 

@@ -20,7 +20,8 @@ Lint, type check, unit tests (vitest), production build and `.vsix` package, wit
 change.
 
 - Date: 2026-11-15
-- Result: **383 passed, 0 failed** in 20 test files; `bifrost-meter.vsix` 256.5 KB (11 files), version 0.1.2
+- Result: **383 passed, 0 failed** in 20 test files; `bifrost-meter.vsix` 257.3 KB (11 files), version 0.1.2. The package
+  carries the README, so it grew from the 256.5 KB of the released file when the README header changed; the code is the same.
 
 ## Contract (`npm run test:contract`)
 
@@ -60,7 +61,7 @@ same pinned gateway and host as the contract run above (2026-11-14, a shared bui
 The median holds steady between runs; the tail depends on other work on the shared host.
 
 The meter makes one such read per editor window every 60 s by default (`bifrostMeter.pollIntervalSeconds`, minimum 15),
-four times less often while the window is not focused. The packaged `.vsix` is 245 KB.
+four times less often while the window is not focused. The packaged `.vsix` is 257 KB.
 
 ## One-command demo (`demo/run.sh`)
 

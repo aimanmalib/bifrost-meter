@@ -31,4 +31,5 @@ demo/run.sh             # the whole stack with mock traffic; demo/run.sh stop re
 Please don't open a public issue. Use
 [private vulnerability reporting](https://github.com/aimanmalib/bifrost-meter/security/advisories/new).
 
-By contributing you agree that your contribution is licensed under the [Apache License 2.0](LICENSE).
+By contributing you agree that your contribution is licensed under the [Apache License 2.0](LICENSE) and that you follow
+the [Code of Conduct](CODE_OF_CONDUCT.md).

@@ -1,6 +1,6 @@
-<h1 align="center">Bifrost Meter (Unofficial)</h1>
+<p align="center"><img src="https://raw.githubusercontent.com/aimanmalib/bifrost-meter/main/brand/logo-512.png" width="112" height="112" alt="Bifrost Meter"></p>
 
-<p align="center"><img src="https://raw.githubusercontent.com/aimanmalib/bifrost-meter/main/docs/images/banner.png" alt="Bifrost Meter: a gauge icon, the name, and three status bar readings: 40% with $0.60 left, a warning at 79%, and budget used up"></p>
+<h1 align="center">Bifrost Meter (Unofficial)</h1>
 
 <p align="center"><a href="https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml"><img src="https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml/badge.svg" alt="CI"></a> <a href="https://open-vsx.org/extension/aimanmalib/bifrost-meter"><img src="https://img.shields.io/open-vsx/v/aimanmalib/bifrost-meter?label=Open%20VSX" alt="Open VSX"></a> <a href="https://github.com/aimanmalib/bifrost-meter/releases/latest"><img src="https://img.shields.io/github/v/release/aimanmalib/bifrost-meter" alt="Latest release"></a> <a href="https://github.com/aimanmalib/bifrost-meter/blob/main/LICENSE"><img src="https://img.shields.io/github/license/aimanmalib/bifrost-meter" alt="Licence: Apache-2.0"></a></p>
 
@@ -145,7 +145,7 @@ and "bifrost budget" (14 results) found no editor client, and code search for `"
 
 | Suite | Command | Latest result |
 |---|---|---|
-| Lint, type check, unit tests, build, package | `npm run gate` | 383 passed, `.vsix` 256 KB |
+| Lint, type check, unit tests, build, package | `npm run gate` | 383 passed, `.vsix` 257 KB |
 | Contract, against the pinned gateway in Docker | `npm run test:contract` | 11 passed |
 | End to end, Playwright driving code-server | `npm run test:e2e` | 9 passed |
 
@@ -215,6 +215,7 @@ agent scene in it replays one recorded session of a coding agent (`demo/agent-se
 | [`demo/README.md`](demo/README.md) | The demo stack, step by step |
 | [`CHANGELOG.md`](CHANGELOG.md) | What changed in each release |
 | [`CONTRIBUTING.md`](CONTRIBUTING.md) | How to build, test and send a change |
+| [`CODE_OF_CONDUCT.md`](CODE_OF_CONDUCT.md) | Contributor Covenant |
 
 ## License
 

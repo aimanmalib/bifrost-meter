@@ -1,0 +1,21 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 256 256" width="256" height="256" role="img" aria-labelledby="t">
+  <title id="t">Bifrost Meter</title>
+  <defs>
+    <linearGradient id="rim" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#ffffff" stop-opacity=".16"/>
+      <stop offset="1" stop-color="#ffffff" stop-opacity="0"/>
+    </linearGradient>
+    <linearGradient id="tile" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1c1f26"/>
+      <stop offset="1" stop-color="#121418"/>
+    </linearGradient>
+  </defs>
+  <!-- ink tile shared with Codr, MyPII and Hermes Telegram Mini App -->
+  <rect x="16" y="16" width="224" height="224" rx="56" fill="url(#tile)"/>
+  <rect x="17" y="17" width="222" height="222" rx="55" fill="none" stroke="url(#rim)" stroke-width="2"/>
+  <!-- mark: a gauge whose last stretch is amber, with the needle close to it -->
+  <path d="M64 160 A64 64 0 0 1 169.1 111" fill="none" stroke="#f4f4f1" stroke-width="16" stroke-linecap="round"/>
+  <path d="M183.4 128 A64 64 0 0 1 192 160" fill="none" stroke="#e8b04a" stroke-width="16" stroke-linecap="round"/>
+  <line x1="128" y1="160" x2="149" y2="120" stroke="#f4f4f1" stroke-width="10" stroke-linecap="round"/>
+  <circle cx="128" cy="160" r="12" fill="#f4f4f1"/>
+</svg>
