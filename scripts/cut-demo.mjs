@@ -105,7 +105,7 @@ const sound = spoken.length
         return `[${v.input}:a]aformat=sample_fmts=fltp:sample_rates=48000:channel_layouts=stereo,adelay=${ms}:all=1[a${i}]`;
       }),
       `${spoken.map((_, i) => `[a${i}]`).join('')}amix=inputs=${spoken.length}:normalize=0:duration=longest,apad=whole_dur=${at.toFixed(2)},atrim=0:${at.toFixed(2)},loudnorm=I=${voice.lufs ?? -16}:TP=-1.5:LRA=11[voice]`,
-      bed.length ? '[voice][bed]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.7[aud]' : '[voice]anull[aud]',
+      bed.length ? '[voice][bed]amix=inputs=2:normalize=0:duration=first,alimiter=limit=0.7:level=false[aud]' : '[voice]anull[aud]',
     ]
   : [];
 const graph = [
