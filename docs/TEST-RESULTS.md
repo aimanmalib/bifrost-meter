@@ -20,7 +20,7 @@ Lint, type check, unit tests (vitest), production build and `.vsix` package, wit
 change.
 
 - Date: 2026-11-15
-- Result: **378 passed, 0 failed** in 19 test files; `bifrost-meter.vsix` 245.3 KB (10 files), version 0.1.1
+- Result: **383 passed, 0 failed** in 20 test files; `bifrost-meter.vsix` 256.5 KB (11 files), version 0.1.2
 
 ## Contract (`npm run test:contract`)
 
@@ -92,7 +92,7 @@ extension's own code. The stack is removed afterwards (`docker compose down -v`)
 - Date: 2026-11-15
 - Editor: `codercom/code-server@sha256:09565f9e07f5624554e295e8bab0e2fec4a7c533eb3cff459ed6596a4d3d7c1c` (`4.145.2`)
 - Gateway: the same pinned image as the contract suite
-- Result: **9 passed, 0 failed**; 1.4 min for the v0.1.1 check (earlier: 1.8 min for the v0.1.0 release check, 2.8 min
+- Result: **9 passed, 0 failed** again with the 0.1.2 package, which adds `dist/cli.js`; 1.4 min for the v0.1.1 check (earlier: 1.8 min for the v0.1.0 release check, 2.8 min
   after the design review pass of ADR 0009). The extension declares
   `engines.vscode` `^1.90.0` and is compiled against the 1.90 API; this run installs it in code-server 4.145.2
 

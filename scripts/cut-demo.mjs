@@ -10,6 +10,7 @@
 // them the video is silent, with the same captions. "voice.music" may name a music file to play quietly underneath.
 // Output: out/recording/bifrost-meter-demo.mp4 (1920x1080) and docs/images/hero.gif.
 // Usage: node scripts/cut-demo.mjs   (needs ffmpeg and ffprobe on PATH)
+// A shorter cut: DEMO_SCENES=hook,warning,agent,end DEMO_OUT=short.mp4 node scripts/cut-demo.mjs (the GIF is left alone).
 import { execFileSync } from 'node:child_process';
 import { existsSync, readFileSync, statSync, writeFileSync } from 'node:fs';
 import { join, resolve } from 'node:path';
@@ -24,7 +25,8 @@ const ff = (args) => execFileSync('ffmpeg', ['-hide_banner', '-loglevel', 'error
 
 // Timeline: each scene's place in the final video.
 let at = 0;
-const timeline = rec.scenes.map((s) => {
+const only = process.env.DEMO_SCENES?.split(',').map((x) => x.trim());
+const timeline = rec.scenes.filter((s) => !only || only.includes(s.id)).map((s) => {
   const mark = s.clip ? undefined : marks[s.id];
   const length = mark ? Math.min(s.seconds, mark.end - mark.start) : s.seconds;
   const item = { ...s, mark, at, length };
@@ -114,11 +116,15 @@ const graph = [
   `[cat]subtitles=${assFile.replace(/[:\\']/g, '\\$&')}[out]`,
   ...sound,
 ].join(';');
-const mp4 = join(out, 'bifrost-meter-demo.mp4');
+const mp4 = join(out, process.env.DEMO_OUT ?? 'bifrost-meter-demo.mp4');
 const audio = spoken.length ? ['-map', '[aud]', '-c:a', 'aac', '-b:a', '160k', '-ar', '48000'] : ['-an'];
 ff([...inputs, '-filter_complex', graph, '-map', '[out]', ...audio, '-c:v', 'libx264', '-preset', 'medium', '-crf', '20', '-pix_fmt', 'yuv420p', '-movflags', '+faststart', mp4]);
 
 // README GIF: a slice of the finished video, so it carries the same captions.
+if (only) {
+  console.log(JSON.stringify({ video: mp4.slice(root.length + 1), seconds: Number(at.toFixed(2)), scenes: timeline.map((s) => s.id) }));
+  process.exit(0);
+}
 const g = rec.gif;
 const from = timeline.find((s) => s.id === g.from);
 const gif = join(root, 'docs/images/hero.gif');

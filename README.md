@@ -102,7 +102,9 @@ notifications, language) are listed in [`docs/CONFIGURATION.md`](docs/CONFIGURAT
 
 The extension also carries a small MCP server with one read-only tool, `get_budget_status`, so a coding agent can read the
 same budget and limits before a long task. VS Code 1.101 and later list it automatically; other MCP clients can start
-`node dist/mcp.js`. Setup, real output and an example `AGENTS.md` snippet: [`docs/MCP.md`](docs/MCP.md).
+`node dist/mcp.js`. For agents that run in a terminal, `node dist/cli.js status` prints the same reading as one line
+(`Bifrost 26% · $0.73 left · resets in 3m`) for a status line or tmux. Setup, real output and an example `AGENTS.md`
+snippet: [`docs/MCP.md`](docs/MCP.md).
 
 ## How it works
 
@@ -145,7 +147,7 @@ window every 60 seconds by default, four times less often while the window is no
 
 | Suite | Command | Latest result |
 |---|---|---|
-| Lint, type check, unit tests, build, package | `npm run gate` | 378 passed, `.vsix` 245 KB |
+| Lint, type check, unit tests, build, package | `npm run gate` | 383 passed, `.vsix` 256 KB |
 | Contract, against the pinned gateway in Docker | `npm run test:contract` | 11 passed |
 | End to end, Playwright driving code-server | `npm run test:e2e` | 9 passed |
 

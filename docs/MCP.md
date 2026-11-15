@@ -149,3 +149,34 @@ See [`AGENTS.example.md`](AGENTS.example.md) for a few lines to paste into a pro
 [bifrost-budget](https://github.com/Jasonrve/bifrost-budget) is an MCP server in Python that reads Bifrost budgets with
 admin credentials and Entra sign-in, over HTTP. This server differs in scope: it reads only the user's own virtual key,
 runs over stdio, and installs with the editor extension.
+
+## Terminal status line
+
+The same reading is available as one line of text, for places where an agent runs outside the editor: an agent's status
+line, tmux, or a shell prompt. `dist/cli.js` is in the `.vsix` next to `dist/mcp.js` and reads the same environment
+variables.
+
+```sh
+BIFROST_BASE_URL=http://localhost:8080 BIFROST_VIRTUAL_KEY=<your key> node /path/to/dist/cli.js status
+```
+
+Output measured on the demo gateway on 2026-11-15, three readings some seconds apart, then a wrong key:
+
+```
+Bifrost 17% · $0.82 left · resets in 3m
+Bifrost 26% · $0.73 left · resets in 3m
+Bifrost 37% · $0.62 left · resets in 3m
+Bifrost Key rejected
+```
+
+It prints the limit closest to running out, with the same words and rounding as the editor status bar. The exit code is
+0 after a reading and 1 when the gateway could not be read or no key is set. `--format json` prints the structured result
+of `get_budget_status` instead. The key is never printed.
+
+Claude Code status line (`~/.claude/settings.json`), as one example of an agent that can show a command's output:
+
+```json
+{ "statusLine": { "type": "command", "command": "node /path/to/dist/cli.js status" } }
+```
+
+tmux: `set -g status-right '#(node /path/to/dist/cli.js status)'` with `status-interval 60`.

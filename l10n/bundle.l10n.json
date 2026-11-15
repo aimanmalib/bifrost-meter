@@ -8,6 +8,8 @@
   "action.setBaseUrl": "Set gateway URL",
   "action.setKey": "Set key",
   "action.showLog": "Show log",
+  "cli.line": "Bifrost {0}",
+  "cli.usage": "Usage: node dist/cli.js status [--format line|json]. Reads BIFROST_BASE_URL and BIFROST_VIRTUAL_KEY from the environment.",
   "col.left": "Left",
   "col.limit": "Limit",
   "col.percent": "%",

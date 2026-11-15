@@ -8,6 +8,8 @@
   "action.setBaseUrl": "Tetapkan URL gateway",
   "action.setKey": "Tetapkan kunci",
   "action.showLog": "Tunjuk log",
+  "cli.line": "Bifrost {0}",
+  "cli.usage": "Guna: node dist/cli.js status [--format line|json]. Membaca BIFROST_BASE_URL dan BIFROST_VIRTUAL_KEY daripada persekitaran.",
   "col.left": "Baki",
   "col.limit": "Had",
   "col.percent": "%",
