@@ -1,0 +1,53 @@
+{
+  "provider": {
+    "name": "openai",
+    "mockBaseUrl": "http://bifrost-meter-mock-upstream:8787",
+    "models": [
+      "gpt-4o-mini",
+      "gpt-4o"
+    ]
+  },
+  "virtualKeys": [
+    {
+      "name": "demo-team-a",
+      "budgets": [
+        {
+          "max_limit": 1,
+          "reset_duration": "5m"
+        }
+      ],
+      "rate_limit": {
+        "token_max_limit": 500000000,
+        "token_reset_duration": "1h",
+        "request_max_limit": 100000,
+        "request_reset_duration": "1h"
+      }
+    },
+    {
+      "name": "demo-team-b",
+      "budgets": [
+        {
+          "max_limit": 1,
+          "reset_duration": "1h"
+        }
+      ],
+      "rate_limit": {
+        "request_max_limit": 30,
+        "request_reset_duration": "1m"
+      }
+    }
+  ],
+  "traffic": {
+    "keyName": "demo-team-a",
+    "models": [
+      "openai/gpt-4o",
+      "openai/gpt-4o-mini"
+    ],
+    "intervalSeconds": 3,
+    "requests": 0
+  },
+  "mock": {
+    "promptTokens": 3000,
+    "completionTokens": 2000
+  }
+}

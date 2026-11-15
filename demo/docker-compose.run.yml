@@ -1,7 +1,21 @@
-# Overlay used by demo/run.sh on top of demo/docker-compose.yml and test/e2e/docker-compose.e2e.yml:
-# gives the in-browser editor the demo key and gateway URL through its environment, so the meter starts without typing.
+# Overlay used by demo/run.sh on top of demo/docker-compose.yml and test/e2e/docker-compose.e2e.yml.
+# It gives the in-browser editor the demo key and gateway URL through its environment, so the meter starts without
+# typing, and seeds from demo/run.config.json: a small budget that resets every 5 minutes, so a full cycle is visible.
 services:
   bifrost-meter-code-server:
     environment:
       BIFROST_VIRTUAL_KEY: ${BIFROST_METER_DEMO_KEY:?demo/run.sh sets this after seeding}
       BIFROST_BASE_URL: http://localhost:8080
+
+  bifrost-meter-mock-upstream:
+    environment:
+      MOCK_PROMPT_TOKENS: ${MOCK_PROMPT_TOKENS:-120}
+      MOCK_COMPLETION_TOKENS: ${MOCK_COMPLETION_TOKENS:-80}
+
+  bifrost-meter-seed:
+    volumes:
+      - ./run.config.json:/srv/demo.config.json:ro
+
+  bifrost-meter-traffic:
+    volumes:
+      - ./run.config.json:/srv/demo.config.json:ro

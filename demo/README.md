@@ -20,9 +20,16 @@ demo/run.sh          # from the repository root; needs Docker only
 This creates `demo/.env` with a random setup token if it does not exist, starts the gateway, the mock upstream, the demo keys,
 steady mock traffic and code-server with Bifrost Meter installed, then prints the editor link (`http://127.0.0.1:8443/` by
 default). Open it: the meter is already in the status bar, because the editor gets the demo key and the gateway URL through
-its environment (`BIFROST_VIRTUAL_KEY`, `BIFROST_BASE_URL`). The first run builds the extension in a Node 22 container;
+its environment (`BIFROST_VIRTUAL_KEY`, `BIFROST_BASE_URL`), and a short note on what to look at opens in the editor
+(`editor-welcome.md`).
+
+The one-command demo seeds from `run.config.json`, not `demo.config.json`. Its traffic key has a budget of $1.00 that
+resets every 5 minutes, and the mock upstream reports 3,000 prompt and 2,000 completion tokens per call, so one cycle shows
+every state: OK, the warning at 75%, critical at 90%, "Budget used up" while the gateway refuses requests, then the reset. The first run builds the extension in a Node 22 container;
 set `BIFROST_METER_VSIX` to use a package you already have. Ports are `BIFROST_PORT` and `CODE_SERVER_PORT` in `demo/.env`,
-and the editor settings are in `editor-settings.json`. Every port is bound to `127.0.0.1` only.
+and the editor settings are in `editor-settings.json`. Every port is bound to `127.0.0.1` only. When a port is taken (8080
+usually is on a machine that already runs Bifrost), the script uses the next free one and prints it. The first run
+downloads about 550 MB of images. If the start fails half way, the script removes what it started.
 
 `demo/run.sh stop` removes every container and all gateway data.
 
@@ -63,9 +70,10 @@ BIFROST_URL=http://127.0.0.1:8080 BIFROST_SETUP_TOKEN=<your token> node traffic/
 
 ## Change the demo
 
-Everything the demo creates is in `demo.config.json`: provider, model names, virtual key names, budgets
-(`max_limit` in USD, `reset_duration` such as `1h` or `1d`), rate limits, and the traffic settings (key, optional `models` list, interval,
-number of requests; `0` means run until stopped). No code change is needed.
+Everything the demo creates is in `demo.config.json` (`run.config.json` for `demo/run.sh`): provider, model names, virtual
+key names, budgets (`max_limit` in USD, `reset_duration` such as `5m`, `1h` or `1d`), rate limits, and the traffic settings
+(key, optional `models` list, interval, number of requests; `0` means run until stopped). `run.config.json` also sets the
+token counts the mock upstream reports. No code change is needed.
 
 ## Record the demo video
 
