@@ -1,18 +1,20 @@
-From 5d5bd9481d4b157ac5533c79e0b02e5698c93f02 Mon Sep 17 00:00:00 2001
+From 0b8b3c40310f1fad705e7d931d20e73a3de52989 Mon Sep 17 00:00:00 2001
 From: Aiman Malib <84276911+aimanmalib@users.noreply.github.com>
-Date: Sun, 15 Nov 2026 05:48:30 +0000
+Date: Sun, 15 Nov 2026 13:04:29 +0000
 Subject: [PATCH] feat: report the enforced budget limit in the virtual key
  quota response
 
+The whole of pull request maximhq/bifrost#10044 (two commits) against dev at
+a3cd2b5, as produced by `gh pr diff 10044`.
 ---
- .../schemas/management/governance.yaml        |  6 +++
- .../bifrost-http/handlers/governance.go       |  8 ++-
- .../bifrost-http/handlers/governance_test.go  | 53 +++++++++++++++++++
- transports/changelog.md                       |  1 +
+ docs/openapi/schemas/management/governance.yaml    |    6 ++
+ transports/bifrost-http/handlers/governance.go     |    8 ++-
+ .../bifrost-http/handlers/governance_test.go       |   53 ++++++++++++++++++++
+ transports/changelog.md                            |    1 
  4 files changed, 66 insertions(+), 2 deletions(-)
 
 diff --git a/docs/openapi/schemas/management/governance.yaml b/docs/openapi/schemas/management/governance.yaml
-index fc5096e..bcf9b18 100644
+index fc5096e5848..bcf9b18a696 100644
 --- a/docs/openapi/schemas/management/governance.yaml
 +++ b/docs/openapi/schemas/management/governance.yaml
 @@ -1011,7 +1011,13 @@ VirtualKeyBudgetUsage:
@@ -30,7 +32,7 @@ index fc5096e..bcf9b18 100644
            type: array
            description: Per-model actual usage within this budget's current cycle
 diff --git a/transports/bifrost-http/handlers/governance.go b/transports/bifrost-http/handlers/governance.go
-index 92f0a3e..190e625 100644
+index 92f0a3e26bf..8f4708c7849 100644
 --- a/transports/bifrost-http/handlers/governance.go
 +++ b/transports/bifrost-http/handlers/governance.go
 @@ -5783,7 +5783,11 @@ type quotaBudget struct {
@@ -39,8 +41,8 @@ index 92f0a3e..190e625 100644
  	configstoreTables.SourceRef
 -	Models []quotaModelSpend `json:"per_model_usage"`
 +	// The limit the gateway enforces for this budget: max_limit plus an active override.
-+	// A self-service caller sees override_amount but cannot tell on its own whether the
-+	// override is still active, so the enforced value is reported directly.
++	// A self-service caller would otherwise have to repeat the gateway's override rule
++	// (override_mode and override_cycles_remaining) to get this value.
 +	EffectiveMaxLimit float64           `json:"effective_max_limit"`
 +	Models            []quotaModelSpend `json:"per_model_usage"`
  }
@@ -56,13 +58,13 @@ index 92f0a3e..190e625 100644
  			start := b.LastReset
  			if b.CreatedAt.After(start) {
 diff --git a/transports/bifrost-http/handlers/governance_test.go b/transports/bifrost-http/handlers/governance_test.go
-index 3f72c39..c01955a 100644
+index 3f72c39ae90..96701f111ce 100644
 --- a/transports/bifrost-http/handlers/governance_test.go
 +++ b/transports/bifrost-http/handlers/governance_test.go
-@@ -2580,6 +2580,59 @@ func TestGetVirtualKeyQuota_ExternalResolverErrorFailsClosed(t *testing.T) {
- // TestGetVirtualKeyQuota_NoGovernanceReturnsEmpty verifies that a VK without any
- // VK-scoped model configs reports empty governance (not a stale direct-relationship
- // read) and still returns 200 with identity fields.
+@@ -2577,6 +2577,59 @@ func TestGetVirtualKeyQuota_ExternalResolverErrorFailsClosed(t *testing.T) {
+ 	}
+ }
+ 
 +// TestGetVirtualKeyQuota_ReportsEffectiveMaxLimit checks that each quota budget carries the
 +// limit the gateway enforces. The response already exposes max_limit and the override fields,
 +// but a caller that reads max_limit alone under-reports the limit while an override is active.
@@ -116,11 +118,11 @@ index 3f72c39..c01955a 100644
 +	}
 +}
 +
- func TestGetVirtualKeyQuota_NoGovernanceReturnsEmpty(t *testing.T) {
- 	SetLogger(&mockLogger{})
- 
+ // TestGetVirtualKeyQuota_NoGovernanceReturnsEmpty verifies that a VK without any
+ // VK-scoped model configs reports empty governance (not a stale direct-relationship
+ // read) and still returns 200 with identity fields.
 diff --git a/transports/changelog.md b/transports/changelog.md
-index 8d876b0..6ce2757 100644
+index 8d876b021df..6ce275732cf 100644
 --- a/transports/changelog.md
 +++ b/transports/changelog.md
 @@ -1,6 +1,7 @@
@@ -133,4 +135,3 @@ index 8d876b0..6ce2757 100644
  
 -- 
 2.43.0
-

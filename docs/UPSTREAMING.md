@@ -67,6 +67,8 @@ The first field is ready as a patch against the gateway's `dev` branch (commit `
 `buildBudgetsWithUsage`, a unit test for four override cases, the schema entry and a changelog line, 66 lines in all. With
 it, the 86 handler tests matching `TestGetVirtualKeyQuota|Override|Budget` pass in the `golang:1.27.3` image; without the
 handler change the new test fails. The full suite and the generated `openapi.json` were not run or rebuilt.
+The patch file now carries the whole pull request: a follow-up commit corrected a code comment and moved the new test so it no
+longer splits the doc comment of the test after it. The test run above was made before that commit.
 
 On 15 November 2026 this first field was proposed upstream as
 [issue 10043](https://github.com/maximhq/bifrost/issues/10043) and
