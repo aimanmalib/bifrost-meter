@@ -1,0 +1,54 @@
+{
+  "_note": "A real agent session, recorded once and replayed in the demo video (scripts/agent-scene.mjs). The agent ran with only this MCP tool allowed, against the demo gateway (demo/run.sh, mock upstream). An internal tool-loading step of the agent is left out; nothing else is edited.",
+  "recorded_at": "2026-11-15T05:16:47.021Z",
+  "agent": "Claude Code 2.1.325",
+  "model": "claude-sonnet-5-5",
+  "mcp_server": "bifrost-meter (node dist/mcp.js)",
+  "prompt": "Refactor the payments module to the new ledger API. It is a long task with many model calls through our Bifrost gateway, so check the remaining budget on my virtual key first. Then tell me in two short sentences whether you would start now or ask me first, and why.",
+  "tool": "get_budget_status",
+  "tool_input": {},
+  "tool_result": {
+    "read_at": "2026-11-15T05:16:47.021Z",
+    "gateway": "http://127.0.0.1:8081",
+    "key_name": "demo-team-b",
+    "key_hint": "…50f5",
+    "is_active": true,
+    "is_exhausted": false,
+    "will_exhaust_before_reset": null,
+    "limits": [
+      {
+        "kind": "budget",
+        "scope": "key",
+        "scope_label": null,
+        "unit": "usd",
+        "limit": 1,
+        "used": 0.8162000000000003,
+        "remaining": 0.18379999999999974,
+        "percent": 81.62,
+        "is_exhausted": false,
+        "reset_period": "1h",
+        "resets_at": "2026-11-15T06:13:47.500Z",
+        "forecast": "insufficient_data",
+        "exhausts_at": null,
+        "will_exhaust_before_reset": null
+      },
+      {
+        "kind": "requests",
+        "scope": "key",
+        "scope_label": null,
+        "unit": "requests",
+        "limit": 30,
+        "used": 15,
+        "remaining": 15,
+        "percent": 50,
+        "is_exhausted": false,
+        "reset_period": "1m",
+        "resets_at": "2026-11-15T05:16:47.498Z",
+        "forecast": "insufficient_data",
+        "exhausts_at": null,
+        "will_exhaust_before_reset": null
+      }
+    ]
+  },
+  "reply": "I'd ask you first. The key has only $0.18 left of its $1 hourly budget (81.6% used), and that budget resets in about 57 minutes. A long refactor with many model calls would probably use that up partway through, and the forecast says \"insufficient_data\", so I can't confirm it would fit."
+}
