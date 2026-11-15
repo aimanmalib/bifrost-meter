@@ -67,8 +67,8 @@ slides:
     tag: "User experience"
     body:
       - "One command starts the official Bifrost image, a mock model and an editor in the browser."
-      - "The meter is already connected. Open the printed link and it is in the status bar."
-      - "GIF in the README. Full 77-second video in the v0.1.0 release."
+      - "The meter is already connected. A $1.00 demo budget resets every 5 minutes, so the whole cycle shows live."
+      - "GIF in the README. Full 77-second video in the latest release."
     image_height: 3.3
     images:
       - {path: deck/assets/video-tooltip.jpg, caption: "Hover: every limit on the key, with a forecast", crop: [0.3, 0.15, 0.04, 0.0]}
@@ -129,9 +129,9 @@ slides:
     widths: [3.4, 8.4]
     rows:
       - ["Real operator problem", "Issue 6482. End to end in a real editor: set the key, send traffic, see the warning. 9 tests passed."]
-      - ["Public extension points", "The documented quota endpoint, and MCP for agents. 352 unit tests passed."]
-      - ["Reproducible integration", "Official Bifrost image v2.5.1, unmodified, pinned by digest. 10 contract tests passed."]
-      - ["Contribution quality", "Documentation, Apache-2.0, and a note on how it could move upstream."]
+      - ["Public extension points", "The documented quota endpoint, and MCP for agents. 378 unit tests passed."]
+      - ["Reproducible integration", "Official Bifrost image v2.5.1, unmodified, pinned by digest. 11 contract tests passed."]
+      - ["Contribution quality", "Documentation, Apache-2.0, a note on moving it upstream, and three additive quota fields proposed from what the client had to recompute."]
     note: "Each quota read costs the gateway p50 6.9 ms, p95 12.2 ms (200 reads). Numbers from docs/TEST-RESULTS.md."
 
   - layout: text
@@ -146,7 +146,8 @@ slides:
     tag: "Scalability and potential"
     body:
       - "Limits today: budgets on a team or customer above the key are not in the quota response. The meter is a gauge, not an audit log. Tested on one gateway version."
-      - "Next, if the Bifrost team wants it: a Marketplace and Open VSX listing, usage history once the endpoint asked for in issue 6482 exists, and a JetBrains version."
+      - "Found while building it: the quota response has no enforced limit after an admin override and no next reset time. The meter recomputes both with the gateway's own rules, and contract tests check them. docs/UPSTREAMING.md proposes three additive fields."
+      - "Next, if the Bifrost team wants it: a Marketplace and Open VSX listing, usage history once issue 6482 lands, and a JetBrains version."
 
   - layout: end
     title: "Thank you."
