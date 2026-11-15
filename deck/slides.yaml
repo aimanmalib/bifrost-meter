@@ -53,7 +53,7 @@ slides:
       - ["VS Code Marketplace, \"bifrost\"", "10 extensions. None shows usage or budgets."]
       - ["Open VSX, \"bifrost\"", "4 extensions. None shows usage or budgets."]
       - ["GitHub, \"bifrost vscode\" and \"bifrost budget\"", "11 and 14 repositories. No editor client."]
-      - ["Existing budget readers", "A web dashboard, an MCP server and the Bifrost CLI. All outside the editor."]
+      - ["Existing budget readers", "A web dashboard, an MCP server, the Bifrost CLI and desktop monitors (CodexBar, Pulse, TokenBar). All outside the editor."]
     note: "Affected: developers who send coding agents through a Bifrost virtual key, and the operators who set its budget."
 
   - layout: stack
@@ -62,7 +62,7 @@ slides:
     body:
       - "One number, where you already look."
       - "Status bar: percent used, amount left, time to reset."
-      - "Tooltip and panel: every limit on the key, the strictest first."
+      - "Tooltip and panel: every limit on the key. The status bar shows the strictest."
       - "One warning at 75% and one at 90%, and an estimate of when the budget runs out."
     # crop = [left, top, right, bottom] as fractions of the screenshot (here: the status bar item).
     images:
@@ -113,7 +113,7 @@ slides:
       - {value: "383", label: "unit tests passed"}
       - {value: "11", label: "contract tests, official image"}
       - {value: "9", label: "end-to-end tests in a real editor"}
-      - {value: "6.9 ms", label: "median cost of one quota read"}
+      - {value: "6.9 ms", label: "median quota read, demo stack"}
 
   - layout: code
     title: "For agents"
@@ -144,8 +144,8 @@ slides:
       - ["Real operator problem", "Issue 6482. End to end in a real editor: set the key, send traffic, see the warning. 9 tests passed."]
       - ["Public extension points", "The documented quota endpoint, and MCP for agents. 383 unit tests passed."]
       - ["Reproducible integration", "Official Bifrost image v2.5.1, unmodified, pinned by digest. 11 contract tests passed."]
-      - ["Contribution quality", "A tested gateway change is open upstream as pull request 10044 (the quota response reports the enforced limit). Docs, Apache-2.0, and two more fields proposed."]
-    note: "Each quota read costs the gateway p50 6.9 ms, p95 12.2 ms (200 reads). Numbers from docs/TEST-RESULTS.md."
+      - ["Contribution quality", "A tested gateway change is open upstream as pull request 10044 (the quota response reports the enforced limit). Docs, Apache-2.0, and two more fields sketched in docs/UPSTREAMING.md."]
+    note: "Each quota read costs the gateway p50 6.9 ms, p95 12.2 ms on the demo stack (200 reads). Numbers from docs/TEST-RESULTS.md."
 
   - layout: text
     title: "How AI is used"
@@ -160,7 +160,7 @@ slides:
     body:
       - "Limits today: budgets on a team or customer above the key are not in the quota response. The meter is a gauge, not an audit log. Tested on one gateway version."
       - "Found while building it: the quota response has no enforced limit after an admin override and no next reset time. The meter recomputes both with the gateway's own rules, and contract tests check them. The first fix is open upstream as pull request 10044."
-      - "Listed on Open VSX (aimanmalib.bifrost-meter). Next, if the Bifrost team wants it: a Marketplace listing, usage history once issue 6482 lands, and a JetBrains version."
+      - "Listed on Open VSX (aimanmalib.bifrost-meter). If the Bifrost team wants the extension itself, the repository can move under their organisation. It is Apache-2.0, like Bifrost. Next: a Marketplace listing, usage history once issue 6482 lands, and a JetBrains version."
 
   - layout: end
     title: "Thank you."
