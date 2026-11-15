@@ -15,7 +15,7 @@ same numbers, so an agent can check before it starts a long task.
 > Bifrost gateway through one documented endpoint and changes nothing on it.
 
 Built for the Global AI Hackathon (Geek Room), problem statement PS04, "Open-Source Bifrost Gateway". Slides: [`docs/deck.pdf`](docs/deck.pdf). The
-full 77-second demo video is attached to the [v0.1.0 release](https://github.com/aimanmalib/bifrost-meter/releases/tag/v0.1.0).
+full 77-second demo video is attached to the [latest release](https://github.com/aimanmalib/bifrost-meter/releases/latest).
 
 | OK | Warning | Used up |
 | --- | --- | --- |
@@ -40,8 +40,11 @@ demo/run.sh stop     # removes every demo container and all gateway data
 
 `demo/run.sh` starts a pinned, unmodified Bifrost gateway, a mock model upstream labelled `[mock]`, two demo keys, steady
 mock traffic, and an editor in your browser with Bifrost Meter already connected. Open the printed link; the meter is in the
-status bar without typing anything. No provider account and no paid API call. Every port is bound to `127.0.0.1`. To run
-the stack step by step with your own editor, see [`demo/README.md`](demo/README.md).
+status bar without typing anything. The demo key has a $1.00 budget that resets every 5 minutes, so within about 5 minutes
+the meter goes from OK to a warning at 75%, critical at 90%, "Budget used up" and back to OK after the reset. No provider
+account and no paid API call. Every port is bound to `127.0.0.1`. If
+8080 or 8443 is taken, as 8080 usually is on a machine that already runs Bifrost, the script uses the next free port and
+prints it. To run the stack step by step with your own editor, see [`demo/README.md`](demo/README.md).
 
 ## The problem, from an operator
 
@@ -82,6 +85,8 @@ and "bifrost budget" (14 results) found no editor client, and code search for `"
   before it resets.
 - **Admin overrides.** When an admin grants an extra amount on a budget, the meter shows the limit the gateway enforces, not
   the base one.
+- **Reset times as the gateway counts them.** A rolling month is 30 days and a quarter 90, as in Bifrost. Keys that are
+  calendar aligned reset at 00:00 UTC on the next day, Monday, first of the month, quarter or year.
 - **Key safety.** The key lives in the editor's secret storage and is shown only as its last 4 characters. Plain `http://` is
   refused for anything but loopback and private addresses unless you allow it.
 - **English and Malay.** Every string comes from the language files; the language follows the editor or the
@@ -123,7 +128,7 @@ window every 60 seconds by default, four times less often while the window is no
 | Real operator problem, end to end | Developers using coding agents through a Bifrost virtual key cannot see their remaining budget until a request is refused (issue 6482 above). The demo goes from `demo/run.sh` to a meter moving in the status bar |
 | Public extension points | Only the documented self-service endpoint `GET /api/governance/virtual-keys/quota`, plus an MCP server for agents. No change to Bifrost code, no fork |
 | Reproducible integration on a standard installation | The official `maximhq/bifrost` image, unmodified and pinned by digest; one-command demo; tested versions listed below |
-| Contribution quality | Unit tests, contract tests against a real Bifrost container, end-to-end tests in the editor; docs; [`docs/UPSTREAMING.md`](docs/UPSTREAMING.md) on moving it upstream; Apache-2.0 like Bifrost |
+| Contribution quality | Unit tests, contract tests against a real Bifrost container, end-to-end tests in the editor; docs; Apache-2.0 like Bifrost; [`docs/UPSTREAMING.md`](docs/UPSTREAMING.md) on moving it upstream, with three additive fields the quota response could carry, found while building this client |
 
 ## Tested with
 
@@ -137,20 +142,22 @@ window every 60 seconds by default, four times less often while the window is no
 
 | Suite | Command | Latest result |
 |---|---|---|
-| Lint, type check, unit tests, build, package | `npm run gate` | 352 passed, `.vsix` 245 KB |
-| Contract, against the pinned gateway in Docker | `npm run test:contract` | 10 passed |
+| Lint, type check, unit tests, build, package | `npm run gate` | 378 passed, `.vsix` 245 KB |
+| Contract, against the pinned gateway in Docker | `npm run test:contract` | 11 passed |
 | End to end, Playwright driving code-server | `npm run test:e2e` | 9 passed |
 
-The contract suite also reads the quota endpoint 200 times in a row: p50 6.9 ms, p95 12.2 ms. A second run on
-the same shared host, for the v0.1.0 release check, measured p50 7.1 ms, p95 51.3 ms. What each test checks, with
+The contract suite also reads the quota endpoint 200 times in a row: p50 6.9 ms, p95 12.2 ms. Two more runs on
+the same shared host measured p50 7.1 ms, p95 51.3 ms and p50 6.8 ms, p95 13.0 ms. What each test checks, with
 dates and versions, is in [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md).
 
 ## Limits and honest notes
 
 - The quota endpoint reports the key's own budgets and rate limits. It does not report budgets set on a team or customer
   above the key. If one of those runs out first, the meter still shows the key's own numbers.
-- Counters appear a few seconds after a request (2 to 6 seconds in the contract runs), and the meter polls once a minute by
+- Counters appear a few seconds after a request (2 to 9 seconds in the contract runs), and the meter polls once a minute by
   default. It is a gauge, not an audit log.
+- The quota response has no next reset time and no calendar-aligned flag. The meter derives both from `reset_duration`
+  and `last_reset` with the gateway's rules ([`docs/API-CONTRACT.md`](docs/API-CONTRACT.md)).
 - The run-out estimate is a straight line through the last 30 minutes of readings. Bursty usage will fool it.
 - Tested end to end on one gateway version (v2.5.1, pinned by digest) and one editor build. Other editors built on VS Code
   should load it. I have not tested them.

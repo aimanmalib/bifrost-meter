@@ -40,7 +40,8 @@ Top level, exactly as returned: `virtual_key_name`, `is_active`, `budgets`, `rat
 `model_configs`.
 
 - `budgets[]`: `max_limit` (USD), `current_usage` (USD), `reset_duration` (for example `1d`, `1h`), `last_reset` (ISO time),
-  `override_amount`, `override_mode`, `override_cycles_remaining` (only after an admin override), `per_model_usage[]`.
+  `override_amount`, `override_mode`, `override_cycles_remaining` (only after an admin override),
+  `reset_config.quarter_start_month` (only on a quarterly budget with a fiscal calendar), `per_model_usage[]`.
 - `budgets[].per_model_usage[]`: `model`, `provider`, `total_cost` (USD since the last reset), `total_requests`,
   `total_tokens`. The meter shows `total_cost` per model, highest first.
 - **Enforced budget limit.** After an admin override the gateway enforces `max_limit + override_amount` when
@@ -51,6 +52,27 @@ Top level, exactly as returned: `virtual_key_name`, `is_active`, `budgets`, `rat
   `request_max_limit`, `request_current_usage`, `request_reset_duration`, `request_last_reset`. A limit that is not set is
   absent or `null`.
 - `rate_limits[]`: same shape as `rate_limit`.
+
+## Reset windows
+
+The quota response gives `reset_duration` and `last_reset`, not the time of the next reset. The meter derives it with the
+gateway's own window rules (`framework/configstore/tables/utils.go` and `budget.go` in v2.5.1). Measured on the pinned
+gateway on 2026-11-15:
+
+- **Rolling windows.** `d` is 24 hours, `w` 7 days, `M` 30 days, `Q` 90 days and `Y` 365 days; other values are Go
+  durations such as `30s`, `5m` or `1h30m`. `last_reset` stays on a lattice of that length. A `1m` budget created at
+  `04:06:27.847221039Z` reported `last_reset: 04:07:27.847221039Z` one minute later. The next reset is `last_reset` plus
+  a whole number of lengths.
+- **Calendar-aligned windows.** A key created with `calendar_aligned` resets its `1d`, `1w`, `1M`, `1Q` and `1Y` windows
+  at 00:00 UTC on the calendar boundary. On Sunday 2026-11-15 such keys reported `last_reset` `2026-11-15T00:00:00Z` for
+  `1d`, `2026-11-09T00:00:00Z` (the Monday) for `1w`, `2026-11-01T00:00:00Z` for `1M` and `2026-10-01T00:00:00Z` for `1Q`.
+- **Which kind a window is.** The quota response does not carry `calendar_aligned`. The meter treats a `1d`, `1w`, `1M`,
+  `1Q` or `1Y` window as calendar aligned when its `last_reset` sits exactly on its own UTC boundary, and as rolling
+  otherwise. For `1d` and `1w` both readings give the same reset time.
+
+The contract suite creates a calendar-aligned monthly key, a calendar-aligned quarterly key and a rolling monthly key on
+the pinned gateway and checks that the meter's next reset is the next boundary for the first two and `last_reset` plus
+30 days for the third.
 
 ## Measured counter movement
 
@@ -66,7 +88,7 @@ Five `POST /v1/chat/completions` calls through key `demo-team-a` (model `openai/
 
 Cost is computed by the gateway from its own pricing catalog and the token counts; no real provider is called.
 
-Counters are written asynchronously. In the contract runs they became visible 2 to 6 seconds after the last request, so a
+Counters are written asynchronously. In the contract runs they became visible 2 to 9 seconds after the last request, so a
 reading taken right after a request can still show the old value. The extension polls on an interval, which hides this
 lag; the contract test waits up to 30 seconds for the counters to move.
 
@@ -82,3 +104,14 @@ for `gpt-4o` and 0.000198 USD for `gpt-4o-mini` (`test/fixtures/quota-200-after-
 - Optional: `rate_limit` may be `null` or absent, `rate_limits`, `provider_configs` and `model_configs` may be absent, and a
   rate limit field that is `null` means "no limit of that kind". A key with no limit at all shows "No limit".
 - Unknown fields are ignored, so newer gateways that add fields keep working.
+
+## What the response does not say
+
+Three things a client has to work out for itself today. Each could be one more field in the quota response;
+`docs/UPSTREAMING.md` lists them as a proposal.
+
+| Not in the response | What the meter does instead |
+|---|---|
+| The enforced limit after an admin override | Adds `override_amount` to `max_limit` when the override mode and remaining cycles say it is active |
+| The time of the next reset, and whether the window is calendar aligned | Derives both from `reset_duration` and `last_reset` with the rules under "Reset windows" |
+| Budgets on a team or customer above the key | Nothing: a virtual key cannot read them. The README lists this as a limit |

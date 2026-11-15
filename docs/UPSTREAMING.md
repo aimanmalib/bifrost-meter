@@ -42,6 +42,25 @@ works with, and the display name carries "(Unofficial)". If the maintainers adop
   response change before release.
 - Translations are in `package.nls*.json` and `l10n/bundle.l10n*.json` (English and Malay, same keys).
 
+## Three fields the quota response could carry
+
+Building a client against `GET /api/governance/virtual-keys/quota` showed three places where every client has to repeat
+gateway logic. The response is assembled in `getVirtualKeyQuota` (`transports/bifrost-http/handlers/governance.go`), and
+the values already exist on the server.
+
+| Field | Where the gateway already has it | Why a client needs it |
+| --- | --- | --- |
+| `effective_max_limit`, per budget | `TableBudget.EffectiveMaxLimit()`; the override call on the management API returns it | After an admin override the quota response keeps the base `max_limit` next to `override_amount`. A client that reads `max_limit` alone reports "used up" while requests still pass |
+| `next_reset`, per budget and per rate limit window | `WindowStart(now)` plus the window length, or the next calendar boundary | The response has `reset_duration` and `last_reset` only. A client has to copy the 30-day month, the 90-day quarter and the calendar rules to show a countdown |
+| `calendar_aligned`, per key | The virtual key's own flag | A client cannot see it. Bifrost Meter infers it from `last_reset`, which is right in practice but still a guess |
+
+The response sketched in issue 6482 already carries `remaining` and `next_reset` per budget, so the first two are in
+line with what operators ask for. All three are additive and read-only, so existing clients keep working. The contract tests in `test/contract` pin
+today's behaviour for each one (an override, calendar boundaries, the 30-day rolling month) against the pinned gateway,
+so they would show such a change. The details and the measurements are in `docs/API-CONTRACT.md`.
+
+As of 15 November 2026 none of this has been filed upstream; see the next section.
+
 ## Contributor agreement
 
 Opening a pull request to the Bifrost repositories may require signing their contributor license agreement. Whether to

@@ -36,8 +36,11 @@ demo/run.sh stop     # buang semua kontena demo dan data gateway
 
 `demo/run.sh` menghidupkan gateway Bifrost rasmi yang dipin dan tidak diubah, huluan model tiruan berlabel `[mock]`, dua
 kunci demo, trafik tiruan dan editor dalam pelayar dengan Bifrost Meter sudah bersambung. Buka pautan yang dicetak; meter
-sudah ada di bar status tanpa menaip apa-apa. Tiada akaun pembekal dan tiada panggilan API berbayar. Semua port diikat pada
-`127.0.0.1`. Langkah demi langkah: [`demo/README.md`](demo/README.md).
+sudah ada di bar status tanpa menaip apa-apa. Kunci demo ada bajet $1.00 yang diset semula setiap 5 minit, jadi dalam kira-kira
+5 minit meter bergerak dari OK ke amaran pada 75%, kritikal pada 90%, "Bajet habis" dan kembali OK selepas set semula. Tiada
+akaun pembekal dan tiada panggilan API berbayar. Semua port diikat pada
+`127.0.0.1`. Jika port 8080 atau 8443 sudah dipakai (8080 biasanya dipakai pada mesin yang sudah menjalankan Bifrost), skrip
+memilih port bebas seterusnya dan mencetaknya. Langkah demi langkah: [`demo/README.md`](demo/README.md).
 
 ## Guna
 
