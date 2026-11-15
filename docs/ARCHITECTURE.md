@@ -55,7 +55,7 @@ See docs/MCP.md and ADR 0010.
 | `settings.ts`, `secrets.ts` | Typed settings; key from secret storage, then the environment. |
 | `poller.ts` | Refresh interval, exponential back-off after errors, slower when the window is not focused. |
 | `controller.ts` | Fetch, keep samples, decide notifications, render. Takes storage and rendering as parameters, so unit tests run without VS Code. |
-| `state.ts`, `view.ts` | The 13 display states and their status bar text, icon, background and accessibility label. |
+| `state.ts`, `view.ts` | The 14 display states of the design brief, plus four settings and connection errors, and their status bar text, icon, background and accessibility label. |
 | `tooltip.ts`, `statusBar.ts` | Tooltip table with command links; the only place that touches the status bar item. |
 | `panel.ts`, `panelHtml.ts`, `panelStyle.ts`, `chart.ts` | The details panel: pure HTML and SVG generation, then a webview with a strict content security policy. |
 | `notifications.ts`, `noteText.ts` | Once per threshold per reset cycle, once per forecast; state kept in the editor's global storage. |
