@@ -50,6 +50,19 @@ describe('normalize', () => {
     expect(normalize(quota('quota-200-inactive'), NOW).isActive).toBe(false);
   });
 
+  it('reads a quarterly budget with the fiscal quarter start the gateway sends', () => {
+    const s = normalize(
+      quota('quota-200-after-traffic', (b) => {
+        const budget = (b.budgets as Record<string, unknown>[])[0]!;
+        budget.reset_duration = '1Q';
+        budget.last_reset = '2026-11-01T00:00:00Z';
+        budget.reset_config = { quarter_start_month: 2 };
+      }),
+      NOW,
+    );
+    expect(s.limits[0]).toMatchObject({ resetRaw: '1Q', nextReset: Date.parse('2027-02-01T00:00:00Z') });
+  });
+
   it('keeps an unreadable reset period as raw text without a countdown', () => {
     const s = normalize(
       quota('quota-200-after-traffic', (b) => ((b.budgets as Record<string, unknown>[])[0]!.reset_duration = 'monthly-ish')),

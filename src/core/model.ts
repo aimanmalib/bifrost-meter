@@ -47,6 +47,7 @@ function make(
   resetRaw: string | null | undefined,
   last: string | null | undefined,
   now: number,
+  quarterStartMonth?: number,
 ): Limit {
   const lastMs = typeof last === 'string' ? Date.parse(last) : NaN;
   return {
@@ -59,7 +60,7 @@ function make(
     remaining: Math.max(0, limit - used),
     percent: pct(used, limit),
     ...(resetRaw ? { resetRaw } : {}),
-    nextReset: nextReset(last, parseDuration(resetRaw), now),
+    nextReset: nextReset(last, parseDuration(resetRaw), now, quarterStartMonth),
     lastReset: Number.isFinite(lastMs) ? lastMs : null,
   };
 }
@@ -76,7 +77,8 @@ export function effectiveMaxLimit(b: RawBudget): number {
 
 function budgets(list: RawBudget[], scope: LimitScope, label: string | undefined, prefix: string, now: number): Limit[] {
   return list.map((b, i) =>
-    make(`${prefix}budget:${b.id ?? i}`, 'budget', scope, label, effectiveMaxLimit(b), b.current_usage, b.reset_duration, b.last_reset, now),
+    make(`${prefix}budget:${b.id ?? i}`, 'budget', scope, label, effectiveMaxLimit(b), b.current_usage, b.reset_duration, b.last_reset, now,
+      b.quarter_start_month),
   );
 }
 

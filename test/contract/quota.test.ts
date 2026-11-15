@@ -5,7 +5,7 @@ import { readFileSync } from 'node:fs';
 import { join } from 'node:path';
 import { promisify } from 'node:util';
 import { describe, expect, inject, it } from 'vitest';
-import { fetchQuota, fetchVersion, normalize, QUOTA_PATH, type QuotaResponse } from '../../src/core';
+import { fetchQuota, fetchVersion, normalize, periodStart, QUOTA_PATH, type QuotaResponse } from '../../src/core';
 
 const run = promisify(execFile);
 const stack = inject('contract');
@@ -114,6 +114,30 @@ describe.skipIf(Boolean(stack.skip))('quota API contract on the pinned gateway',
     const q = await quotaOk(vk.value);
     expect(q.budgets[0]?.max_limit).toBe(2);
     expect(normalize(q, Date.now()).limits.find((l) => l.kind === 'budget')?.limit).toBe(5);
+  });
+
+  it('reports reset windows the meter reads the same way: calendar boundaries and 30-day rolling months', async () => {
+    const stamp = Date.now();
+    const key = async (suffix: string, body: Record<string, unknown>): Promise<string> => {
+      const created = await admin('POST', '/api/governance/virtual-keys', { name: `contract-window-${suffix}-${stamp}`, ...body });
+      expect(created.status).toBe(200);
+      return (created.json.virtual_key as { value: string }).value;
+    };
+    const now = Date.now();
+    // Calendar-aligned keys: last_reset is the UTC period start, and the meter's next reset is the next boundary.
+    for (const unit of ['M', 'Q'] as const) {
+      const q = await quotaOk(await key(`aligned-${unit}`, { calendar_aligned: true, budgets: [{ max_limit: 1, reset_duration: `1${unit}` }] }));
+      expect(Date.parse(q.budgets[0]?.last_reset ?? '')).toBe(periodStart(unit, now));
+      const next = normalize(q, now).limits[0]?.nextReset ?? 0;
+      expect(next).toBeGreaterThan(now);
+      expect(periodStart(unit, next)).toBe(next);
+      expect(periodStart(unit, next - 1)).toBe(periodStart(unit, now));
+    }
+    // A rolling monthly key: the gateway's month is 30 days from last_reset, not a calendar month.
+    const rolling = await quotaOk(await key('rolling-M', { budgets: [{ max_limit: 1, reset_duration: '1M' }] }));
+    const last = Date.parse(rolling.budgets[0]?.last_reset ?? '');
+    expect(periodStart('M', last)).not.toBe(last);
+    expect(normalize(rolling, now).limits[0]?.nextReset).toBe(last + 30 * 86_400_000);
   });
 });
 

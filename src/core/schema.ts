@@ -8,6 +8,8 @@ export interface RawBudget {
   reset_duration?: string;
   last_reset?: string;
   calendar_aligned?: boolean;
+  /** First month (1 to 12) of the first quarter for a "1Q" budget, from reset_config.quarter_start_month. */
+  quarter_start_month?: number;
   /** Extra amount an admin granted on top of max_limit (budget override). */
   override_amount?: number;
   /** "forever", or "cycles" together with override_cycles_remaining. */
@@ -89,6 +91,7 @@ function budget(v: unknown, path: string): RawBudget {
     reset_duration: typeof v.reset_duration === 'string' ? v.reset_duration : undefined,
     last_reset: typeof v.last_reset === 'string' ? v.last_reset : undefined,
     calendar_aligned: v.calendar_aligned === true,
+    quarter_start_month: isObj(v.reset_config) && isNum(v.reset_config.quarter_start_month) ? v.reset_config.quarter_start_month : undefined,
     override_amount: isNum(v.override_amount) ? v.override_amount : undefined,
     override_mode: typeof v.override_mode === 'string' ? v.override_mode : undefined,
     override_cycles_remaining: isNum(v.override_cycles_remaining) ? v.override_cycles_remaining : undefined,
