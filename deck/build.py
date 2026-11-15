@@ -8,15 +8,18 @@ All text, colours and image paths come from the YAML file; this script only lays
 
 from __future__ import annotations
 
+import copy
 import sys
 from pathlib import Path
 
 import yaml
+from lxml import etree
 from PIL import Image
 from pptx import Presentation
 from pptx.dml.color import RGBColor
 from pptx.enum.shapes import MSO_CONNECTOR, MSO_SHAPE
 from pptx.enum.text import MSO_ANCHOR, PP_ALIGN
+from pptx.text.text import _Run
 from pptx.util import Emu, Inches, Pt
 
 ROOT = Path(__file__).resolve().parent.parent
@@ -305,9 +308,66 @@ class Deck:
         self.text(slide, MARGIN, 2.5, 11, 1.2, s["title"], size=44, bold=True)
         self.text(slide, MARGIN, 3.8, 11, 1.4, s["lines"], size=22, space_after=10)
 
+    # ---- links ------------------------------------------------------------
+    def _frames(self):
+        for slide in self.prs.slides:
+            for shape in slide.shapes:
+                if shape.has_text_frame:
+                    yield shape.text_frame
+                if getattr(shape, "has_table", False) and shape.has_table:
+                    for row in shape.table.rows:
+                        for cell in row.cells:
+                            yield cell.text_frame
+
+    def link_text(self) -> int:
+        """Make each phrase listed under `links` in the YAML clickable, keeping the rest of its line as it was."""
+        links = self.spec.get("links") or {}
+        done = 0
+        for tf in self._frames():
+            for para in tf.paragraphs:
+                for run in list(para.runs):
+                    for phrase, url in links.items():
+                        at = run.text.find(phrase)
+                        if at < 0:
+                            continue
+                        before, after = run.text[:at], run.text[at + len(phrase):]
+                        mid = copy.deepcopy(run._r)
+                        run._r.addnext(mid)
+                        if after:
+                            tail = copy.deepcopy(run._r)
+                            mid.addnext(tail)
+                            _Run(tail, para).text = after
+                        link = _Run(mid, para)
+                        link.text = phrase
+                        link.hyperlink.address = url
+                        if before:
+                            run.text = before
+                        else:
+                            run._r.getparent().remove(run._r)
+                        done += 1
+                        break
+        return done
+
+    def link_colour(self) -> None:
+        """Links take the theme's hyperlink colour, not the run's: set it to the accent so they read on the dark slide."""
+        ns = "{http://schemas.openxmlformats.org/drawingml/2006/main}"
+        for rel in self.prs.slide_masters[0].part.rels.values():
+            if not rel.reltype.endswith("/theme"):
+                continue
+            part = rel.target_part
+            root = etree.fromstring(part.blob)
+            for name in ("hlink", "folHlink"):
+                for node in root.iter(ns + name):
+                    for child in list(node):
+                        node.remove(child)
+                    etree.SubElement(node, ns + "srgbClr").set("val", self.t["accent"])
+            part._blob = etree.tostring(root, xml_declaration=True, encoding="UTF-8", standalone=True)
+
     def build(self) -> Path:
         for i, s in enumerate(self.spec["slides"], start=1):
             getattr(self, f"layout_{s['layout']}")(s, i)
+        if self.link_text():
+            self.link_colour()
         out = ROOT / self.spec["output"]
         self.prs.save(out)
         return out

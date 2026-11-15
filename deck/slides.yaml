@@ -5,6 +5,13 @@
 output: deck/bifrost-meter.pptx
 footer: "Bifrost Meter (Unofficial)"
 
+# Phrases on the slides that become clickable links. The text stays as written; only the link is added.
+links:
+  "github.com/aimanmalib/bifrost-meter": "https://github.com/aimanmalib/bifrost-meter"
+  "youtu.be/XpW94Z39lG0": "https://youtu.be/XpW94Z39lG0"
+  "pull request 10044": "https://github.com/maximhq/bifrost/pull/10044"
+  "Open VSX (aimanmalib.bifrost-meter)": "https://open-vsx.org/extension/aimanmalib/bifrost-meter"
+
 theme:
   font: Arial
   mono: Courier New
