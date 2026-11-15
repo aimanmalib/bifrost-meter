@@ -59,6 +59,12 @@ line with what operators ask for. All three are additive and read-only, so exist
 today's behaviour for each one (an override, calendar boundaries, the 30-day rolling month) against the pinned gateway,
 so they would show such a change. The details and the measurements are in `docs/API-CONTRACT.md`.
 
+The first field is ready as a patch against the gateway's `dev` branch (commit `a3cd2b5`):
+[`docs/upstream/0001-quota-effective-max-limit.patch`](upstream/0001-quota-effective-max-limit.patch). It adds the field in
+`buildBudgetsWithUsage`, a unit test for four override cases, the schema entry and a changelog line, 66 lines in all. With
+it, the 86 handler tests matching `TestGetVirtualKeyQuota|Override|Budget` pass in the `golang:1.27.3` image; without the
+handler change the new test fails. The full suite and the generated `openapi.json` were not run or rebuilt.
+
 As of 15 November 2026 none of this has been filed upstream; see the next section.
 
 ## Contributor agreement

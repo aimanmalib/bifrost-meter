@@ -1,0 +1,136 @@
+From 5d5bd9481d4b157ac5533c79e0b02e5698c93f02 Mon Sep 17 00:00:00 2001
+From: Aiman Malib <84276911+aimanmalib@users.noreply.github.com>
+Date: Sun, 15 Nov 2026 05:48:30 +0000
+Subject: [PATCH] feat: report the enforced budget limit in the virtual key
+ quota response
+
+---
+ .../schemas/management/governance.yaml        |  6 +++
+ .../bifrost-http/handlers/governance.go       |  8 ++-
+ .../bifrost-http/handlers/governance_test.go  | 53 +++++++++++++++++++
+ transports/changelog.md                       |  1 +
+ 4 files changed, 66 insertions(+), 2 deletions(-)
+
+diff --git a/docs/openapi/schemas/management/governance.yaml b/docs/openapi/schemas/management/governance.yaml
+index fc5096e..bcf9b18 100644
+--- a/docs/openapi/schemas/management/governance.yaml
++++ b/docs/openapi/schemas/management/governance.yaml
+@@ -1011,7 +1011,13 @@ VirtualKeyBudgetUsage:
+     - type: object
+       required:
+         - per_model_usage
++        - effective_max_limit
+       properties:
++        effective_max_limit:
++          type: number
++          description: >
++            The limit the gateway enforces for this budget: `max_limit` plus an active override.
++            Equal to `max_limit` when the budget has no active override.
+         per_model_usage:
+           type: array
+           description: Per-model actual usage within this budget's current cycle
+diff --git a/transports/bifrost-http/handlers/governance.go b/transports/bifrost-http/handlers/governance.go
+index 92f0a3e..190e625 100644
+--- a/transports/bifrost-http/handlers/governance.go
++++ b/transports/bifrost-http/handlers/governance.go
+@@ -5783,7 +5783,11 @@ type quotaBudget struct {
+ 	// Identifies what governs this budget (e.g. an access profile), when the caller
+ 	// supplied one. Empty for a VK's own budget rows.
+ 	configstoreTables.SourceRef
+-	Models []quotaModelSpend `json:"per_model_usage"`
++	// The limit the gateway enforces for this budget: max_limit plus an active override.
++	// A self-service caller sees override_amount but cannot tell on its own whether the
++	// override is still active, so the enforced value is reported directly.
++	EffectiveMaxLimit float64           `json:"effective_max_limit"`
++	Models            []quotaModelSpend `json:"per_model_usage"`
+ }
+ 
+ // buildBudgetsWithUsage wraps each budget with its per-model actual usage, queried from
+@@ -5792,7 +5796,7 @@ func (h *GovernanceHandler) buildBudgetsWithUsage(ctx context.Context, vkID, usa
+ 	out := make([]quotaBudget, 0, len(budgets))
+ 	for i := range budgets {
+ 		b := &budgets[i].TableBudget
+-		entry := quotaBudget{TableBudget: *b, SourceRef: budgets[i].SourceRef, Models: []quotaModelSpend{}}
++		entry := quotaBudget{TableBudget: *b, SourceRef: budgets[i].SourceRef, EffectiveMaxLimit: b.EffectiveMaxLimit(), Models: []quotaModelSpend{}}
+ 		if h.logManager != nil {
+ 			start := b.LastReset
+ 			if b.CreatedAt.After(start) {
+diff --git a/transports/bifrost-http/handlers/governance_test.go b/transports/bifrost-http/handlers/governance_test.go
+index 3f72c39..c01955a 100644
+--- a/transports/bifrost-http/handlers/governance_test.go
++++ b/transports/bifrost-http/handlers/governance_test.go
+@@ -2580,6 +2580,59 @@ func TestGetVirtualKeyQuota_ExternalResolverErrorFailsClosed(t *testing.T) {
+ // TestGetVirtualKeyQuota_NoGovernanceReturnsEmpty verifies that a VK without any
+ // VK-scoped model configs reports empty governance (not a stale direct-relationship
+ // read) and still returns 200 with identity fields.
++// TestGetVirtualKeyQuota_ReportsEffectiveMaxLimit checks that each quota budget carries the
++// limit the gateway enforces. The response already exposes max_limit and the override fields,
++// but a caller that reads max_limit alone under-reports the limit while an override is active.
++func TestGetVirtualKeyQuota_ReportsEffectiveMaxLimit(t *testing.T) {
++	SetLogger(&mockLogger{})
++
++	active := true
++	budgets := []configstoreTables.TableBudget{
++		{ID: "b-plain", MaxLimit: 5, ResetDuration: "1d"},
++		{ID: "b-forever", MaxLimit: 5, ResetDuration: "1d", OverrideAmount: 5, OverrideMode: configstoreTables.BudgetOverrideModeForever},
++		{ID: "b-cycles", MaxLimit: 5, ResetDuration: "1d", OverrideAmount: 3, OverrideMode: configstoreTables.BudgetOverrideModeCycles, OverrideCyclesRemaining: 2},
++		{ID: "b-spent", MaxLimit: 5, ResetDuration: "1d", OverrideAmount: 3, OverrideMode: configstoreTables.BudgetOverrideModeCycles, OverrideCyclesRemaining: 0},
++	}
++	want := map[string]float64{"b-plain": 5, "b-forever": 10, "b-cycles": 8, "b-spent": 5}
++	store := &mockQuotaConfigStore{
++		vk: &configstoreTables.TableVirtualKey{ID: "vk-eff", Name: "Effective", IsActive: &active},
++		modelConfigs: []configstoreTables.TableModelConfig{
++			{
++				ID:        "mc-vk-eff",
++				Scope:     configstoreTables.ModelConfigScopeVirtualKey,
++				ScopeID:   schemas.Ptr("vk-eff"),
++				ModelName: configstoreTables.ModelConfigAllModels,
++				Budgets:   budgets,
++			},
++		},
++	}
++	h := &GovernanceHandler{configStore: store}
++
++	ctx := &fasthttp.RequestCtx{}
++	ctx.Request.Header.Set("x-bf-vk", "sk-bf-secret")
++
++	h.getVirtualKeyQuota(ctx)
++
++	if ctx.Response.StatusCode() != 200 {
++		t.Fatalf("expected status 200, got %d: %s", ctx.Response.StatusCode(), string(ctx.Response.Body()))
++	}
++	var resp quotaResponse
++	if err := json.Unmarshal(ctx.Response.Body(), &resp); err != nil {
++		t.Fatalf("failed to parse response: %v", err)
++	}
++	if len(resp.Budgets) != len(budgets) {
++		t.Fatalf("expected %d budgets, got %#v", len(budgets), resp.Budgets)
++	}
++	for _, b := range resp.Budgets {
++		if b.EffectiveMaxLimit != want[b.ID] {
++			t.Errorf("budget %s: expected effective_max_limit %v, got %v (max_limit %v)", b.ID, want[b.ID], b.EffectiveMaxLimit, b.MaxLimit)
++		}
++	}
++	if !bytes.Contains(ctx.Response.Body(), []byte(`"effective_max_limit":10`)) {
++		t.Fatalf("expected raw response to carry \"effective_max_limit\":10, got %s", string(ctx.Response.Body()))
++	}
++}
++
+ func TestGetVirtualKeyQuota_NoGovernanceReturnsEmpty(t *testing.T) {
+ 	SetLogger(&mockLogger{})
+ 
+diff --git a/transports/changelog.md b/transports/changelog.md
+index 8d876b0..6ce2757 100644
+--- a/transports/changelog.md
++++ b/transports/changelog.md
+@@ -1,6 +1,7 @@
+ ## ✨ Features
+ 
+ - **Kimchi Provider** - New `kimchi` provider for chat, Responses, embeddings and list models
++- **Enforced Limit in Virtual Key Quota** - Each budget in `GET /api/governance/virtual-keys/quota` carries `effective_max_limit`, the limit the gateway enforces once an active override is added, so a self-service client no longer has to rebuild it from `max_limit` and the override fields
+ 
+ ## 🐞 Fixed
+ 
+-- 
+2.43.0
+
