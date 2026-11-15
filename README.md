@@ -2,9 +2,16 @@
 
 ![Bifrost Meter: a gauge icon, the name, and three status bar readings: 40% with $0.60 left, a warning at 79%, and budget used up](docs/images/banner.png)
 
-See what is left on your Bifrost virtual key without leaving the editor.
+**See what is left on your Bifrost virtual key without leaving the editor.**
 
 [![ci](https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml/badge.svg)](https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml)
+[![Open VSX](https://img.shields.io/open-vsx/v/aimanmalib/bifrost-meter?label=Open%20VSX)](https://open-vsx.org/extension/aimanmalib/bifrost-meter)
+[![Release](https://img.shields.io/github/v/release/aimanmalib/bifrost-meter)](https://github.com/aimanmalib/bifrost-meter/releases/latest)
+[![License](https://img.shields.io/github/license/aimanmalib/bifrost-meter)](LICENSE)
+
+[Install](#already-run-bifrost-two-steps) · [One-command demo](#no-gateway-yet-one-command) ·
+[Video, 87 s](https://youtu.be/XpW94Z39lG0) · [Slides](docs/deck.pdf) · [Documentation](#documentation) ·
+[Bahasa Melayu](README.ms.md)
 
 ![Bifrost Meter in code-server: mock traffic through a Bifrost gateway raises the budget used in the status bar from 22% to 40%](docs/images/hero.gif)
 
@@ -18,13 +25,33 @@ same numbers, so an agent can check before it starts a long task.
 > **Unofficial.** Not affiliated with, endorsed by, or supported by Maxim AI or the Bifrost project. It talks to an unmodified
 > Bifrost gateway through one documented endpoint and changes nothing on it.
 
-Built for the Global AI Hackathon (Geek Room), problem statement PS04, "Open-Source Bifrost Gateway". Slides: [`docs/deck.pdf`](docs/deck.pdf). The
-full 87-second narrated demo video is on [YouTube](https://youtu.be/XpW94Z39lG0) and attached to the
-[latest release](https://github.com/aimanmalib/bifrost-meter/releases/latest).
+Built for the Global AI Hackathon by Geek Room (November 2026), problem statement PS04, "Open-Source Bifrost Gateway".
+The narrated demo video is also attached to the [latest release](https://github.com/aimanmalib/bifrost-meter/releases/latest).
 
 | OK | Warning | Used up |
 | --- | --- | --- |
 | ![Status bar showing 40% of the budget used, $0.02 left](docs/images/demo-ok.png) | ![Panel and status bar at 79% in the warning state, with the threshold notification](docs/images/demo-warning.png) | ![Panel and status bar in red: budget used up](docs/images/demo-exhausted.png) |
+
+## Features
+
+- **Status bar.** Percent used and amount left of the tightest limit (budget, tokens or requests), with the reset time. It
+  turns to the warning colour at 75% and the error colour at 90%. Problems have their own text, such as "Set Bifrost key",
+  "Key rejected", "Key expired" and "Gateway offline".
+- **Tooltip and details panel.** Every budget and rate limit with its reset, spend per model sorted by cost, a small usage
+  chart, the run-out estimate, and the gateway version.
+- **Warnings.** One notification per threshold per reset cycle, and one per cycle when the estimate says the limit runs out
+  before it resets.
+- **Admin overrides.** When an admin grants an extra amount on a budget, the meter shows the limit the gateway enforces, not
+  the base one.
+- **Reset times as the gateway counts them.** A rolling month is 30 days and a quarter 90, as in Bifrost. Keys that are
+  calendar aligned reset at 00:00 UTC on the next day, Monday, first of the month, quarter or year.
+- **Key safety.** The key lives in the editor's secret storage and is shown only as its last 4 characters. Plain `http://` is
+  refused for anything but loopback and private addresses unless you allow it.
+- **English and Malay.** Every string comes from the language files; the language follows the editor or the
+  `bifrostMeter.language` setting.
+
+Settings (`bifrostMeter.*`: gateway URL, poll interval, thresholds, status bar metric and format, forecast window,
+notifications, language) are listed in [`docs/CONFIGURATION.md`](docs/CONFIGURATION.md).
 
 ## Already run Bifrost? Two steps
 
@@ -52,55 +79,6 @@ the meter goes from OK to a warning at 75%, critical at 90%, "Budget used up" an
 account and no paid API call. Every port is bound to `127.0.0.1`. If
 8080 or 8443 is taken, as 8080 usually is on a machine that already runs Bifrost, the script uses the next free port and
 prints it. To run the stack step by step with your own editor, see [`demo/README.md`](demo/README.md).
-
-## The problem, from an operator
-
-An operator described this gap in the Bifrost issue tracker on 24 August 2026
-([issue 6482](https://github.com/maximhq/bifrost/issues/6482)):
-
-> "Those callers need to see their own spend and remaining budget in lightweight clients such as a Windows tray usage
-> monitor, without receiving management-plane credentials or access to other tenants' logs."
-
-The same issue names the endpoint this extension uses and says it "is safely authenticated by the Virtual Key itself".
-Bifrost Meter is that lightweight client, in the place developers already look.
-
-## What Bifrost already has, and prior art
-
-The problem statement asks contributors to check existing functionality first. This is what I found on 14 November 2026.
-
-| Where | What it does | Why it does not cover this |
-|---|---|---|
-| Bifrost dashboard | Shows budgets and usage per virtual key | Needs management access. A developer with only a virtual key cannot open it |
-| `GET /api/governance/virtual-keys/quota` (since v1.5.0) | Returns the key's own budgets and rate limits to whoever holds the key | It is an endpoint, not a client. Nothing calls it for you or warns you |
-| Bifrost CLI | Has a quota operation for virtual keys | One reading in a terminal, when you ask for it |
-| [Open pull request 8927](https://github.com/maximhq/bifrost/pull/8927) by the Bifrost team | Adds "users/me/limits" endpoints, "so users and admins can see their budgets, rate limits, and live usage over the API" | Enterprise only, and still an API without an editor client |
-| "Bifrost for GitHub Copilot (Unofficial)" on the VS Code Marketplace | Registers Bifrost as a model provider for Copilot Chat | Does not show budgets or limits |
-| [bifrost-budget](https://github.com/Jasonrve/bifrost-budget), [bifrost-usage-dashboard](https://github.com/arashfarahani/bifrost-usage-dashboard) | A read-only MCP server and a web dashboard for Bifrost budgets | Separate services, outside the editor |
-
-I found no editor extension that shows a virtual key's budget. The VS Code Marketplace returns 10 extensions for "bifrost"
-and Open VSX returns 4; none of them shows usage or budgets. GitHub repository searches for "bifrost vscode" (11 results)
-and "bifrost budget" (14 results) found no editor client, and code search for `"virtual-keys/quota" vscode` found none.
-
-## Features
-
-- **Status bar.** Percent used and amount left of the tightest limit (budget, tokens or requests), with the reset time. It
-  turns to the warning colour at 75% and the error colour at 90%. Problems have their own text, such as "Set Bifrost key",
-  "Key rejected", "Key expired" and "Gateway offline".
-- **Tooltip and details panel.** Every budget and rate limit with its reset, spend per model sorted by cost, a small usage
-  chart, the run-out estimate, and the gateway version.
-- **Warnings.** One notification per threshold per reset cycle, and one per cycle when the estimate says the limit runs out
-  before it resets.
-- **Admin overrides.** When an admin grants an extra amount on a budget, the meter shows the limit the gateway enforces, not
-  the base one.
-- **Reset times as the gateway counts them.** A rolling month is 30 days and a quarter 90, as in Bifrost. Keys that are
-  calendar aligned reset at 00:00 UTC on the next day, Monday, first of the month, quarter or year.
-- **Key safety.** The key lives in the editor's secret storage and is shown only as its last 4 characters. Plain `http://` is
-  refused for anything but loopback and private addresses unless you allow it.
-- **English and Malay.** Every string comes from the language files; the language follows the editor or the
-  `bifrostMeter.language` setting.
-
-Settings (`bifrostMeter.*`: gateway URL, poll interval, thresholds, status bar metric and format, forecast window,
-notifications, language) are listed in [`docs/CONFIGURATION.md`](docs/CONFIGURATION.md).
 
 ## For agents
 
@@ -130,6 +108,34 @@ snippet: [`docs/MCP.md`](docs/MCP.md).
 window every 60 seconds by default, four times less often while the window is not focused. Details in
 [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md); the response fields it relies on in [`docs/API-CONTRACT.md`](docs/API-CONTRACT.md).
 
+## The problem, from an operator
+
+An operator described this gap in the Bifrost issue tracker on 24 August 2026
+([issue 6482](https://github.com/maximhq/bifrost/issues/6482)):
+
+> "Those callers need to see their own spend and remaining budget in lightweight clients such as a Windows tray usage
+> monitor, without receiving management-plane credentials or access to other tenants' logs."
+
+The same issue names the endpoint this extension uses and says it "is safely authenticated by the Virtual Key itself".
+Bifrost Meter is that lightweight client, in the place developers already look.
+
+## What Bifrost already has, and prior art
+
+The problem statement asks contributors to check existing functionality first. This is what I found on 14 November 2026.
+
+| Where | What it does | Why it does not cover this |
+|---|---|---|
+| Bifrost dashboard | Shows budgets and usage per virtual key | Needs management access. A developer with only a virtual key cannot open it |
+| `GET /api/governance/virtual-keys/quota` (since v1.5.0) | Returns the key's own budgets and rate limits to whoever holds the key | It is an endpoint, not a client. Nothing calls it for you or warns you |
+| Bifrost CLI | Has a quota operation for virtual keys | One reading in a terminal, when you ask for it |
+| [Open pull request 8927](https://github.com/maximhq/bifrost/pull/8927) by the Bifrost team | Adds "users/me/limits" endpoints, "so users and admins can see their budgets, rate limits, and live usage over the API" | Enterprise only, and still an API without an editor client |
+| "Bifrost for GitHub Copilot (Unofficial)" on the VS Code Marketplace | Registers Bifrost as a model provider for Copilot Chat | Does not show budgets or limits |
+| [bifrost-budget](https://github.com/Jasonrve/bifrost-budget), [bifrost-usage-dashboard](https://github.com/arashfarahani/bifrost-usage-dashboard) | A read-only MCP server and a web dashboard for Bifrost budgets | Separate services, outside the editor |
+
+I found no editor extension that shows a virtual key's budget. The VS Code Marketplace returns 10 extensions for "bifrost"
+and Open VSX returns 4; none of them shows usage or budgets. GitHub repository searches for "bifrost vscode" (11 results)
+and "bifrost budget" (14 results) found no editor client, and code search for `"virtual-keys/quota" vscode` found none.
+
 ## PS04 requirements
 
 | Requirement | How this project meets it |
@@ -138,14 +144,6 @@ window every 60 seconds by default, four times less often while the window is no
 | Public extension points | Only the documented self-service endpoint `GET /api/governance/virtual-keys/quota`, plus an MCP server for agents. No change to Bifrost code, no fork |
 | Reproducible integration on a standard installation | The official `maximhq/bifrost` image, unmodified and pinned by digest; one-command demo; tested versions listed below |
 | Contribution quality | A tested change to the gateway itself, open as [pull request 10044](https://github.com/maximhq/bifrost/pull/10044): the quota response reports the enforced budget limit. Unit tests, contract tests against a real Bifrost container, end-to-end tests in the editor; docs; Apache-2.0 like Bifrost; [`docs/UPSTREAMING.md`](docs/UPSTREAMING.md) on moving it upstream, with three additive fields the quota response could carry, found while building this client |
-
-## Tested with
-
-| Part | Version |
-|---|---|
-| Bifrost gateway | `v2.5.1`, `maximhq/bifrost@sha256:5ec9873acaf1687556b6e4dd854b92b539d9debf87a5a683b66338648b84d3c8` |
-| Editor | code-server `4.145.2` (end to end); compiled against the VS Code 1.90 API (`engines.vscode` `^1.90.0`) |
-| Build | Node.js 22, TypeScript, esbuild, `@vscode/vsce` |
 
 ## Tests
 
@@ -159,6 +157,19 @@ The contract suite also reads the quota endpoint 200 times in a row: p50 6.9 ms,
 the same shared host measured p50 7.1 ms, p95 51.3 ms and p50 6.8 ms, p95 13.0 ms. What each test checks, with
 dates and versions, is in [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md). The gate and the contract suite also run on GitHub
 Actions for every push ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
+
+### Tested with
+
+| Part | Version |
+|---|---|
+| Bifrost gateway | `v2.5.1`, `maximhq/bifrost@sha256:5ec9873acaf1687556b6e4dd854b92b539d9debf87a5a683b66338648b84d3c8` |
+| Editor | code-server `4.145.2` (end to end); compiled against the VS Code 1.90 API (`engines.vscode` `^1.90.0`) |
+| Build | Node.js 22, TypeScript, esbuild, `@vscode/vsce` |
+
+### Technologies
+
+TypeScript, the VS Code extension API (status bar, webview, secret storage), esbuild, vitest, Playwright, the official MCP
+TypeScript SDK, Docker Compose, the official Bifrost image and code-server.
 
 ## Limits and honest notes
 
@@ -175,11 +186,6 @@ Actions for every push ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
   code-server can install it from their extension view. Not on the VS Code Marketplace: there, install from the `.vsix` file.
 - The demo uses a mock model upstream, labelled `[mock]`. The gateway, the keys, the budgets and the counters are real.
 
-## Technologies
-
-TypeScript, the VS Code extension API (status bar, webview, secret storage), esbuild, vitest, Playwright, the official MCP
-TypeScript SDK, Docker Compose, the official Bifrost image and code-server.
-
 ## How AI is used
 
 - **In the product.** The extension makes no model calls and sends nothing to any AI service. It serves people and agents
@@ -188,7 +194,7 @@ TypeScript SDK, Docker Compose, the official Bifrost image and code-server.
 - **In the build.** AI coding agents (Anthropic Claude models) wrote the code, the tests, the documentation and the slides.
   Because agents wrote it, I only claim what a test checks. The numbers in this README come from `docs/TEST-RESULTS.md`.
 
-## AI disclosure
+### AI disclosure
 
 AI disclosure: the code, tests and documentation in this repository were written by AI coding agents (Anthropic Claude models)
 working under my direction. I chose the problem, set the requirements and checked the result in the demo. I am responsible for it.
@@ -197,10 +203,20 @@ In detail: the idea is one of the examples in the problem statement. My agents p
 and I watched the recorded demo before I submitted. The narration in the demo video is an AI clone of my own voice; its music is by Sascha Ende, ende.app (CC BY 4.0). The
 agent scene in it replays one recorded session of a coding agent (`demo/agent-session.json`).
 
-## Event
+## Documentation
 
-Global AI Hackathon by Geek Room, November 2026, problem statement PS04 "Open-Source Bifrost Gateway".
-Malay README: [README.ms.md](README.ms.md).
+| Document | What is in it |
+|---|---|
+| [`docs/INSTALL.md`](docs/INSTALL.md) | Install from Open VSX or the `.vsix` file, build it yourself, set the key without a prompt, uninstall |
+| [`docs/CONFIGURATION.md`](docs/CONFIGURATION.md) | Every `bifrostMeter.*` setting |
+| [`docs/MCP.md`](docs/MCP.md) | The MCP tool and the terminal status line, with real output |
+| [`docs/ARCHITECTURE.md`](docs/ARCHITECTURE.md) | Modules, polling and data flow |
+| [`docs/API-CONTRACT.md`](docs/API-CONTRACT.md) | The gateway response fields the meter relies on |
+| [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md) | What each test checks, with dates and versions |
+| [`docs/UPSTREAMING.md`](docs/UPSTREAMING.md) | How this could move into Bifrost itself |
+| [`docs/SECURITY.md`](docs/SECURITY.md) | How the key is stored and what leaves the editor |
+| [`docs/decisions/`](docs/decisions/) | Decision records |
+| [`demo/README.md`](demo/README.md) | The demo stack, step by step |
 
 ## License
 

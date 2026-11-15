@@ -1,6 +1,11 @@
 # Bifrost Meter (Tidak Rasmi)
 
-Lihat baki kunci maya Bifrost anda tanpa meninggalkan editor.
+![Bifrost Meter: ikon tolok, nama, dan tiga bacaan bar status: 40% dengan baki $0.60, amaran pada 79%, dan bajet habis](docs/images/banner.png)
+
+**Lihat baki kunci maya Bifrost anda tanpa meninggalkan editor.**
+
+[Pasang](#sudah-ada-bifrost-dua-langkah) · [Demo satu arahan](#belum-ada-gateway-satu-arahan) ·
+[Video, 87 s](https://youtu.be/XpW94Z39lG0) · [Slaid](docs/deck.pdf) · [English](README.md)
 
 ![Bifrost Meter dalam code-server: trafik tiruan melalui gateway Bifrost menaikkan bajet terpakai di bar status dari 22% ke 40%](docs/images/hero.gif)
 
