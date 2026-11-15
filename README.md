@@ -26,7 +26,9 @@ full 87-second narrated demo video is on [YouTube](https://youtu.be/WIpad7NQ3_Y)
 
 ## Already run Bifrost? Two steps
 
-1. Download `bifrost-meter.vsix` from the [Releases page](https://github.com/aimanmalib/bifrost-meter/releases) and install it:
+1. Install it. In an editor that uses Open VSX (VSCodium, Cursor, code-server), search for "Bifrost Meter" in the
+   extension view ([listing](https://open-vsx.org/extension/aimanmalib/bifrost-meter)). In VS Code, download
+   `bifrost-meter.vsix` from the [Releases page](https://github.com/aimanmalib/bifrost-meter/releases) and run
    `code --install-extension bifrost-meter.vsix` (or Extensions view, `...` menu, **Install from VSIX...**).
 2. Run **Bifrost Meter: Set Virtual Key** from the Command Palette and paste your key. If the gateway is not at
    `http://localhost:8080`, also run **Bifrost Meter: Set Gateway URL**.
@@ -167,7 +169,8 @@ Actions for every push ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
 - The run-out estimate is a straight line through the last 30 minutes of readings. Bursty usage will fool it.
 - Tested end to end on one gateway version (v2.5.1, pinned by digest) and one editor build. Other editors built on VS Code
   should load it. I have not tested them.
-- Not on the VS Code Marketplace or Open VSX. Install from the `.vsix` file in the release.
+- On [Open VSX](https://open-vsx.org/extension/aimanmalib/bifrost-meter) since 15 November 2026, so VSCodium, Cursor and
+  code-server can install it from their extension view. Not on the VS Code Marketplace: there, install from the `.vsix` file.
 - The demo uses a mock model upstream, labelled `[mock]`. The gateway, the keys, the budgets and the counters are real.
 
 ## Technologies

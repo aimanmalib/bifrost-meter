@@ -23,3 +23,4 @@ One line per step.
 - 2026-11-15: Demo video narrated (an AI clone of the author's voice, labelled on the end card) with a scene that replays one recorded coding-agent session calling `get_budget_status` (`demo/agent-session.json`, `scripts/agent-scene.mjs`); 81 s. Deck restyled: dark theme, cards and test tiles, same content.
 - 2026-11-15: Repository public. Checked without signing in: the repository page and README return 200, the v0.1.1 release lists the .vsix, deck and video, and the CI workflow passed on the last two pushes.
 - 2026-11-15: Terminal status line: `node dist/cli.js status` prints the limit closest to running out as one line for an agent's status line or tmux, from the shared core; measured on the demo gateway; version 0.1.2 (ADR 0015).
+- 2026-11-15: Version 0.1.2 published on Open VSX as `aimanmalib.bifrost-meter` (the same file as the release); README says where to install it.

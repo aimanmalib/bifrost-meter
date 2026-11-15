@@ -153,7 +153,7 @@ slides:
     body:
       - "Limits today: budgets on a team or customer above the key are not in the quota response. The meter is a gauge, not an audit log. Tested on one gateway version."
       - "Found while building it: the quota response has no enforced limit after an admin override and no next reset time. The meter recomputes both with the gateway's own rules, and contract tests check them. The first fix is open upstream as pull request 10044."
-      - "Next, if the Bifrost team wants it: a Marketplace and Open VSX listing, usage history once issue 6482 lands, and a JetBrains version."
+      - "Listed on Open VSX (aimanmalib.bifrost-meter). Next, if the Bifrost team wants it: a Marketplace listing, usage history once issue 6482 lands, and a JetBrains version."
 
   - layout: end
     title: "Thank you."
