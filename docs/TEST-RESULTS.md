@@ -3,15 +3,16 @@
 Latest recorded run of each suite. The fast gate (`bash scripts/gerbang-ujian.sh`: lint, type check, unit tests, build,
 package) runs on every change; the suites below need Docker and run when the files they cover change.
 
-## Clean clone (v0.1.0 release check)
+## Clean clone (v0.1.1 release check)
 
 `git archive HEAD` of the release commit, unpacked into an empty folder, then inside the pinned
 `node@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914` (`node:22.23.4-alpine`, Node v22.23.4)
 container: `npm ci`, lint, type check, unit tests, build, `npm run package`.
 
-- Date: 2026-11-14
-- Result: **all steps passed**; unit **352 passed, 0 failed** in 19 test files; `bifrost-meter.vsix` 244.9 KB (10 files),
-  version 0.1.0. This is the file attached to the v0.1.0 release.
+- Date: 2026-11-15
+- Result: **all steps passed**; unit **378 passed, 0 failed** in 19 test files; `bifrost-meter.vsix` 245.7 KB (10 files),
+  version 0.1.1. This is the file attached to the v0.1.1 release. The same check for v0.1.0 on 2026-11-14 passed with
+  352 unit tests and a 244.9 KB package.
 
 ## Unit (`npm run gate`)
 
