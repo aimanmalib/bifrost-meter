@@ -53,6 +53,26 @@ Top level, exactly as returned: `virtual_key_name`, `is_active`, `budgets`, `rat
   absent or `null`.
 - `rate_limits[]`: same shape as `rate_limit`.
 
+## Fields from pending upstream changes (not in a released gateway)
+
+Two pull requests to Bifrost add fields to this response:
+[10050](https://github.com/maximhq/bifrost/pull/10050) (`calendar_aligned` at the top level, `next_reset` per budget,
+`token_next_reset` and `request_next_reset` per rate limit) and [10044](https://github.com/maximhq/bifrost/pull/10044)
+(`effective_max_limit` per budget). Neither is merged, and v2.5.1 sends none of these fields. The meter reads them when a
+gateway sends them:
+
+- `next_reset`, `token_next_reset`, `request_next_reset` (ISO time): used as the next reset when the time is still ahead
+  of the reading. Absent, unparseable or already past: the meter computes the reset as under "Reset windows".
+- `effective_max_limit` (number, 0 or more): used as the enforced budget limit. Absent or not a usable number: the meter
+  adds the override itself as described above.
+- `calendar_aligned` (boolean): reported to agents as `calendar_aligned` by the MCP tool. The reset times above already
+  carry the alignment, so the meter does not use the flag in its own calculation.
+
+A missing or mistyped field from this list never makes the reading fail. The unit tests use
+`test/fixtures/quota-200-upstream-next-reset.json`, whose shape comes from the OpenAPI schema in those pull requests; it was
+not recorded from a released gateway. The contract tests still run against the pinned v2.5.1 image, where the meter's own
+rules are the path in use.
+
 ## Reset windows
 
 The quota response gives `reset_duration` and `last_reset`, not the time of the next reset. The meter derives it with the
@@ -107,8 +127,8 @@ for `gpt-4o` and 0.000198 USD for `gpt-4o-mini` (`test/fixtures/quota-200-after-
 
 ## What the response does not say
 
-Three things a client has to work out for itself today. Each could be one more field in the quota response;
-`docs/UPSTREAMING.md` lists them as a proposal.
+Three things a client has to work out for itself with v2.5.1. Pull requests 10050 and 10044 add the first two (see
+"Fields from pending upstream changes"); `docs/UPSTREAMING.md` has the details.
 
 | Not in the response | What the meter does instead |
 |---|---|

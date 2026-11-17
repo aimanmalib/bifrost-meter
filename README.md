@@ -164,7 +164,7 @@ The hackathon rules list six judging criteria. Each row points to the evidence i
 | Problem and potential impact | [Issue 6482](https://github.com/maximhq/bifrost/issues/6482) from an operator; desktop monitors already read this endpoint, so the need is real ([prior art](#what-bifrost-already-has-and-prior-art)); the fix for the missing reset time was approved upstream ([pull request 10050](https://github.com/maximhq/bifrost/pull/10050)) |
 | Use of AI | `get_budget_status` lets a coding agent check its budget before a long task ([For agents](#for-agents)). Measured with real agents: the tool was called before the answer in 36 of 36 runs, and the budget rule was followed in 30 of 36 ([`docs/AGENT-EVAL.md`](docs/AGENT-EVAL.md)); [AI disclosure](#ai-disclosure) |
 | User experience | [One-command demo](#no-gateway-yet-one-command); status bar, tooltip, panel, and warnings at 75% and 90%; English and Malay; three themes |
-| Scalability and potential | One documented endpoint, no admin access; [Open VSX](https://open-vsx.org/extension/aimanmalib/bifrost-meter); VS Code 1.90 and later; [`docs/UPSTREAMING.md`](docs/UPSTREAMING.md) |
+| Scalability and potential | One documented endpoint, no admin access; reads `next_reset` and `effective_max_limit` when the gateway sends them and uses its own rules when it does not; [Open VSX](https://open-vsx.org/extension/aimanmalib/bifrost-meter); VS Code 1.90 and later; [`docs/UPSTREAMING.md`](docs/UPSTREAMING.md) |
 
 ## Tests
 
@@ -203,8 +203,13 @@ TypeScript SDK, Docker Compose, the official Bifrost image and code-server.
   a long model name is cut to 20 characters. The tooltip and the panel show the full name.
 - Counters appear a few seconds after a request (2 to 9 seconds in the contract runs), and the meter polls once a minute by
   default. It is a gauge, not an audit log.
-- The quota response has no next reset time and no calendar-aligned flag. The meter derives both from `reset_duration`
-  and `last_reset` with the gateway's rules ([`docs/API-CONTRACT.md`](docs/API-CONTRACT.md)).
+- The quota response of released gateways (v2.5.1 and older) has no next reset time, no calendar-aligned flag and no
+  enforced limit after an override. The meter derives them from `reset_duration`, `last_reset` and the override fields with
+  the gateway's rules ([`docs/API-CONTRACT.md`](docs/API-CONTRACT.md)).
+- Pull requests 10050 and 10044 add `next_reset`, `token_next_reset`, `request_next_reset`, `calendar_aligned` and
+  `effective_max_limit`. The meter reads them when a gateway sends them and falls back to its own rules when it does not.
+  These fields are not in a released gateway yet, so that path is tested only against a response shaped from the schema
+  in those pull requests, not one recorded from a gateway.
 - The run-out estimate is a straight line through the last 30 minutes of readings. Bursty usage will fool it.
 - Tested end to end on one gateway version (v2.5.1, pinned by digest) and one editor build. Other editors built on VS Code
   should load it. I have not tested them.

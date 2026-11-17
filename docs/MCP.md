@@ -89,7 +89,9 @@ what to do with them is up to the agent and the user.
 - Per limit: `kind` (`budget`, `tokens`, `requests`), `scope` (`key`, `provider`, `model`) and `scope_label`, `unit`
   (`usd`, `tokens`, `requests`), `limit`, `used`, `remaining`, `percent`, `is_exhausted`, `reset_period`, `resets_at`,
   `forecast` (`insufficient_data`, `steady`, `rising`, `exhausted`), `exhausts_at`, `will_exhaust_before_reset`.
-- Overall: `read_at`, `gateway`, `key_name`, `key_hint`, `is_active`, `is_exhausted`, `will_exhaust_before_reset` (true when
+- Overall: `read_at`, `gateway`, `key_name`, `key_hint`, `is_active`, `calendar_aligned` (the key's setting when the gateway
+  reports it, `null` on v2.5.1, which does not; added after the call below was recorded), `is_exhausted`,
+  `will_exhaust_before_reset` (true when
   any limit is forecast to run out before its reset, false when every open limit is known to be safe, null while the
   forecast still lacks readings).
 - The forecast needs at least two readings two minutes apart in the same server process. The first call therefore always
