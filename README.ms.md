@@ -16,6 +16,8 @@ Bifrost Meter membaca titik hujung kuota layan diri gateway itu sendiri dengan k
 jawapannya di bar status VS Code, memberi amaran pada 75% dan 90%, dan menganggar bila bajet akan habis. Pelayan MCP kecil
 memberi ejen pengekod angka yang sama, supaya ejen boleh menyemak sebelum memulakan tugas panjang.
 
+Semasa membina meter ini saya jumpa dua jurang dalam respons kuota, dan kedua-duanya saya hantar ke huluan sebagai pull request yang beruji. [Pull request 10050](https://github.com/maximhq/bifrost/pull/10050) menambah masa reset seterusnya. Seorang penyelenggara Bifrost menyemak dan meluluskannya pada 17 November 2026; ia masih terbuka dan belum digabung. [Pull request 10044](https://github.com/maximhq/bifrost/pull/10044) melaporkan had yang dikuatkuasakan selepas override admin dan sedang menunggu semakan.
+
 > **Tidak rasmi.** Tidak bergabung dengan, tidak disokong dan tidak disahkan oleh Maxim AI atau projek Bifrost. Ia bercakap
 > dengan gateway Bifrost yang tidak diubah melalui satu titik hujung yang didokumenkan, dan tidak mengubah apa-apa padanya.
 

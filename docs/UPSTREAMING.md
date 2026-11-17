@@ -74,7 +74,10 @@ On 15 November 2026 this first field was proposed upstream as
 [issue 10043](https://github.com/maximhq/bifrost/issues/10043) and
 [pull request 10044](https://github.com/maximhq/bifrost/pull/10044). The other two fields, `next_reset` and `calendar_aligned`, were proposed later the same day as
 [pull request 10050](https://github.com/maximhq/bifrost/pull/10050) ([issue 10049](https://github.com/maximhq/bifrost/issues/10049)), with unit tests
-for the reset arithmetic. Both pull requests are open and neither has been reviewed by a maintainer yet.
+for the reset arithmetic.
+
+Status on 17 November 2026: a Bifrost maintainer reviewed pull request 10050 and approved it on 17 November 2026; it is open
+and not merged yet. Pull request 10044 is open and waiting for review by a maintainer.
 
 ## Contributor agreement
 

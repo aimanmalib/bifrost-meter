@@ -18,6 +18,8 @@ Bifrost Meter reads the gateway's own self-service quota endpoint with the key y
 VS Code status bar, warns at 75% and 90%, and estimates when the budget runs out. A small MCP server gives coding agents the
 same numbers, so an agent can check before it starts a long task.
 
+Building the meter showed two gaps in the quota response, and I sent both upstream as tested pull requests. [Pull request 10050](https://github.com/maximhq/bifrost/pull/10050) adds the next reset time. A Bifrost maintainer reviewed it and approved it on 17 November 2026; it is open and not merged yet. [Pull request 10044](https://github.com/maximhq/bifrost/pull/10044) reports the enforced limit after an admin override and is waiting for review.
+
 > **Unofficial.** Not affiliated with, endorsed by, or supported by Maxim AI or the Bifrost project. It talks to an unmodified
 > Bifrost gateway through one documented endpoint and changes nothing on it.
 
@@ -149,7 +151,7 @@ and "bifrost budget" (14 results) found no editor client, and code search for `"
 | Real operator problem, end to end | Developers using coding agents through a Bifrost virtual key cannot see their remaining budget until a request is refused (issue 6482 above). The demo goes from `demo/run.sh` to a meter moving in the status bar |
 | Public extension points | Only the documented self-service endpoint `GET /api/governance/virtual-keys/quota`, plus an MCP server for agents. No change to Bifrost code, no fork |
 | Reproducible integration on a standard installation | The official `maximhq/bifrost` image, unmodified and pinned by digest; one-command demo; tested versions listed below |
-| Contribution quality | A tested change to the gateway itself, open as [pull request 10044](https://github.com/maximhq/bifrost/pull/10044): the quota response reports the enforced budget limit. A second one, [pull request 10050](https://github.com/maximhq/bifrost/pull/10050), adds the next reset time and the calendar alignment flag. Unit tests, contract tests against a real Bifrost container, end-to-end tests in the editor; docs; Apache-2.0 like Bifrost; [`docs/UPSTREAMING.md`](docs/UPSTREAMING.md) on moving it upstream, with three additive fields the quota response could carry, found while building this client |
+| Contribution quality | Two tested changes to the gateway itself. [Pull request 10050](https://github.com/maximhq/bifrost/pull/10050) adds the next reset time and the calendar alignment flag to the quota response; a Bifrost maintainer approved it on 17 November 2026 (open, not merged yet). [Pull request 10044](https://github.com/maximhq/bifrost/pull/10044) reports the enforced budget limit after an override (open, waiting for review). Unit tests, contract tests against a real Bifrost container, end-to-end tests in the editor; docs; Apache-2.0 like Bifrost; [`docs/UPSTREAMING.md`](docs/UPSTREAMING.md) on moving it upstream. |
 
 ## Judging criteria, and where to look
 
@@ -158,8 +160,8 @@ The hackathon rules list six judging criteria. Each row points to the evidence i
 | Criterion | Evidence |
 |---|---|
 | Innovation | The budget inside the editor and as an MCP tool for agents ([`docs/MCP.md`](docs/MCP.md)); a run-out forecast; reset dates for calendar-aligned windows, derived and checked against the gateway ([`docs/API-CONTRACT.md`](docs/API-CONTRACT.md)) |
-| Technical execution | 391 unit tests, 11 contract tests on the official image, 9 end-to-end tests in a real editor; CI on every push ([Tests](#tests), [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md)) |
-| Problem and potential impact | [Issue 6482](https://github.com/maximhq/bifrost/issues/6482) from an operator; desktop monitors already read this endpoint, so the need is real ([prior art](#what-bifrost-already-has-and-prior-art)); [pull request 10044](https://github.com/maximhq/bifrost/pull/10044) |
+| Technical execution | 391 unit tests, 11 contract tests on the official image, 9 end-to-end tests in a real editor; CI on every push ([Tests](#tests), [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md)); [pull request 10050](https://github.com/maximhq/bifrost/pull/10050) approved by a Bifrost maintainer |
+| Problem and potential impact | [Issue 6482](https://github.com/maximhq/bifrost/issues/6482) from an operator; desktop monitors already read this endpoint, so the need is real ([prior art](#what-bifrost-already-has-and-prior-art)); the fix for the missing reset time was approved upstream ([pull request 10050](https://github.com/maximhq/bifrost/pull/10050)) |
 | Use of AI | `get_budget_status` lets a coding agent check its budget before a long task ([For agents](#for-agents), and a recorded session in the video); [AI disclosure](#ai-disclosure) |
 | User experience | [One-command demo](#no-gateway-yet-one-command); status bar, tooltip, panel, and warnings at 75% and 90%; English and Malay; three themes |
 | Scalability and potential | One documented endpoint, no admin access; [Open VSX](https://open-vsx.org/extension/aimanmalib/bifrost-meter); VS Code 1.90 and later; [`docs/UPSTREAMING.md`](docs/UPSTREAMING.md) |
