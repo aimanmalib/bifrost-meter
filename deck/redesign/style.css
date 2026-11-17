@@ -1,0 +1,68 @@
+/* Look of the redesigned deck. Colours come from the theme in deck/slides.yaml (set as CSS variables by render.mjs). */
+@font-face { font-family: "Barlow"; font-weight: 400; src: url("fonts/barlow-latin-400-normal.woff2"); }
+@font-face { font-family: "Barlow"; font-weight: 500; src: url("fonts/barlow-latin-500-normal.woff2"); }
+@font-face { font-family: "Barlow"; font-weight: 700; src: url("fonts/barlow-latin-700-normal.woff2"); }
+@font-face { font-family: "Barlow"; font-weight: 900; src: url("fonts/barlow-latin-900-normal.woff2"); }
+@font-face { font-family: "Plex Mono"; font-weight: 400; src: url("fonts/ibm-plex-mono-latin-400-normal.woff2"); }
+@font-face { font-family: "Plex Mono"; font-weight: 500; src: url("fonts/ibm-plex-mono-latin-500-normal.woff2"); }
+
+@page { margin: 0; }
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 1440px; height: 810px; overflow: hidden; }
+body { font-family: "Barlow", sans-serif; letter-spacing: 0.004em; -webkit-font-smoothing: antialiased; }
+
+.slide { position: relative; width: 1440px; height: 810px; overflow: hidden; background: var(--bg); color: var(--ink); }
+.slide.light { --bg: var(--accent); --ink: var(--dark); --label: rgb(15 18 22 / 0.72); --rule: rgb(15 18 22 / 0.1); --strong-rule: var(--dark); }
+.slide.dark { --bg: var(--dark); --ink: var(--panel-ink); --label: rgb(61 214 163 / 0.75); --rule: var(--rule-dark); --strong-rule: rgb(61 214 163 / 0.2); }
+
+a { color: inherit; text-decoration: underline; text-decoration-thickness: 1.5px; text-underline-offset: 4px; }
+code { font-family: "Plex Mono", monospace; font-size: 0.9em; }
+.note code { font-size: 1em; }
+.mono { font-family: "Plex Mono", monospace; font-weight: 500; text-transform: uppercase; letter-spacing: 0.07em; }
+
+/* chrome shared by the content slides */
+.top, .bottom { position: absolute; left: 72px; right: 72px; display: flex; justify-content: space-between; font-size: 14.2px; color: var(--label); }
+.top { top: 39px; padding-bottom: 7px; border-bottom: 1px solid var(--rule); height: 25px; }
+.bottom { top: 745.5px; padding-top: 6px; border-top: 1px solid var(--rule); }
+h1 { position: absolute; left: 72px; top: var(--h1-top, 84px); font-weight: 900; font-size: var(--h1-size, 69px); line-height: 1; letter-spacing: -0.01em; text-transform: uppercase; }
+.dark h1 { color: var(--accent); }
+
+/* table slide */
+.sheet { position: absolute; left: 72px; width: 1296px; }
+table { width: 100%; border-collapse: collapse; }
+th { text-align: left; font-family: "Plex Mono", monospace; font-weight: 500; font-size: 15.7px; letter-spacing: 0.05em; text-transform: uppercase; color: var(--label); padding: 0 0 4px; border-bottom: 1.5px solid var(--strong-rule); }
+td { vertical-align: top; border-bottom: 1px solid var(--rule); }
+td:first-child { font-weight: 700; }
+.note { font-family: "Plex Mono", monospace; font-weight: 500; font-size: 16.5px; color: var(--label); }
+
+/* three columns */
+.cols { position: absolute; left: 72px; right: 72px; top: 195.5px; display: grid; grid-template-columns: repeat(3, 1fr); column-gap: 42px; }
+.col { border-top: 2px solid var(--strong-rule); padding-top: 18px; }
+.col.hot { border-top: 1.5px solid var(--accent); }
+.col h2 { font-size: 16.5px; letter-spacing: 0.08em; color: var(--label); margin-bottom: 14px; }
+.col.hot h2 { color: var(--accent); }
+.col p { font-size: 23.2px; line-height: 34.8px; letter-spacing: 0.007em; }
+.col p + p { margin-top: 13px; }
+
+/* title slide */
+.brand { position: absolute; left: 72px; top: 47px; color: var(--accent); font-weight: 900; text-transform: uppercase; }
+.brand .big { font-size: 138px; line-height: 118.5px; letter-spacing: -0.013em; }
+.brand .small { font-size: 42px; line-height: 1; margin-top: 13px; }
+.lede { position: absolute; left: 72px; top: 359px; width: 520px; font-weight: 500; font-size: 30px; line-height: 40.5px; letter-spacing: 0.01em; }
+.stats { position: absolute; left: 72px; top: 464.5px; display: flex; gap: 31.5px; }
+.stat { border-top: 1.5px solid var(--accent); padding-top: 14px; min-width: 76px; }
+.stat b { display: block; font-weight: 900; font-size: 48px; line-height: 1; color: var(--accent); }
+.stat span { display: block; font-weight: 500; font-size: 18.7px; line-height: 24.7px; margin-top: 1px; }
+.facts { position: absolute; left: 72px; top: 598px; font-family: "Plex Mono", monospace; font-weight: 500; font-size: 17px; line-height: 27px; color: var(--accent); }
+.shot { position: absolute; left: 690px; top: 118.5px; width: 760px; height: 534px; border: 1px solid #252b33; overflow: hidden; }
+.shot img { position: absolute; display: block; }
+.foot3 { position: absolute; left: 72px; right: 72px; top: 710.5px; border-top: 1px solid rgb(61 214 163 / 0.2); padding-top: 11px; display: grid; grid-template-columns: 1fr auto 1fr; font-size: 16.5px; letter-spacing: 0.045em; line-height: 23.3px; color: var(--label); }
+.foot3 > :nth-child(2) { text-align: center; }
+.foot3 > :last-child { text-align: right; }
+.foot3 .keep { text-transform: none; }
+
+/* closing slide */
+.thanks { position: absolute; left: 72px; top: 686px; font-weight: 900; font-size: 48px; line-height: 1; letter-spacing: -0.01em; text-transform: uppercase; }
+.repo { position: absolute; right: 72px; top: 672px; text-align: right; }
+.repo p { font-size: 19.5px; color: var(--label); }
+.repo a { font-family: "Plex Mono", monospace; font-weight: 500; font-size: 25.5px; letter-spacing: -0.04em; }

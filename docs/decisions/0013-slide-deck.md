@@ -1,6 +1,6 @@
 # 0013: Slide deck built from a data file
 
-Status: accepted (2026-11-14)
+Status: accepted (2026-11-14); `npm run deck` replaced by ADR 0016, this build is now `npm run deck:plain`
 
 ## Context
 
