@@ -162,7 +162,7 @@ The hackathon rules list six judging criteria. Each row points to the evidence i
 | Innovation | The budget inside the editor and as an MCP tool for agents ([`docs/MCP.md`](docs/MCP.md)); a run-out forecast; reset dates for calendar-aligned windows, derived and checked against the gateway ([`docs/API-CONTRACT.md`](docs/API-CONTRACT.md)) |
 | Technical execution | 391 unit tests, 11 contract tests on the official image, 9 end-to-end tests in a real editor; CI on every push ([Tests](#tests), [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md)); [pull request 10050](https://github.com/maximhq/bifrost/pull/10050) approved by a Bifrost maintainer |
 | Problem and potential impact | [Issue 6482](https://github.com/maximhq/bifrost/issues/6482) from an operator; desktop monitors already read this endpoint, so the need is real ([prior art](#what-bifrost-already-has-and-prior-art)); the fix for the missing reset time was approved upstream ([pull request 10050](https://github.com/maximhq/bifrost/pull/10050)) |
-| Use of AI | `get_budget_status` lets a coding agent check its budget before a long task ([For agents](#for-agents), and a recorded session in the video); [AI disclosure](#ai-disclosure) |
+| Use of AI | `get_budget_status` lets a coding agent check its budget before a long task ([For agents](#for-agents)). Measured with real agents: the tool was called before the answer in 36 of 36 runs, and the budget rule was followed in 30 of 36 ([`docs/AGENT-EVAL.md`](docs/AGENT-EVAL.md)); [AI disclosure](#ai-disclosure) |
 | User experience | [One-command demo](#no-gateway-yet-one-command); status bar, tooltip, panel, and warnings at 75% and 90%; English and Malay; three themes |
 | Scalability and potential | One documented endpoint, no admin access; [Open VSX](https://open-vsx.org/extension/aimanmalib/bifrost-meter); VS Code 1.90 and later; [`docs/UPSTREAMING.md`](docs/UPSTREAMING.md) |
 
@@ -221,6 +221,8 @@ TypeScript SDK, Docker Compose, the official Bifrost image and code-server.
 - **In the product.** The extension makes no model calls and sends nothing to any AI service. It serves people and agents
   who use models through Bifrost. The MCP tool `get_budget_status` lets a coding agent read its own remaining budget and
   limits. The agent can then stop, ask, or pick a cheaper model before a long task, where today it fails halfway.
+  The measurement in [`docs/AGENT-EVAL.md`](docs/AGENT-EVAL.md) ran Claude models through Claude Code, and every run is
+  in `demo/eval`.
 - **In the build.** AI coding agents (Anthropic Claude models) wrote the code, the tests, the documentation and the slides.
   Because agents wrote it, I only claim what a test checks. The numbers in this README come from `docs/TEST-RESULTS.md`.
 

@@ -103,6 +103,7 @@ def spec() -> None:
         "colours": {
             "dark": theme["background"],
             "accent": theme["accent"],
+            "panel": theme["panel"],
             "panel-ink": theme["panel_ink"],
             "rule-dark": theme["rule"],
         },

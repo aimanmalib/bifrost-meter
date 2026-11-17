@@ -34,6 +34,9 @@ function rich(text, { links = true } = {}) {
   return html;
 }
 
+/** Set the listed phrases (already escaped HTML) in the accent colour. */
+const accent = (html, phrases = []) => phrases.reduce((h, p) => h.split(esc(p)).join(`<span class="accent">${esc(p)}</span>`), html);
+
 const pageNo = (n) => `${String(n).padStart(2, "0")} / ${String(spec.total).padStart(2, "0")}`;
 const top = (s) => `<div class="top mono"><span>${esc(s.label)}</span><span>${pageNo(s.n)}</span></div>`;
 const bottom = (s) => `<div class="bottom mono"><span>${esc(spec.footer)}</span><span>${esc(s.section)}</span></div>`;
@@ -58,6 +61,13 @@ const layouts = {
     ${s.note ? `<p class="note" style="margin-top:${s.note_gap}px">${rich(s.note, { links: false })}</p>` : ""}
     </div>
     ${s.end ? `<div class="thanks">${esc(s.end.title)}</div><div class="repo"><p>${esc(s.end.lines[0])}</p>${rich(s.end.lines[1])}</div>` : ""}
+    ${bottom(s)}
+  </div>`,
+  code: (s) => `<div class="slide dark">${top(s)}
+    <h1>${esc(s.title)}</h1>
+    <ul class="points">${s.body.map((b) => `<li>${accent(rich(b), s.accent)}</li>`).join("")}</ul>
+    <div class="panel"><h2 class="mono">${esc(s.code_caption)}</h2><pre>${s.code.trim().split("\n").map((l) => rich(l, { links: false })).join("\n")}</pre></div>
+    ${s.stats ? `<div class="stats panel-stats">${s.stats.map(([v, l]) => `<div class="stat"><b>${esc(v)}</b><span>${l.split("\n").map(esc).join("<br>")}</span></div>`).join("")}</div>` : ""}
     ${bottom(s)}
   </div>`,
   columns: (s) => `<div class="slide dark">${top(s)}

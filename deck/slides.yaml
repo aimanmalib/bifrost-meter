@@ -21,7 +21,7 @@ links:
 # The `redesign` block under a slide holds what only the redesigned layout shows.
 redesign:
   title: "Bifrost Meter (Unofficial): slides"
-  slides: [1, 9, 11, 12]
+  slides: [1, 8, 9, 11, 12]
   # Text set in the monospace font: file paths and tool names.
   code: "\\b[a-z]+/[A-Za-z_.-]+\\.md\\b|\\bget_budget_status\\b"
   keep_together: ["AI disclosure", "pull request 10050"]
@@ -150,18 +150,18 @@ slides:
       - "get_budget_status is an MCP tool that returns the same limits as structured data."
       - "A coding agent can call it before a long task, then stop or ask when little is left."
       - "For agents in a terminal, one line: Bifrost 26% · $0.73 left · resets in 3m."
-    code_caption: "Real tools/call output (contract test, pinned gateway)"
+    code_caption: "Measured with real agents"
     code: |
-      Key demo-team-a (…8280),
-        read at 2026-11-14T18:46:36Z.
-      Budget: $0.0013 of $5.00 used (<0.1%),
-        $4.99 left, resets in 23h 59m.
-      Tokens: 600 of 100k used (0.6%),
-        99.4k tokens left, resets in 59m.
-      Requests: 3 of 200 used (1%),
-        197 requests left, resets in 59m.
-      No forecast yet: it needs two readings
-        at least 2m apart.
+      48 runs, 2 models: 36 with the tool, 12 without it.
+      The prompt never mentions the budget.
+      Tool called before the answer: 36 of 36.
+      Budget rule followed: 30 of 36 with the tool,
+      3 of 12 without it.
+      Every run is in demo/eval.
+    redesign:
+      section: "MCP"
+      accent: ["Bifrost 26% · $0.73 left · resets in 3m"]
+      stats: [["36 / 36", "tool called before\nthe answer"], ["30 / 36", "budget rule followed,\nwith the tool"], ["3 / 12", "budget rule followed,\nwithout it"]]
 
   - layout: table
     title: "Tests and the PS04 requirements"

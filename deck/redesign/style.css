@@ -66,3 +66,16 @@ td:first-child { font-weight: 700; }
 .repo { position: absolute; right: 72px; top: 672px; text-align: right; }
 .repo p { font-size: 19.5px; color: var(--label); }
 .repo a { font-family: "Plex Mono", monospace; font-weight: 500; font-size: 25.5px; letter-spacing: -0.04em; }
+
+/* list and panel slide (For agents) */
+.points { position: absolute; left: 72px; top: 205px; width: 590px; list-style: none; }
+.points li { position: relative; padding-left: 38px; font-weight: 500; font-size: 23.2px; line-height: 34.8px; }
+.points li + li { margin-top: 18px; }
+.points li::before { content: "\2014"; position: absolute; left: 0; color: var(--accent); }
+.points code { color: var(--accent); }
+.accent { color: var(--accent); }
+.panel { position: absolute; left: 716px; top: 112px; width: 652px; }
+.panel h2 { font-size: 16.5px; letter-spacing: 0.08em; color: var(--accent); margin-bottom: 14px; }
+.panel pre { background: var(--panel); border-left: 1.5px solid var(--accent); padding: 26px 28px; font-family: "Plex Mono", monospace; font-size: 18px; line-height: 30px; white-space: pre-wrap; color: var(--ink); }
+.panel-stats { left: 716px; top: 470px; gap: 42px; }
+.panel-stats .stat { width: 189px; }
