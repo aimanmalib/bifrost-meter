@@ -1,0 +1,64 @@
+{
+  "recorded": {
+    "status": 200,
+    "gateway": "none",
+    "note": "shape from upstream pull request schema, not recorded from a released gateway",
+    "source": [
+      "https://github.com/maximhq/bifrost/pull/10050 (calendar_aligned, next_reset, token_next_reset, request_next_reset)",
+      "https://github.com/maximhq/bifrost/pull/10044 (effective_max_limit)"
+    ],
+    "read_at": "2026-11-17T10:15:00Z"
+  },
+  "body": {
+    "virtual_key_name": "demo-team-a",
+    "is_active": true,
+    "calendar_aligned": true,
+    "budgets": [
+      {
+        "id": "budget-upstream-1",
+        "max_limit": 5,
+        "reset_duration": "1M",
+        "last_reset": "2026-11-01T00:00:00Z",
+        "current_usage": 1.25,
+        "override_amount": 5,
+        "override_mode": "cycles",
+        "override_cycles_remaining": 1,
+        "effective_max_limit": 10,
+        "next_reset": "2026-12-01T00:00:00Z",
+        "per_model_usage": [
+          { "model": "gpt-4o-mini", "provider": "openai", "total_cost": 1.25, "total_requests": 40, "total_tokens": 52000 }
+        ]
+      }
+    ],
+    "rate_limit": {
+      "id": "rate-upstream-1",
+      "token_max_limit": 100000,
+      "token_reset_duration": "1h",
+      "token_current_usage": 52000,
+      "token_last_reset": "2026-11-17T10:00:00Z",
+      "token_next_reset": "2026-11-17T11:00:00Z",
+      "request_max_limit": 200,
+      "request_reset_duration": "1m",
+      "request_current_usage": 3,
+      "request_last_reset": "2026-11-17T10:15:00Z",
+      "request_next_reset": "2026-11-17T10:16:00Z"
+    },
+    "rate_limits": [
+      {
+        "id": "rate-upstream-1",
+        "token_max_limit": 100000,
+        "token_reset_duration": "1h",
+        "token_current_usage": 52000,
+        "token_last_reset": "2026-11-17T10:00:00Z",
+        "token_next_reset": "2026-11-17T11:00:00Z",
+        "request_max_limit": 200,
+        "request_reset_duration": "1m",
+        "request_current_usage": 3,
+        "request_last_reset": "2026-11-17T10:15:00Z",
+        "request_next_reset": "2026-11-17T10:16:00Z"
+      }
+    ],
+    "provider_configs": [],
+    "model_configs": []
+  }
+}

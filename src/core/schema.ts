@@ -16,6 +16,10 @@ export interface RawBudget {
   override_mode?: string;
   override_cycles_remaining?: number;
   per_model_usage?: RawModelUsage[];
+  /** Limit the gateway enforces (max_limit plus an active override); only in gateways newer than v2.5.1. */
+  effective_max_limit?: number;
+  /** ISO time of the gateway's next reset of this budget; only in gateways newer than v2.5.1. */
+  next_reset?: string;
 }
 
 export interface RawModelUsage {
@@ -41,6 +45,9 @@ export interface RawRateLimit {
   request_current_usage?: number | null;
   request_reset_duration?: string | null;
   request_last_reset?: string | null;
+  /** ISO times of the gateway's next counter resets; only in gateways newer than v2.5.1. */
+  token_next_reset?: string;
+  request_next_reset?: string;
 }
 
 /** A provider or model entry that may carry its own budgets and rate limit. */
@@ -55,6 +62,8 @@ export interface RawScopedConfig {
 export interface QuotaResponse {
   virtual_key_name: string;
   is_active: boolean;
+  /** The key's calendar_aligned setting; only in gateways newer than v2.5.1, undefined otherwise. */
+  calendar_aligned?: boolean;
   budgets: RawBudget[];
   rate_limit: RawRateLimit | null;
   rate_limits: RawRateLimit[];
@@ -70,6 +79,10 @@ const isObj = (v: unknown): v is Obj => typeof v === 'object' && v !== null && !
 const isNum = (v: unknown): v is number => typeof v === 'number' && Number.isFinite(v);
 const optNum = (v: unknown): boolean => v === undefined || v === null || isNum(v);
 const optStr = (v: unknown): boolean => v === undefined || v === null || typeof v === 'string';
+// Fields that newer gateways add are optional extras: a missing or mistyped one is dropped, and the model falls back to its
+// own calculation, so a response from v2.5.1 or older reads exactly as before.
+const extraStr = (v: unknown): string | undefined => (typeof v === 'string' && v !== '' ? v : undefined);
+const extraLimit = (v: unknown): number | undefined => (isNum(v) && v >= 0 ? v : undefined);
 
 class FieldError extends Error {
   constructor(readonly field: string) {
@@ -96,6 +109,8 @@ function budget(v: unknown, path: string): RawBudget {
     override_mode: typeof v.override_mode === 'string' ? v.override_mode : undefined,
     override_cycles_remaining: isNum(v.override_cycles_remaining) ? v.override_cycles_remaining : undefined,
     per_model_usage: pmu as RawModelUsage[],
+    effective_max_limit: extraLimit(v.effective_max_limit),
+    next_reset: extraStr(v.next_reset),
   };
 }
 
@@ -114,6 +129,8 @@ function rateLimit(v: unknown, path: string): RawRateLimit | null {
     if (!optStr(v[k])) throw new FieldError(`${path}.${k}`);
     out[k] = (v[k] as string | null | undefined) ?? null;
   }
+  out.token_next_reset = extraStr(v.token_next_reset);
+  out.request_next_reset = extraStr(v.request_next_reset);
   return out;
 }
 
@@ -150,6 +167,7 @@ export function parseQuota(body: unknown): SchemaResult {
       value: {
         virtual_key_name: body.virtual_key_name,
         is_active: body.is_active,
+        calendar_aligned: typeof body.calendar_aligned === 'boolean' ? body.calendar_aligned : undefined,
         budgets: body.budgets.map((b, i) => budget(b, `budgets[${i}]`)),
         rate_limit: rateLimit(body.rate_limit, 'rate_limit'),
         rate_limits: list(body.rate_limits, 'rate_limits', rateLimit),

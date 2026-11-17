@@ -21,7 +21,10 @@ export interface Limit {
   percent: number;
   /** Reset period exactly as the gateway sent it. */
   resetRaw?: string;
-  /** Epoch ms of the next reset, or null when the period or last reset cannot be read. */
+  /**
+   * Epoch ms of the next reset: the gateway's own value when the response carries it and it is still ahead, otherwise
+   * computed from the period and last reset; null when neither can be read.
+   */
   nextReset: number | null;
   /** Epoch ms of the last reset (used to tell when a new cycle starts). */
   lastReset: number | null;
@@ -33,6 +36,8 @@ export interface Snapshot {
   limits: Limit[];
   /** Spend per model from the budgets, highest cost first. Empty when the gateway does not report it. */
   modelSpend: { model: string; usd: number }[];
+  /** The key's calendar_aligned setting; present only when the gateway reports it (newer than v2.5.1). */
+  calendarAligned?: boolean;
 }
 
 const pct = (used: number, limit: number): number => (limit > 0 ? (used / limit) * 100 : used > 0 ? Infinity : 100);
@@ -48,8 +53,10 @@ function make(
   last: string | null | undefined,
   now: number,
   quarterStartMonth?: number,
+  gatewayNext?: string,
 ): Limit {
   const lastMs = typeof last === 'string' ? Date.parse(last) : NaN;
+  const reported = typeof gatewayNext === 'string' ? Date.parse(gatewayNext) : NaN;
   return {
     id,
     kind,
@@ -60,16 +67,18 @@ function make(
     remaining: Math.max(0, limit - used),
     percent: pct(used, limit),
     ...(resetRaw ? { resetRaw } : {}),
-    nextReset: nextReset(last, parseDuration(resetRaw), now, quarterStartMonth),
+    nextReset: Number.isFinite(reported) && reported > now ? reported : nextReset(last, parseDuration(resetRaw), now, quarterStartMonth),
     lastReset: Number.isFinite(lastMs) ? lastMs : null,
   };
 }
 
 /**
- * The limit the gateway enforces: max_limit plus an active admin override. An override is active when its amount is positive
- * and its mode is "forever", or "cycles" with cycles remaining (the quota response carries no effective limit field).
+ * The limit the gateway enforces. Gateways newer than v2.5.1 may send it as effective_max_limit, which is used as is.
+ * Otherwise it is max_limit plus an active admin override: the amount is positive and the mode is "forever", or "cycles"
+ * with cycles remaining.
  */
 export function effectiveMaxLimit(b: RawBudget): number {
+  if (b.effective_max_limit !== undefined) return b.effective_max_limit;
   const extra = b.override_amount ?? 0;
   const active = extra > 0 && (b.override_mode === 'forever' || (b.override_mode === 'cycles' && (b.override_cycles_remaining ?? 0) > 0));
   return active ? b.max_limit + extra : b.max_limit;
@@ -78,7 +87,7 @@ export function effectiveMaxLimit(b: RawBudget): number {
 function budgets(list: RawBudget[], scope: LimitScope, label: string | undefined, prefix: string, now: number): Limit[] {
   return list.map((b, i) =>
     make(`${prefix}budget:${b.id ?? i}`, 'budget', scope, label, effectiveMaxLimit(b), b.current_usage, b.reset_duration, b.last_reset, now,
-      b.quarter_start_month),
+      b.quarter_start_month, b.next_reset),
   );
 }
 
@@ -89,11 +98,11 @@ function rates(rl: RawRateLimit, scope: LimitScope, label: string | undefined, p
   const base = `${prefix}rate:${rl.id ?? idx}`;
   if (isSet(rl.token_max_limit)) {
     out.push(make(`${base}:tokens`, 'tokens', scope, label, rl.token_max_limit, rl.token_current_usage ?? 0,
-      rl.token_reset_duration, rl.token_last_reset, now));
+      rl.token_reset_duration, rl.token_last_reset, now, undefined, rl.token_next_reset));
   }
   if (isSet(rl.request_max_limit)) {
     out.push(make(`${base}:requests`, 'requests', scope, label, rl.request_max_limit, rl.request_current_usage ?? 0,
-      rl.request_reset_duration, rl.request_last_reset, now));
+      rl.request_reset_duration, rl.request_last_reset, now, undefined, rl.request_next_reset));
   }
   return out;
 }
@@ -145,6 +154,7 @@ export function normalize(q: QuotaResponse, now: number): Snapshot {
       ...scopedLimits(q.model_configs, 'model', now),
     ],
     modelSpend: modelSpend(q.budgets),
+    ...(q.calendar_aligned !== undefined ? { calendarAligned: q.calendar_aligned } : {}),
   };
 }
 

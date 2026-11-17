@@ -38,6 +38,15 @@ describe('readConfig', () => {
 });
 
 describe('budgetStatus', () => {
+  it('reports calendar_aligned from gateways that send it and null from v2.5.1', () => {
+    const recorded = budgetStatus(ok(body('quota-200-after-traffic')), cfg, NOW, {}, t);
+    const upstream = budgetStatus(ok(body('quota-200-upstream-next-reset')), cfg, Date.parse('2026-11-17T10:15:00Z'), {}, t);
+    if (!recorded.ok || !upstream.ok) throw new Error('expected ok');
+    expect(recorded.status.calendar_aligned).toBeNull();
+    expect(upstream.status.calendar_aligned).toBe(true);
+    expect(upstream.status.limits.find((l) => l.kind === 'tokens')?.resets_at).toBe('2026-11-17T11:00:00.000Z');
+  });
+
   it('reports every limit with unit, remaining, percent and reset time from a recorded response', () => {
     const out = budgetStatus(ok(body('quota-200-after-traffic')), cfg, NOW, {}, t);
     if (!out.ok) throw new Error('expected ok');

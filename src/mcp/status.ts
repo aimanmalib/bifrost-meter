@@ -33,6 +33,8 @@ export interface BudgetStatus {
   key_name: string;
   key_hint: string;
   is_active: boolean;
+  /** The key's calendar_aligned setting, or null when the gateway does not report it (v2.5.1 and older). */
+  calendar_aligned: boolean | null;
   is_exhausted: boolean;
   will_exhaust_before_reset: boolean | null;
   limits: LimitStatus[];
@@ -136,6 +138,7 @@ export function budgetStatus(result: QuotaResult, cfg: McpConfig, now: number, s
     key_name: snap.keyName,
     key_hint: redactKey(cfg.key),
     is_active: snap.isActive,
+    calendar_aligned: snap.calendarAligned ?? null,
     is_exhausted: limits.some((l) => l.is_exhausted),
     will_exhaust_before_reset: overall(limits),
     limits,

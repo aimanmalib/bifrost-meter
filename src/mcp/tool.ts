@@ -39,6 +39,7 @@ export const outputShape = {
   key_name: z.string(),
   key_hint: z.string(),
   is_active: z.boolean(),
+  calendar_aligned: z.boolean().nullable(),
   is_exhausted: z.boolean(),
   will_exhaust_before_reset: z.boolean().nullable(),
   limits: z.array(limitShape),
