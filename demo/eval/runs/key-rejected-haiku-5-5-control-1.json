@@ -1,0 +1,43 @@
+{
+  "id": "key-rejected-haiku-5-5-control-1",
+  "model": "claude-haiku-5-5",
+  "model_requested": "claude-haiku-5-5",
+  "state": "key-rejected",
+  "state_label": "Key rejected by the gateway",
+  "arm": "control",
+  "repeat": 1,
+  "started_at": "2026-11-17T21:58:35.869Z",
+  "duration_ms": 17084,
+  "error": null,
+  "init": {
+    "apiKeySource": "none",
+    "claude_code_version": "2.1.326",
+    "tools": [],
+    "mcp_servers": [],
+    "memory_excludes": [
+      "<home>/CLAUDE.md",
+      "<home>/AGENTS.md",
+      "<home>/.claude-e/CLAUDE.md"
+    ],
+    "setting_sources": "project,local"
+  },
+  "num_turns": 1,
+  "tool_calls": [],
+  "answer": "\n<invoke:get_budget_status\n</invoke>\n*Tool result unavailable: the `get_budget_status` call did not run. No tool result came back, so the budget state is unknown.*",
+  "reading": {
+    "ok": false,
+    "message": "Could not read the quota. Key rejected. The gateway rejected the key (401). Set the key again.",
+    "traffic": {
+      "sent": 0,
+      "blocked": 0
+    }
+  },
+  "score": {
+    "tool_called": false,
+    "tool_before_answer": false,
+    "decision": null,
+    "expected": "ask-first",
+    "rule_followed": false,
+    "numbers_correct": null
+  }
+}

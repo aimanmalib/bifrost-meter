@@ -1,0 +1,43 @@
+{
+  "id": "key-rejected-sonnet-5-5-control-1",
+  "model": "claude-sonnet-5-5",
+  "model_requested": "claude-sonnet-5-5",
+  "state": "key-rejected",
+  "state_label": "Key rejected by the gateway",
+  "arm": "control",
+  "repeat": 1,
+  "started_at": "2026-11-17T21:57:50.570Z",
+  "duration_ms": 15195,
+  "error": null,
+  "init": {
+    "apiKeySource": "none",
+    "claude_code_version": "2.1.326",
+    "tools": [],
+    "mcp_servers": [],
+    "memory_excludes": [
+      "<home>/CLAUDE.md",
+      "<home>/AGENTS.md",
+      "<home>/.claude-e/CLAUDE.md"
+    ],
+    "setting_sources": "project,local"
+  },
+  "num_turns": 1,
+  "tool_calls": [],
+  "answer": "I'll check the gateway budget first, since this is a long task.\n\n\n<invoke name=\"get_budget_status\">\n</invoke>",
+  "reading": {
+    "ok": false,
+    "message": "Could not read the quota. Key rejected. The gateway rejected the key (401). Set the key again.",
+    "traffic": {
+      "sent": 0,
+      "blocked": 0
+    }
+  },
+  "score": {
+    "tool_called": false,
+    "tool_before_answer": false,
+    "decision": null,
+    "expected": "ask-first",
+    "rule_followed": false,
+    "numbers_correct": null
+  }
+}

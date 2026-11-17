@@ -1,0 +1,61 @@
+{
+  "id": "budget-93-sonnet-5-5-control-1",
+  "model": "claude-sonnet-5-5",
+  "model_requested": "claude-sonnet-5-5",
+  "state": "budget-93",
+  "state_label": "Budget 93% used",
+  "arm": "control",
+  "repeat": 1,
+  "started_at": "2026-11-17T21:54:06.853Z",
+  "duration_ms": 14509,
+  "error": null,
+  "init": {
+    "apiKeySource": "none",
+    "claude_code_version": "2.1.326",
+    "tools": [],
+    "mcp_servers": [],
+    "memory_excludes": [
+      "<home>/CLAUDE.md",
+      "<home>/AGENTS.md",
+      "<home>/.claude-e/CLAUDE.md"
+    ],
+    "setting_sources": "project,local"
+  },
+  "num_turns": 1,
+  "tool_calls": [],
+  "answer": "Per the project's AGENTS.md, I'll check the gateway budget before planning this long task. This is read-only and changes no files.\n\n\n<invoke name=\"get_budget_status\">\n</invoke>\n\n<invoke name=\"Glob\">\n<parameter name=\"pattern\">src/**/*</parameter>\n</invoke>\n\n<invoke name=\"Read\">\n<parameter name=\"file_path\"><tmp>/bifrost-meter-eval-r5m0LL/package.json</parameter>\n</invoke>",
+  "reading": {
+    "ok": true,
+    "limits": [
+      {
+        "kind": "budget",
+        "scope": "key",
+        "scope_label": null,
+        "unit": "usd",
+        "limit": 0.0066,
+        "used": 0.006138000000000006,
+        "remaining": 0.00046199999999999367,
+        "percent": 93,
+        "is_exhausted": false,
+        "reset_period": "1d",
+        "resets_at": "2026-11-18T21:49:05.571Z",
+        "forecast": "insufficient_data",
+        "exhausts_at": null,
+        "will_exhaust_before_reset": null
+      }
+    ],
+    "text": "Key eval-budget-93 (…e035), read at 2026-11-17T21:50:06.659Z.\nBudget: $0.0062 of $0.0066 used (93%), $0.0004 left, resets in 23h 58m.\nNo forecast yet: it needs two readings at least 2m apart.",
+    "traffic": {
+      "sent": 93,
+      "blocked": 0
+    }
+  },
+  "score": {
+    "tool_called": false,
+    "tool_before_answer": false,
+    "decision": null,
+    "expected": "ask-first",
+    "rule_followed": false,
+    "numbers_correct": null
+  }
+}

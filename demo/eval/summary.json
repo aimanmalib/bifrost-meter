@@ -1,0 +1,143 @@
+{
+  "runs": 48,
+  "completed": 48,
+  "failed": 0,
+  "models": [
+    "claude-haiku-5-5",
+    "claude-sonnet-5-5"
+  ],
+  "with_tool": 36,
+  "control": 12,
+  "tool_before_answer": 36,
+  "rule_followed": 30,
+  "numbers_checked": 30,
+  "numbers_correct": 30,
+  "control_rule_followed": 3,
+  "control_tool_called": 0,
+  "claude_code_version": "2.1.326",
+  "api_key_sources": [
+    "none"
+  ],
+  "by_state": [
+    {
+      "state": "budget-20",
+      "label": "Budget 20% used",
+      "expected": "start",
+      "runs": 8,
+      "completed": 8,
+      "failed": 0,
+      "models": [
+        "claude-haiku-5-5",
+        "claude-sonnet-5-5"
+      ],
+      "with_tool": 6,
+      "control": 2,
+      "tool_before_answer": 6,
+      "rule_followed": 5,
+      "numbers_checked": 6,
+      "numbers_correct": 6,
+      "control_rule_followed": 0,
+      "control_tool_called": 0
+    },
+    {
+      "state": "budget-81",
+      "label": "Budget 81% used",
+      "expected": "start",
+      "runs": 8,
+      "completed": 8,
+      "failed": 0,
+      "models": [
+        "claude-haiku-5-5",
+        "claude-sonnet-5-5"
+      ],
+      "with_tool": 6,
+      "control": 2,
+      "tool_before_answer": 6,
+      "rule_followed": 1,
+      "numbers_checked": 6,
+      "numbers_correct": 6,
+      "control_rule_followed": 0,
+      "control_tool_called": 0
+    },
+    {
+      "state": "budget-93",
+      "label": "Budget 93% used",
+      "expected": "ask-first",
+      "runs": 8,
+      "completed": 8,
+      "failed": 0,
+      "models": [
+        "claude-haiku-5-5",
+        "claude-sonnet-5-5"
+      ],
+      "with_tool": 6,
+      "control": 2,
+      "tool_before_answer": 6,
+      "rule_followed": 6,
+      "numbers_checked": 6,
+      "numbers_correct": 6,
+      "control_rule_followed": 1,
+      "control_tool_called": 0
+    },
+    {
+      "state": "budget-exhausted",
+      "label": "Budget used up",
+      "expected": "ask-first",
+      "runs": 8,
+      "completed": 8,
+      "failed": 0,
+      "models": [
+        "claude-haiku-5-5",
+        "claude-sonnet-5-5"
+      ],
+      "with_tool": 6,
+      "control": 2,
+      "tool_before_answer": 6,
+      "rule_followed": 6,
+      "numbers_checked": 6,
+      "numbers_correct": 6,
+      "control_rule_followed": 1,
+      "control_tool_called": 0
+    },
+    {
+      "state": "requests-92",
+      "label": "Request limit 92% used",
+      "expected": "ask-first",
+      "runs": 8,
+      "completed": 8,
+      "failed": 0,
+      "models": [
+        "claude-haiku-5-5",
+        "claude-sonnet-5-5"
+      ],
+      "with_tool": 6,
+      "control": 2,
+      "tool_before_answer": 6,
+      "rule_followed": 6,
+      "numbers_checked": 6,
+      "numbers_correct": 6,
+      "control_rule_followed": 1,
+      "control_tool_called": 0
+    },
+    {
+      "state": "key-rejected",
+      "label": "Key rejected by the gateway",
+      "expected": "ask-first",
+      "runs": 8,
+      "completed": 8,
+      "failed": 0,
+      "models": [
+        "claude-haiku-5-5",
+        "claude-sonnet-5-5"
+      ],
+      "with_tool": 6,
+      "control": 2,
+      "tool_before_answer": 6,
+      "rule_followed": 6,
+      "numbers_checked": 0,
+      "numbers_correct": 0,
+      "control_rule_followed": 0,
+      "control_tool_called": 0
+    }
+  ]
+}

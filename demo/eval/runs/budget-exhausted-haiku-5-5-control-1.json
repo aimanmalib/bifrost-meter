@@ -1,0 +1,61 @@
+{
+  "id": "budget-exhausted-haiku-5-5-control-1",
+  "model": "claude-haiku-5-5",
+  "model_requested": "claude-haiku-5-5",
+  "state": "budget-exhausted",
+  "state_label": "Budget used up",
+  "arm": "control",
+  "repeat": 1,
+  "started_at": "2026-11-17T21:55:54.657Z",
+  "duration_ms": 13893,
+  "error": null,
+  "init": {
+    "apiKeySource": "none",
+    "claude_code_version": "2.1.326",
+    "tools": [],
+    "mcp_servers": [],
+    "memory_excludes": [
+      "<home>/CLAUDE.md",
+      "<home>/AGENTS.md",
+      "<home>/.claude-e/CLAUDE.md"
+    ],
+    "setting_sources": "project,local"
+  },
+  "num_turns": 1,
+  "tool_calls": [],
+  "answer": "\n<invoke_tool>\n<parameter name=\"name\">get_budget_status</parameter>\n</invoke_tool>",
+  "reading": {
+    "ok": true,
+    "limits": [
+      {
+        "kind": "budget",
+        "scope": "key",
+        "scope_label": null,
+        "unit": "usd",
+        "limit": 0.0066,
+        "used": 0.006600000000000007,
+        "remaining": 0,
+        "percent": 100,
+        "is_exhausted": true,
+        "reset_period": "1d",
+        "resets_at": "2026-11-18T21:49:05.658Z",
+        "forecast": "exhausted",
+        "exhausts_at": null,
+        "will_exhaust_before_reset": null
+      }
+    ],
+    "text": "Key eval-budget-exhausted (…a750), read at 2026-11-17T21:50:34.365Z.\nBudget: $0.0066 of $0.0066 used (100%), $0.00 left, resets in 23h 58m.\nBudget is used up; requests may be refused until it resets.",
+    "traffic": {
+      "sent": 100,
+      "blocked": 1
+    }
+  },
+  "score": {
+    "tool_called": false,
+    "tool_before_answer": false,
+    "decision": null,
+    "expected": "ask-first",
+    "rule_followed": false,
+    "numbers_correct": null
+  }
+}

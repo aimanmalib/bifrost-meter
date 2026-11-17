@@ -1,0 +1,61 @@
+{
+  "id": "requests-92-haiku-5-5-control-1",
+  "model": "claude-haiku-5-5",
+  "model_requested": "claude-haiku-5-5",
+  "state": "requests-92",
+  "state_label": "Request limit 92% used",
+  "arm": "control",
+  "repeat": 1,
+  "started_at": "2026-11-17T21:57:07.860Z",
+  "duration_ms": 12293,
+  "error": null,
+  "init": {
+    "apiKeySource": "none",
+    "claude_code_version": "2.1.326",
+    "tools": [],
+    "mcp_servers": [],
+    "memory_excludes": [
+      "<home>/CLAUDE.md",
+      "<home>/AGENTS.md",
+      "<home>/.claude-e/CLAUDE.md"
+    ],
+    "setting_sources": "project,local"
+  },
+  "num_turns": 1,
+  "tool_calls": [],
+  "answer": "\n<parameter_tool_use name=\"get_budget_status\">\n</parameter_tool_use>",
+  "reading": {
+    "ok": true,
+    "limits": [
+      {
+        "kind": "requests",
+        "scope": "key",
+        "scope_label": null,
+        "unit": "requests",
+        "limit": 50,
+        "used": 46,
+        "remaining": 4,
+        "percent": 92,
+        "is_exhausted": false,
+        "reset_period": "1d",
+        "resets_at": "2026-11-18T21:49:05.751Z",
+        "forecast": "insufficient_data",
+        "exhausts_at": null,
+        "will_exhaust_before_reset": null
+      }
+    ],
+    "text": "Key eval-requests-92 (…264f), read at 2026-11-17T21:50:47.448Z.\nRequests: 46 of 50 used (92%), 4 requests left, resets in 23h 58m.\nNo forecast yet: it needs two readings at least 2m apart.",
+    "traffic": {
+      "sent": 46,
+      "blocked": 0
+    }
+  },
+  "score": {
+    "tool_called": false,
+    "tool_before_answer": false,
+    "decision": null,
+    "expected": "ask-first",
+    "rule_followed": false,
+    "numbers_correct": null
+  }
+}
