@@ -87,7 +87,8 @@ step by step with your own editor, see [`demo/README.md`](demo/README.md).
 The extension also carries a small MCP server with one read-only tool, `get_budget_status`, so a coding agent can read the
 same budget and limits before a long task. VS Code 1.101 and later list it automatically; other MCP clients can start
 `node dist/mcp.js`. For agents that run in a terminal, `node dist/cli.js status` prints the same reading as one line
-(`Bifrost 26% · $0.73 left · resets in 3m`) for a status line or tmux. Setup, real output and an example `AGENTS.md`
+(`Bifrost 26% · $0.73 left · resets in 3m`) for a status line or tmux, and `node dist/cli.js guard --min-remaining 20` exits 2
+with one sentence when less than 20% of the closest limit is left, so a CI job or an agent script can stop before it starts. Setup, real output and an example `AGENTS.md`
 snippet: [`docs/MCP.md`](docs/MCP.md).
 
 ![A coding agent in a terminal is asked to refactor a payments module, calls get_budget_status, and answers that it would ask first because $0.18 of the $1 hourly budget is left](docs/images/agent-session.png)
@@ -159,7 +160,7 @@ The hackathon rules list six judging criteria. Each row points to the evidence i
 
 | Criterion | Evidence |
 |---|---|
-| Innovation | The budget inside the editor and as an MCP tool for agents ([`docs/MCP.md`](docs/MCP.md)); a run-out forecast; reset dates for calendar-aligned windows, derived and checked against the gateway ([`docs/API-CONTRACT.md`](docs/API-CONTRACT.md)) |
+| Innovation | The budget inside the editor and as an MCP tool for agents ([`docs/MCP.md`](docs/MCP.md)); `guard`, a pre-flight check that stops a long agent run or a CI job when the budget cannot cover it; a run-out forecast; reset dates for calendar-aligned windows, derived and checked against the gateway ([`docs/API-CONTRACT.md`](docs/API-CONTRACT.md)) |
 | Technical execution | 391 unit tests, 11 contract tests on the official image, 9 end-to-end tests in a real editor; CI on every push ([Tests](#tests), [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md)); [pull request 10050](https://github.com/maximhq/bifrost/pull/10050) approved by a Bifrost maintainer |
 | Problem and potential impact | [Issue 6482](https://github.com/maximhq/bifrost/issues/6482) from an operator; desktop monitors already read this endpoint, so the need is real ([prior art](#what-bifrost-already-has-and-prior-art)); the fix for the missing reset time was approved upstream ([pull request 10050](https://github.com/maximhq/bifrost/pull/10050)) |
 | Use of AI | `get_budget_status` lets a coding agent check its budget before a long task ([For agents](#for-agents)). Measured with real agents: the tool was called before the answer in 36 of 36 runs, and the budget rule was followed in 30 of 36 ([`docs/AGENT-EVAL.md`](docs/AGENT-EVAL.md)); [AI disclosure](#ai-disclosure) |

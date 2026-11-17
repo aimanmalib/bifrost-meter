@@ -5,6 +5,12 @@ All notable changes to this project are documented here. The format follows
 
 ## [Unreleased]
 
+### Added
+
+- `node dist/cli.js guard --min-remaining <percent>`: a pre-flight check for CI steps and agent scripts. It exits 0 to go,
+  2 to stop with one sentence (what is left on the closest limit and when it resets), and 1 when the quota cannot be read.
+  Thirteen unit tests and a contract test on the pinned gateway; usage in `docs/MCP.md`.
+
 ## [0.1.4] - 2026-11-15
 
 ### Changed

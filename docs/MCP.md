@@ -187,3 +187,63 @@ tmux: `set -g status-right '#(node /path/to/dist/cli.js status)'` with `status-i
 
 Each call is one gateway read and the command keeps no cache, so cache the output yourself if your status line refreshes
 more often than once a minute.
+
+## Pre-flight check: `guard`
+
+`guard` answers one question before a long agent run or a CI job: is there enough left on this key to start? It reads the
+same environment variables as `status` and decides on the limit closest to running out.
+
+```sh
+node /path/to/dist/cli.js guard --min-remaining 20
+```
+
+| Exit code | Meaning | Output |
+|---|---|---|
+| 0 | Go: the closest limit has at least the asked share left, or the key has no limit | one sentence on stdout |
+| 2 | Stop: that limit has less left than asked, is used up, or the key is inactive | one sentence on stdout |
+| 1 | The quota could not be read (no key, key rejected or expired, gateway offline) or the argument is wrong | one sentence on stderr |
+
+`--min-remaining` is the percent of the limit that must still be left, from 0 to 100 (`20` and `20%` both work). Without
+it the value is 0, so `guard` stops only when a limit is used up. The key is never printed.
+
+Output measured on the demo gateway on 2026-11-17: a fresh key, then a key with a limit of 3 requests per hour before and
+after 3 real requests through the gateway (keys shortened to their last 4 characters):
+
+```
+$ BIFROST_VIRTUAL_KEY=…9cb2 node dist/cli.js guard --min-remaining 10
+Bifrost guard: go. Closest limit: 0% · $5.00 left · resets in 23h 59m; at least 10% left is required.
+exit 0
+
+$ BIFROST_VIRTUAL_KEY=…7955 node dist/cli.js guard --min-remaining 0
+Bifrost guard: go. Closest limit: 0% · 3 requests left · resets in 59m; at least 0% left is required.
+exit 0
+
+$ BIFROST_VIRTUAL_KEY=…7955 node dist/cli.js guard --min-remaining 0
+Bifrost guard: stop. Closest limit: Requests used up · resets in 59m; at least 0% left is required.
+exit 2
+```
+
+The contract test `test/contract/guard.test.ts` repeats this run against the pinned gateway image.
+
+### As a CI step
+
+Put it before the step that spends the budget. Exit 2 fails the job with the sentence above in the log, so nobody has to
+open the gateway to see why:
+
+```yaml
+- name: Check the model budget
+  env:
+    BIFROST_BASE_URL: ${{ vars.BIFROST_BASE_URL }}
+    BIFROST_VIRTUAL_KEY: ${{ secrets.BIFROST_VIRTUAL_KEY }}
+  run: node dist/cli.js guard --min-remaining 15
+```
+
+To skip the expensive step instead of failing the job, read the exit code yourself (`if node dist/cli.js guard …; then`).
+Exit 1 is an error, not a stop: decide separately whether a gateway that cannot be read should block the job.
+
+### Before an agent run
+
+A script that starts an agent on a long task can call `guard` first and stop with the sentence when the key cannot cover
+the run. An agent that has the MCP tool can make the same decision itself with `get_budget_status`
+([`AGENTS.example.md`](AGENTS.example.md)); `guard` is for the places where nothing reads that tool, such as a scheduled
+job or a wrapper script.

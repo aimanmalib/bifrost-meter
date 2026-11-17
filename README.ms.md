@@ -67,7 +67,9 @@ Teks antara muka ada dalam bahasa Inggeris dan Melayu. Bahasa mengikut editor, a
 notifikasi) diterangkan dalam [`docs/CONFIGURATION.md`](docs/CONFIGURATION.md).
 
 Untuk ejen yang berjalan di terminal, `node dist/cli.js status` mencetak bacaan yang sama sebagai satu baris
-(`Bifrost 37% · baki $0.62 · set semula dalam 3m`) untuk baris status atau tmux; butiran dalam [`docs/MCP.md`](docs/MCP.md).
+(`Bifrost 37% · baki $0.62 · set semula dalam 3m`) untuk baris status atau tmux, dan `node dist/cli.js guard --min-remaining 20`
+keluar dengan kod 2 dan satu ayat bila baki had paling hampir kurang daripada 20%, supaya kerja CI atau skrip ejen berhenti sebelum
+bermula; butiran dalam [`docs/MCP.md`](docs/MCP.md).
 
 Tiada kotak untuk menaip kunci (sesetengah persekitaran jauh)? Tetapkan pemboleh ubah persekitaran `BIFROST_VIRTUAL_KEY` dan
 `BIFROST_BASE_URL` untuk proses editor.
