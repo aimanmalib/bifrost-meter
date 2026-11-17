@@ -59,7 +59,7 @@ memilih port bebas seterusnya dan mencetaknya. Langkah demi langkah: [`demo/READ
 | Bifrost Meter: Set Gateway URL | Tukar alamat gateway |
 | Bifrost Meter: Refresh | Baca kuota sekarang |
 | Bifrost Meter: Open Details | Buka panel butiran |
-| Bifrost Meter: Copy Summary | Salin ringkasan baki ke papan klip |
+| Bifrost Meter: Copy Summary | Ringkasan baki disalin ke papan klip |
 | Bifrost Meter: Show Log | Buka log sambungan |
 
 Teks antara muka ada dalam bahasa Inggeris dan Melayu. Bahasa mengikut editor, atau tetapkan `bifrostMeter.language` kepada
