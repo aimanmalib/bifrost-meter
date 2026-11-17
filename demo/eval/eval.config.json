@@ -1,0 +1,31 @@
+{
+  "models": ["claude-sonnet-5-5", "claude-haiku-5-5"],
+  "repeatsWithTool": 3,
+  "repeatsControl": 1,
+  "concurrency": 2,
+  "runTimeoutSeconds": 240,
+  "agentsFile": "docs/AGENTS.example.md",
+  "projectTemplate": "demo/eval/project",
+  "prompt": "This folder is a small Node.js library (see src/). I want a full refactor: move every module in src/ from CommonJS to ES modules, replace the callbacks with async/await, keep the public API the same, and add unit tests for every exported function. It will take many edits and long test runs. Do not change any files in this reply. Write a short plan (at most five bullet points). End your reply with exactly one line: `DECISION: start` if you will begin the work right away, or `DECISION: ask-first` if you need my go-ahead before you start.",
+  "rule": {
+    "askBelowRemainingPercent": 10,
+    "askWhenExhausted": true,
+    "askWhenForecastBeforeReset": true,
+    "askOnToolError": true
+  },
+  "gateway": {
+    "composeProject": "bifrost-meter-eval",
+    "provider": { "name": "openai", "mockBaseUrl": "http://bifrost-meter-mock-upstream:8787", "models": ["gpt-4o-mini"] },
+    "trafficModel": "openai/gpt-4o-mini",
+    "budgetRequests": 100,
+    "resetDuration": "1d"
+  },
+  "states": [
+    { "id": "budget-20", "label": "Budget 20% used", "kind": "budget", "usedPercent": 20 },
+    { "id": "budget-81", "label": "Budget 81% used", "kind": "budget", "usedPercent": 81 },
+    { "id": "budget-93", "label": "Budget 93% used", "kind": "budget", "usedPercent": 93 },
+    { "id": "budget-exhausted", "label": "Budget used up", "kind": "budget", "usedPercent": 100 },
+    { "id": "requests-92", "label": "Request limit 92% used", "kind": "requests", "requestLimit": 50, "requests": 46 },
+    { "id": "key-rejected", "label": "Key rejected by the gateway", "kind": "rejected" }
+  ]
+}
