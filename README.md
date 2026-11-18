@@ -24,7 +24,7 @@ Building the meter showed two gaps in the quota response, and I sent both upstre
 > Bifrost gateway through one documented endpoint and changes nothing on it.
 
 Built for the Global AI Hackathon by Geek Room (November 2026), problem statement PS04, "Open-Source Bifrost Gateway".
-The narrated demo video is also attached to the [latest release](https://github.com/aimanmalib/bifrost-meter/releases/latest).
+The narrated demo video is also attached to the [latest release](https://github.com/aimanmalib/bifrost-meter/releases/latest). It was recorded on version 0.1.4, when the suite had 391 unit tests; the numbers in this README are from the latest run.
 Slide deck, 12 slides: <https://aimanmalib.github.io/bifrost-meter/deck.pdf> (the same file as `docs/deck.pdf` in this repository).
 
 [Bahasa Melayu: README.ms.md](README.ms.md)
@@ -161,7 +161,7 @@ The hackathon rules list six judging criteria. Each row points to the evidence i
 | Criterion | Evidence |
 |---|---|
 | Innovation | The budget inside the editor and as an MCP tool for agents ([`docs/MCP.md`](docs/MCP.md)); `guard`, a pre-flight check that stops a long agent run or a CI job when the budget cannot cover it; a run-out forecast; reset dates for calendar-aligned windows, derived and checked against the gateway ([`docs/API-CONTRACT.md`](docs/API-CONTRACT.md)) |
-| Technical execution | 391 unit tests, 11 contract tests on the official image, 9 end-to-end tests in a real editor; CI on every push ([Tests](#tests), [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md)); [pull request 10050](https://github.com/maximhq/bifrost/pull/10050) approved by a Bifrost maintainer |
+| Technical execution | 427 unit tests, 13 contract tests on the official image, 9 end-to-end tests in a real editor; CI on every push ([Tests](#tests), [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md)); [pull request 10050](https://github.com/maximhq/bifrost/pull/10050) approved by a Bifrost maintainer |
 | Problem and potential impact | [Issue 6482](https://github.com/maximhq/bifrost/issues/6482) from an operator; desktop monitors already read this endpoint, so the need is real ([prior art](#what-bifrost-already-has-and-prior-art)); the fix for the missing reset time was approved upstream ([pull request 10050](https://github.com/maximhq/bifrost/pull/10050)) |
 | Use of AI | `get_budget_status` lets a coding agent check its budget before a long task ([For agents](#for-agents)). Measured with real agents: the tool was called before the answer in 36 of 36 runs, and the budget rule was followed in 30 of 36 ([`docs/AGENT-EVAL.md`](docs/AGENT-EVAL.md)); [AI disclosure](#ai-disclosure) |
 | User experience | [One-command demo](#no-gateway-yet-one-command); status bar, tooltip, panel, and warnings at 75% and 90%; English and Malay; three themes |
@@ -171,8 +171,8 @@ The hackathon rules list six judging criteria. Each row points to the evidence i
 
 | Suite | Command | Latest result |
 |---|---|---|
-| Lint, type check, unit tests, build, package | `npm run gate` | 391 passed, `.vsix` 260 KB |
-| Contract, against the pinned gateway in Docker | `npm run test:contract` | 11 passed |
+| Lint, type check, unit tests, build, package | `npm run gate` | 427 passed, `.vsix` 263 KB |
+| Contract, against the pinned gateway in Docker | `npm run test:contract` | 13 passed |
 | End to end, Playwright driving code-server | `npm run test:e2e` | 9 passed |
 
 The contract suite also reads the quota endpoint 200 times in a row: p50 6.9 ms, p95 12.2 ms. Two more runs on
