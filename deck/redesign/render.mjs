@@ -70,6 +70,12 @@ const layouts = {
     ${s.stats ? `<div class="stats panel-stats">${s.stats.map(([v, l]) => `<div class="stat"><b>${esc(v)}</b><span>${l.split("\n").map(esc).join("<br>")}</span></div>`).join("")}</div>` : ""}
     ${bottom(s)}
   </div>`,
+  points: (s) => `<div class="slide dark">${top(s)}
+    <h1>${esc(s.title)}</h1>
+    <ul class="points two">${s.body.map((b) => `<li>${rich(b)}</li>`).join("")}</ul>
+    <div class="stats row">${s.stats.map(({ value, label }) => `<div class="stat"><b>${esc(value)}</b><span>${esc(label)}</span></div>`).join("")}</div>
+    <div class="bottom mono"><span>${esc(spec.footer)}</span><span class="path">${esc(s.section)}</span></div>
+  </div>`,
   columns: (s) => `<div class="slide dark">${top(s)}
     <h1>${esc(s.title)}</h1>
     <div class="cols">${s.columns.map((c, i) => `<div class="col${i === s.columns.length - 1 ? " hot" : ""}"><h2 class="mono">${esc(c.label)}</h2>${c.paragraphs.map((p) => `<p>${rich(p)}</p>`).join("")}</div>`).join("")}</div>

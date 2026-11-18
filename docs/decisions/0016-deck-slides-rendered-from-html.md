@@ -21,8 +21,9 @@ redesigned deck, and the closing slide lost its criteria table.
 
 ## Consequences
 
-- A text change on slides 1, 9, 11 or 12 is one YAML edit and one command. Another slide needs a layout in
-  `deck/redesign/render.mjs` before it can be listed.
+- A text change on slides 1, 7, 8, 9, 11 or 12 is one YAML edit and one command. Another slide needs a layout in
+  `deck/redesign/render.mjs` before it can be listed. Slides 8 and 7 were added this way; slide 7 uses the `points`
+  layout, checked against its earlier image so the look did not change.
 - The starting point is the redesigned deck in the repository. A run of `npm run deck:plain` must be undone with
   `git checkout` before `npm run deck`.
 - To undo, restore `deck/bifrost-meter.pptx` and `docs/deck.pdf` from an earlier commit and delete `deck/redesign/`.

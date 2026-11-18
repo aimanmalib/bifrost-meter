@@ -21,7 +21,7 @@ links:
 # The `redesign` block under a slide holds what only the redesigned layout shows.
 redesign:
   title: "Bifrost Meter (Unofficial): slides"
-  slides: [1, 8, 9, 11, 12]
+  slides: [1, 7, 8, 9, 11, 12]
   # Text set in the monospace font: file paths and tool names.
   code: "\\b[a-z]+/[A-Za-z_.-]+\\.md\\b|\\bget_budget_status\\b"
   keep_together: ["AI disclosure", "pull request 10050"]
@@ -51,7 +51,7 @@ slides:
     image: docs/images/demo-warning.png
     crop: [0.23, 0.03, 0.0, 0.0]
     redesign:
-      stats: [["391", "unit tests"], ["11", "contract tests,\nofficial image"], ["9", "end-to-end tests,\nreal editor"]]
+      stats: [["427", "unit tests"], ["13", "contract tests,\nofficial image"], ["9", "end-to-end tests,\nreal editor"]]
       facts:
         - ["Upstream PR #10050 approved by a Bifrost maintainer", "https://github.com/maximhq/bifrost/pull/10050"]
         - ["Listed on Open VSX", "https://open-vsx.org/extension/aimanmalib/bifrost-meter"]
@@ -138,10 +138,13 @@ slides:
       - "A response without a required field shows an error, not a zero. English and Bahasa Melayu."
     size: 18
     stats:
-      - {value: "391", label: "unit tests passed"}
-      - {value: "11", label: "contract tests, official image"}
+      - {value: "427", label: "unit tests passed"}
+      - {value: "13", label: "contract tests, official image"}
       - {value: "9", label: "end-to-end tests in a real editor"}
       - {value: "6.9 ms", label: "median quota read, demo stack"}
+    redesign:
+      layout: points
+      section: "docs/TEST-RESULTS.md"
 
   - layout: code
     title: "For agents"
@@ -170,8 +173,8 @@ slides:
     widths: [3.4, 8.4]
     rows:
       - ["Real operator problem", "Issue 6482. End to end in a real editor: set the key, send traffic, see the warning. 9 tests passed."]
-      - ["Public extension points", "The documented quota endpoint, and MCP for agents. 391 unit tests passed."]
-      - ["Reproducible integration", "Official Bifrost image v2.5.1, unmodified, pinned by digest. 11 contract tests passed."]
+      - ["Public extension points", "The documented quota endpoint, and MCP for agents. 427 unit tests passed."]
+      - ["Reproducible integration", "Official Bifrost image v2.5.1, unmodified, pinned by digest. 13 contract tests passed."]
       - ["Contribution quality", "Two tested gateway changes are open upstream. Pull request 10050 (next reset time) was approved by a Bifrost maintainer on 17 Nov 2026. Pull request 10044 (enforced limit after an override) is waiting for review. Docs, Apache-2.0."]
     note: "Each quota read costs the gateway p50 6.9 ms, p95 12.2 ms on the demo stack (200 reads). Numbers from docs/TEST-RESULTS.md."
     redesign:

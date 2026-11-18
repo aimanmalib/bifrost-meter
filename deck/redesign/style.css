@@ -79,3 +79,14 @@ td:first-child { font-weight: 700; }
 .panel pre { background: var(--panel); border-left: 1.5px solid var(--accent); padding: 26px 28px; font-family: "Plex Mono", monospace; font-size: 18px; line-height: 30px; white-space: pre-wrap; color: var(--ink); }
 .panel-stats { left: 716px; top: 470px; gap: 42px; }
 .panel-stats .stat { width: 189px; }
+
+/* text slide with a row of numbers (slide 7) */
+.points.two { top: 193px; width: auto; right: 72px; display: grid; grid-template-columns: 1fr 1fr; column-gap: 62px; row-gap: 22px; }
+.points.two li { font-weight: 400; font-size: 23.4px; line-height: 33.6px; padding-left: 35px; }
+.points.two li + li { margin-top: 0; }
+.points.two li::before { content: ""; top: 16px; width: 14px; height: 2.5px; background: var(--accent); }
+.stats.row { top: 603px; right: 72px; gap: 30px; }
+.stats.row .stat { flex: 1; padding-top: 22px; }
+.stats.row .stat b { font-size: 75px; }
+.stats.row .stat span { font-size: 20px; margin-top: -5px; }
+.bottom .path { text-transform: none; }
