@@ -107,13 +107,13 @@ cost at production log volume is not measured.
 The meter makes one such read per editor window every 60 s by default (`bifrostMeter.pollIntervalSeconds`, minimum 15),
 four times less often while the window is not focused. The packaged `.vsix` is 260 KB.
 
-## One-command demo (`demo/run.sh`)
+## One-command demo (`run.sh` in the demo folder)
 
 Run from a clean `git archive` copy of the repository with only Docker on the path (2026-11-14). The first run built the
 extension in the pinned Node 22 container, started the stack and printed the editor link in about one minute. A Playwright
 check then opened the link without typing anything: the status bar showed the request limit of the traffic key
 (`1% · 197 requests left · resets in 59m`) and moved to `3% · 193 requests left` within 20 seconds of mock traffic.
-`demo/run.sh stop` left no demo containers.
+The demo script's `stop` command left no demo containers.
 
 Run again on 2026-11-15 from a clean copy, on a host where port 8080 was already taken, with nothing but Docker on the
 path. Before ADR 0014 the script stopped with Docker's "port is already allocated" error. Now it reported that the demo
