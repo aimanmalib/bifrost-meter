@@ -10,6 +10,12 @@ Since 0.1.4: `guard`, the pre-flight check (`docs/MCP.md`), and the reading of `
 All three suites were run again on 2026-11-18 with Node v22.23.1: the fast gate (427 passed), the contract suite
 (13 passed) and the end-to-end suite (9 passed). Details are in each section below.
 
+The release file was built from `git archive` of the tagged commit `35db686`, unpacked into an empty folder, in the
+pinned `node@sha256:fe4f6d74e20370acb04ad889077d14d0f64a9c8ea6a42bc60cddf1e844699914` container (Node v22.23.4):
+`npm ci`, lint, type check, unit tests (427 passed, 0 failed), build, `npm run package`: `bifrost-meter.vsix` 262.9 KB
+(12 files), sha256 `6b9400bec3e3c07a471c5964bcb3ebc071dc7874db6ea24263caf3fa052e64e1`. That file is attached to the
+v0.1.5 release. Open VSX still lists 0.1.4.
+
 ## Version 0.1.4
 
 `git diff v0.1.3..HEAD -- src test demo l10n` holds the scoped status text change (two source files, one new text in
