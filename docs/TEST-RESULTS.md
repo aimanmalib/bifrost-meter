@@ -3,6 +3,13 @@
 Latest recorded run of each suite. The fast gate (`bash scripts/gerbang-ujian.sh`: lint, type check, unit tests, build,
 package) runs on every change; the suites below need Docker and run when the files they cover change.
 
+## Version 0.1.5
+
+Since 0.1.4: `guard`, the pre-flight check (`docs/MCP.md`), and the reading of `next_reset`, `token_next_reset`,
+`request_next_reset`, `calendar_aligned` and `effective_max_limit` when the gateway sends them (`docs/API-CONTRACT.md`).
+All three suites were run again on 2026-11-18 with Node v22.23.1: the fast gate (427 passed), the contract suite
+(13 passed) and the end-to-end suite (9 passed). Details are in each section below.
+
 ## Version 0.1.4
 
 `git diff v0.1.3..HEAD -- src test demo l10n` holds the scoped status text change (two source files, one new text in
@@ -39,11 +46,11 @@ container: `npm ci`, lint, type check, unit tests, build, `npm run package`.
 Lint, type check, unit tests (vitest), production build and `.vsix` package, with no Docker and no network. Runs on every
 change.
 
-- Date: 2026-11-15, version 0.1.4
-- Result: **391 passed, 0 failed** in 20 test files; `bifrost-meter.vsix` 260.1 KB (12 files), Node v22.23.1. The eight new
-  tests cover provider and model limits in each status format, the used-up text, Malay and the terminal line. The
-  contract, end-to-end and demo suites were not run for this change; their latest recorded results are below.
-- Previous entries, same day: 391 passed, 260.0 KB, before the version change; 383 passed, 259.7 KB, for the v0.1.3
+- Date: 2026-11-18, before the version change to 0.1.5
+- Result: **427 passed, 0 failed** in 23 test files; `bifrost-meter.vsix` 262.6 KB (12 files), Node v22.23.1. Since
+  0.1.4: 13 tests for `guard` (`test/cli-guard.test.ts`), the upstream reset and limit fields, and the agent evaluation
+  scorer.
+- Previous entries: 391 passed, 260.1 KB, for the v0.1.4 release (2026-11-15); 383 passed, 259.7 KB, for the v0.1.3
   release.
 
 ## Contract (`npm run test:contract`)
@@ -51,9 +58,10 @@ change.
 Runs the extension's own quota client, and the bundled MCP server through the official SDK client over stdio, against the pinned official gateway image and the mock upstream from `demo/`, on a
 free `127.0.0.1` port, then removes the stack (`docker compose down -v`). Without Docker the suite is skipped with a message.
 
-- Date: 2026-11-15
+- Date: 2026-11-18
 - Gateway: `maximhq/bifrost@sha256:5ec9873acaf1687556b6e4dd854b92b539d9debf87a5a683b66338648b84d3c8` (`v2.5.1`)
-- Result: **11 passed, 0 failed**; 56 s in total for the v0.1.1 check, including the 200-read latency test below
+- Result: **13 passed, 0 failed** in 63 s, including the 200-read latency test (this run: p50 6.5 ms, p95 10.0 ms).
+  The two new tests run `guard`. Before `guard`: **11 passed** on 2026-11-15; 56 s in total for the v0.1.1 check, including the 200-read latency test below
   (earlier runs: 57 s, 64 s, 67 s and 71 s, of which about 40 s was starting and seeding the gateway)
 
 | Test | Result |
@@ -69,6 +77,8 @@ free `127.0.0.1` port, then removes the stack (`docker compose down -v`). Withou
 | MCP: `tools/list` shows `get_budget_status`; `tools/call` returns the same limits as the quota endpoint for the same key, without the key in the result | passed |
 | MCP: an unknown key gives a tool error ("Key rejected"), not a crash | passed |
 | 200 sequential quota reads all return 200 (latency below) | passed |
+| `guard` exits 0 for a fresh demo key | passed |
+| `guard` exits 2 once real traffic has used up the key's request limit | passed |
 
 ### Cost to the gateway
 
@@ -118,10 +128,11 @@ default URL, `http://localhost:8080`. Playwright (Chromium) drives the editor th
 key prompt, the theme picker and the status bar. Expected numbers are computed from the live quota response with the
 extension's own code. The stack is removed afterwards (`docker compose down -v`).
 
-- Date: 2026-11-15
+- Date: 2026-11-18, on the code released as 0.1.5, packaged just before the version number changed (1.8 min; the stack
+  started in 55 s)
 - Editor: `codercom/code-server@sha256:09565f9e07f5624554e295e8bab0e2fec4a7c533eb3cff459ed6596a4d3d7c1c` (`4.145.2`)
 - Gateway: the same pinned image as the contract suite
-- Result: **9 passed, 0 failed** again with the 0.1.2 package, which adds `dist/cli.js`; 1.4 min for the v0.1.1 check (earlier: 1.8 min for the v0.1.0 release check, 2.8 min
+- Result: **9 passed, 0 failed**, as with the 0.1.2 package, which added `dist/cli.js`; 1.4 min for the v0.1.1 check (earlier: 1.8 min for the v0.1.0 release check, 2.8 min
   after the design review pass of ADR 0009). The extension declares
   `engines.vscode` `^1.90.0` and is compiled against the 1.90 API; this run installs it in code-server 4.145.2
 
