@@ -78,7 +78,8 @@ for the reset arithmetic.
 
 Status on 21 November 2026: a Bifrost maintainer reviewed pull request 10050 and approved it on 17 November 2026 ("LG").
 Merging `dev` to clear a changelog conflict dismissed that approval, as the repository does on every push; a re-review is
-requested. It is open and not merged. Pull request 10044 is open and waiting for a maintainer review; an automated review
+requested. On 20 November an automated review bot asked for a provider test case, so the pull request shows "Changes
+requested" until that is resolved; the author answered on 21 November. It is open and not merged. Pull request 10044 is open and waiting for a maintainer review; an automated review
 bot asked for an extra Postman test case.
 
 ## Contributor agreement
