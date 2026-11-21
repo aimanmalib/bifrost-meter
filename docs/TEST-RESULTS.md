@@ -101,8 +101,47 @@ The median holds steady between runs; the tail depends on other work on the shar
 
 These are readings on the demo stack, whose request log is nearly empty: at most the few mock requests the suite sends.
 The gateway computes spend per model from its request logs on each read, once for every budget on the key
-(`buildBudgetsWithUsage` in `transports/bifrost-http/handlers/governance.go`, read at the tag `transports/v2.5.1`). The
-cost at production log volume is not measured.
+(`buildBudgetsWithUsage` in `transports/bifrost-http/handlers/governance.go`, read at the tag `transports/v2.5.1`: it calls
+`GetModelRankings` over the key's logs since the budget's last reset). The next section measures what that costs as the
+log grows.
+
+### Cost as the request log grows
+
+`npm run measure:log-volume` (`scripts/log-volume.mjs`, settings in `demo/log-volume/config.json`) starts the same pinned
+gateway (`v2.5.1`) and mock upstream, creates one key with two budgets (1 day and 30 days) and rate limits, and then, at each
+log size, sends mock requests through that key until the gateway's own log stats report that many. At each size it reads
+the quota endpoint 200 times in a row and then fires 50 reads at once. The gateway keeps the demo's limit of one CPU. Its
+request log is the default SQLite store, which the demo keeps in tmpfs, so the log counts against the container's
+memory limit. The raw results are in `demo/log-volume/result-3g.json` and `demo/log-volume/result-768m.json`
+(2026-11-21, the same shared build host as above; the 1-minute host load average is in each file and ranged from 14 to 46).
+
+With the memory limit raised to 3 GiB (`--mem-limit 3g`):
+
+| Requests in the log | 200 in a row: p50 | p95 | 50 at once: p50 | p95 | Failed |
+|---|---|---|---|---|---|
+| 0 | 93 ms | 195 ms | 2.8 s | 4.0 s | 0 |
+| 10,000 | 178 ms | 240 ms | 19.0 s | 22.3 s | 0 |
+| 50,000 | 700 ms | 880 ms | 44.3 s | 53.5 s | 0 |
+| 100,000 | 1.25 s | 1.42 s | 78.7 s | 90.8 s | 0 |
+
+With the demo's own limit of 768 MiB, the 50 reads at once at 10,000 logged requests used up the memory: Docker killed the
+gateway (`OOMKilled`, exit 137), and 43 of the 50 reads failed with a closed connection. The 200 reads in a row at the same
+size had all passed (p50 200 ms, p95 290 ms). The same thing happened in all three runs at that size today, the first one
+with an earlier version of the script.
+
+What this means:
+
+- One read gets slower as the log grows: about 9 to 12 ms more per 1,000 logged requests on this host. Every request in
+  this test came from the measured key and fell inside both budget windows, so this run cannot tell whether other keys'
+  traffic, or older requests, also slow the read. A key with more budgets runs the query once per budget.
+- The meter makes one read per editor window per minute, so one developer adds about one read a minute. A gateway shared
+  by many people adds one read a minute per open window. Fifty windows that all poll in the same second is the bad case in
+  the table; in practice their polls are spread over the minute.
+- The base cost is noisy on this shared host. Sequential p50 at an empty log ranged from 9 ms to 103 ms across today's runs,
+  so read the growth across rows of one run, not the absolute numbers.
+- Not measured: a PostgreSQL log store, a gateway with more than one CPU, a gateway with log retention set, and keys whose
+  traffic spreads over many models. The meter cannot make the read cheaper. Caching the per-model spend in the gateway
+  would; [`UPSTREAMING.md`](UPSTREAMING.md) records that as a suggestion.
 
 The meter makes one such read per editor window every 60 s by default (`bifrostMeter.pollIntervalSeconds`, minimum 15),
 four times less often while the window is not focused. The packaged `.vsix` is 260 KB.

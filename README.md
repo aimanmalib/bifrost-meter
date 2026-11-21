@@ -181,8 +181,9 @@ The hackathon rules list six judging criteria. Each row points to the evidence i
 
 The contract suite also reads the quota endpoint 200 times in a row: p50 6.9 ms, p95 12.2 ms. Two more runs on
 the same shared host measured p50 7.1 ms, p95 51.3 ms and p50 6.8 ms, p95 13.0 ms. These are readings on the demo stack,
-whose request log is nearly empty. The gateway computes spend per model from its request logs on each read, so the cost at
-production log volume is not measured. What each test checks, with
+whose request log is nearly empty. The gateway computes spend per model from its request log on each read, so a read gets
+slower as the log grows: on the same host, a median of 1.25 s per read with 100,000 logged requests (see Limits below).
+What each test checks, with
 dates and versions, is in [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md). The gate and the contract suite also run on GitHub
 Actions for every push ([`.github/workflows/ci.yml`](.github/workflows/ci.yml)).
 
@@ -215,6 +216,12 @@ TypeScript SDK, Docker Compose, the official Bifrost image and code-server.
   `effective_max_limit`. The meter reads them when a gateway sends them and falls back to its own rules when it does not.
   These fields are not in a released gateway yet, so that path is tested only against a response shaped from the schema
   in those pull requests, not one recorded from a gateway.
+- Each quota read costs the gateway a query over its request log. On the pinned demo gateway (one CPU, SQLite log), one
+  read took a median of 93 ms with an empty log, 700 ms with 50,000 logged requests and 1.25 s with 100,000. Fifty reads
+  at once took up to 91 s at 100,000, and at 10,000 they used up the demo's 768 MiB and the gateway was killed. The meter
+  makes one read per window per minute; raise `bifrostMeter.pollIntervalSeconds` on a busy gateway. Measured on a shared
+  host, PostgreSQL untested; method, tables and an upstream caching suggestion in
+  [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md#cost-as-the-request-log-grows).
 - The run-out estimate is a straight line through the last 30 minutes of readings. Bursty usage will fool it.
 - Tested end to end on one gateway version (v2.5.1, pinned by digest) and one editor build. Other editors built on VS Code
   should load it. I have not tested them.

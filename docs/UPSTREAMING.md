@@ -82,6 +82,16 @@ requested. On 20 November an automated review bot asked for a provider test case
 requested" until that is resolved; the author answered on 21 November. It is open and not merged. Pull request 10044 is open and waiting for a maintainer review; an automated review
 bot asked for an extra Postman test case.
 
+## Cost of the quota read on a large log
+
+On v2.5.1 every quota read runs a per-model spend query over the request log, once for each budget on the key. In a
+measured run on the demo gateway (one CPU, SQLite log), a single read took a median of 93 ms with an empty log and
+1.25 s with 100,000 logged requests; 50 reads at once at 10,000 requests used up the demo's 768 MiB and the container was
+killed ([`TEST-RESULTS.md`](TEST-RESULTS.md#cost-as-the-request-log-grows)). A suggestion for the gateway, not yet
+proposed there: keep the per-model spend per budget in memory next to the counters that `current_usage` already comes
+from, or cache the query result for a few seconds per key, so that a poll does not grow with the log. Nothing in this
+repository depends on that change; the meter polls once a minute per window either way.
+
 ## Contributor agreement
 
 Pull requests to the Bifrost repositories fall under their contributor license agreement, and pull request 10044 is
