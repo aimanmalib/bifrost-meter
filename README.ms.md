@@ -7,7 +7,9 @@
 [Pasang](#sudah-ada-bifrost-dua-langkah) · [Demo satu arahan](#belum-ada-gateway-satu-arahan) ·
 [Video, 79 s](https://youtu.be/yDtBFdKZWcw) · [Slaid, 12](https://aimanmalib.github.io/bifrost-meter/deck.pdf) · [English](README.md)
 
-![Bifrost Meter dalam code-server: trafik tiruan melalui gateway Bifrost menaikkan bajet terpakai di bar status dari 22% ke 40%](docs/images/hero.gif)
+Ejen pengekodan yang ada alat MCP meter mengikut peraturan bajet dalam `AGENTS.md` dalam 30 daripada 36 larian; tanpa alat itu, 3 daripada 12 ([penilaian ejen](docs/AGENT-EVAL.md), dalam bahasa Inggeris).
+
+![Bifrost Meter dalam code-server semasa demo: panel menunjukkan bajet 79% terpakai dengan baki $0.01 dan anggaran bila ia habis, bar status dalam warna amaran, dan notifikasi 75% terbuka](docs/images/demo-warning.png)
 
 Bifrost menguatkuasakan bajet dan had kadar bagi setiap kunci maya. Admin boleh melihatnya di papan pemuka. Pembangun yang
 memegang kunci itu tidak boleh, dan biasanya baru tahu apabila permintaan ditolak.
@@ -49,6 +51,10 @@ sudah ada di bar status tanpa menaip apa-apa. Kunci demo ada bajet $1.00 yang di
 akaun pembekal dan tiada panggilan API berbayar. Semua port diikat pada
 `127.0.0.1`. Jika port 8080 atau 8443 sudah dipakai (8080 biasanya dipakai pada mesin yang sudah menjalankan Bifrost), skrip
 memilih port bebas seterusnya dan mencetaknya. Langkah demi langkah: [`demo/README.md`](demo/README.md).
+
+Sebahagian rakaman demo, dengan trafik tiruan menaikkan bajet terpakai dari 22% ke 40%:
+
+![Bifrost Meter dalam code-server: trafik tiruan melalui gateway Bifrost menaikkan bajet terpakai di bar status dari 22% ke 40%](docs/images/hero.gif)
 
 ## Guna
 

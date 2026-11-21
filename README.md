@@ -7,9 +7,11 @@
 <p align="center"><b>See what is left on your Bifrost virtual key without leaving the editor.</b> · <i>Lihat baki kunci maya Bifrost anda tanpa meninggalkan editor.</i><br>
 <a href="https://youtu.be/yDtBFdKZWcw"><b>&#9654;&#xFE0E; demo video, 79 s</b></a> · <a href="#already-run-bifrost-two-steps">install</a> · <a href="#no-gateway-yet-one-command">one-command demo</a> · <a href="https://aimanmalib.github.io/bifrost-meter/deck.pdf">slides, 12</a> · <a href="#documentation">documentation</a> · <a href="https://github.com/aimanmalib/bifrost-meter/blob/main/CHANGELOG.md">changelog</a> · Built in Malaysia by <a href="https://aimanmalib.com">Aiman Malib</a></p>
 
+<p align="center">Coding agents with the meter's MCP tool followed the project budget rule in 30 of 36 runs; without the tool, 3 of 12 (<a href="docs/AGENT-EVAL.md">agent evaluation</a>).</p>
+
 <p align="center"><img src="https://raw.githubusercontent.com/aimanmalib/bifrost-meter/main/docs/images/states-strip.png" width="838" alt="The status bar item in three states: 40% used with $0.60 left, a warning at 79% with $0.21 left, and budget used up"></p>
 
-![Bifrost Meter in code-server: mock traffic through a Bifrost gateway raises the budget used in the status bar from 22% to 40%](docs/images/hero.gif)
+![Bifrost Meter in code-server during the demo: the panel shows the budget at 79% used with $0.01 left and an estimate of when it runs out, the status bar is in the warning colour, and the 75% notification is open](docs/images/demo-warning.png)
 
 Bifrost enforces budgets and rate limits per virtual key. An admin can watch them in the dashboard. The developer who holds
 the key cannot, and usually finds out when a request is refused.
@@ -29,9 +31,9 @@ Slide deck, 12 slides: <https://aimanmalib.github.io/bifrost-meter/deck.pdf> (th
 
 [Bahasa Melayu: README.ms.md](README.ms.md)
 
-| OK | Warning | Used up |
-| --- | --- | --- |
-| ![Status bar showing 40% of the budget used, $0.02 left](docs/images/demo-ok.png) | ![Panel and status bar at 79% in the warning state, with the threshold notification](docs/images/demo-warning.png) | ![Panel and status bar in red: budget used up](docs/images/demo-exhausted.png) |
+| OK | Used up |
+| --- | --- |
+| ![Status bar showing 40% of the budget used, $0.02 left](docs/images/demo-ok.png) | ![Panel and status bar in red: budget used up](docs/images/demo-exhausted.png) |
 
 ## Features
 
@@ -81,6 +83,10 @@ account and no paid API call. Every port is bound to `127.0.0.1`. If
 8080 or 8443 is taken, as 8080 usually is on a machine that already runs Bifrost, the script uses the next free port and
 prints it. The script is bash, so on Windows it needs WSL or Git Bash; I have not run it on Windows. To run the stack
 step by step with your own editor, see [`demo/README.md`](demo/README.md).
+
+A slice of the recorded demo, with mock traffic raising the budget used from 22% to 40%:
+
+![Bifrost Meter in code-server: mock traffic through a Bifrost gateway raises the budget used in the status bar from 22% to 40%](docs/images/hero.gif)
 
 ## For agents
 
