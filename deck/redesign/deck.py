@@ -87,7 +87,7 @@ def spec() -> None:
                 if body.lower().startswith(label.lower() + ":"):
                     body = body[len(label) + 1 :].strip()
                     body = body[0].upper() + body[1:]
-                cols.append({"label": label, "paragraphs": re.split(r"\s(?=Next: )", body)})
+                cols.append({"label": label, "paragraphs": re.split(r"\n\n|\s(?=Next: )", body)})
             s["columns"] = cols
         elif s["layout"] == "end":
             end = {"title": s["title"], "lines": s["lines"]}
