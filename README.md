@@ -218,9 +218,14 @@ TypeScript SDK, Docker Compose, the official Bifrost image and code-server.
   in those pull requests, not one recorded from a gateway.
 - Each quota read costs the gateway a query over its request log. On the pinned demo gateway (one CPU, SQLite log), one
   read took a median of 93 ms with an empty log, 700 ms with 50,000 logged requests and 1.25 s with 100,000. Fifty reads
-  at once took up to 91 s at 100,000, and at 10,000 they used up the demo's 768 MiB and the gateway was killed. The meter
-  makes one read per window per minute; raise `bifrostMeter.pollIntervalSeconds` on a busy gateway. Measured on a shared
-  host, PostgreSQL untested; method, tables and an upstream caching suggestion in
+  at once took up to 91 s at 100,000. Read these as a trend, not as Bifrost's speed: they come from a shared build host
+  with a 1-minute load average of 14 to 46, and the empty-log median was 93 ms in one run and 24 ms in the other (the
+  contract suite measured 6.9 ms on 14 Nov, see Tests).
+- In the demo's own setup the gateway was killed: at 10,000 logged requests, fifty reads at once ran out of memory
+  (OOMKilled, in all three runs at that size). The demo keeps the SQLite log in tmpfs, so the log sits inside the
+  container's 768 MiB; with 3 GiB no read failed up to 100,000. A gateway with its log on disk was not tested. The meter
+  makes one read per window per minute; raise `bifrostMeter.pollIntervalSeconds` on a busy gateway. PostgreSQL
+  untested; method, raw results, tables and an upstream caching suggestion in
   [`docs/TEST-RESULTS.md`](docs/TEST-RESULTS.md#cost-as-the-request-log-grows).
 - The run-out estimate is a straight line through the last 30 minutes of readings. Bursty usage will fool it.
 - Tested end to end on one gateway version (v2.5.1, pinned by digest) and one editor build. Other editors built on VS Code
