@@ -76,8 +76,10 @@ On 15 November 2026 this first field was proposed upstream as
 [pull request 10050](https://github.com/maximhq/bifrost/pull/10050) ([issue 10049](https://github.com/maximhq/bifrost/issues/10049)), with unit tests
 for the reset arithmetic.
 
-Status on 17 November 2026: a Bifrost maintainer reviewed pull request 10050 and approved it on 17 November 2026; it is open
-and not merged yet. Pull request 10044 is open and waiting for review by a maintainer.
+Status on 21 November 2026: a Bifrost maintainer reviewed pull request 10050 and approved it on 17 November 2026 ("LG").
+Merging `dev` to clear a changelog conflict dismissed that approval, as the repository does on every push; a re-review is
+requested. It is open and not merged. Pull request 10044 is open and waiting for a maintainer review; an automated review
+bot asked for an extra Postman test case.
 
 ## Contributor agreement
 
