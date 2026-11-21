@@ -24,7 +24,7 @@ redesign:
   slides: [1, 7, 8, 9, 11, 12]
   # Text set in the monospace font: file paths and tool names.
   code: "\\b[a-z]+/[A-Za-z_.-]+\\.md\\b|\\bget_budget_status\\b"
-  keep_together: ["AI disclosure", "pull request 10050", "load 14 to 46", "3 GiB"]
+  keep_together: ["AI disclosure", "pull request 10050", "load 14 to 46", "3 GiB", "1.25 s", "93 ms"]
 
 theme:
   font: Arial
@@ -199,7 +199,7 @@ slides:
     title: "Limits and next"
     tag: "Scalability and potential"
     body:
-      - "Limits today: budgets on a team or customer above the key are not in the quota response. The meter is a gauge, not an audit log. Tested on one gateway version.\n\nEach read queries the gateway's request log. Demo gateway, 1 CPU, SQLite: median 93 ms empty, 700 ms at 50,000 logged requests, 1.25 s at 100,000. A trend: shared host, load 14 to 46. Log in tmpfs: 50 reads at once at 10,000 ran out of the demo's 768 MiB; 3 GiB, no failures. One read per window per minute, configurable."
+      - "Limits today: budgets on a team or customer above the key are not in the quota response. The meter is a gauge, not an audit log. Tested on one gateway version.\n\nEach read queries the request log. Demo gateway, 1 CPU, SQLite, busy shared host (load 14 to 46, so slower than slide 9): median 93 ms empty, 1.25 s at 100,000 logged requests. Log in tmpfs: 50 reads at once at 10,000 ran out of 768 MiB; 3 GiB, none failed. One read per window per minute."
       - "Found while building it: the quota response has no enforced limit after an admin override and no next reset time. The meter recomputes both with the gateway's own rules, and contract tests check them. Both fixes are open upstream. A maintainer approved pull request 10050 on 17 Nov (\"LG\"); a re-review is pending after a dev merge. Pull request 10044 is waiting for a maintainer review."
       - "Listed on Open VSX (aimanmalib.bifrost-meter). If the Bifrost team wants the extension itself, the repository can move under their organisation. It is Apache-2.0, like Bifrost. Next: a Marketplace listing, usage history once issue 6482 lands, and a JetBrains version."
     redesign:
