@@ -177,6 +177,7 @@
     "package": "vsce package --no-dependencies --out bifrost-meter.vsix",
     "vscode:prepublish": "node esbuild.mjs --production",
     "eval:agents": "node scripts/agent-eval.mjs",
+    "measure:log-volume": "node scripts/log-volume.mjs",
     "deck": "bash deck/redesign/build.sh",
     "deck:plain": "uv run -q --with python-pptx==1.0.2 --with pyyaml==6.0.2 python deck/build.py && bash deck/render.sh"
   },

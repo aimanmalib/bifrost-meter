@@ -1,0 +1,86 @@
+{
+  "gateway": "\"v2.5.1\"\n",
+  "startedAt": "2026-11-21T11:23:48.665Z",
+  "gatewayMemLimit": "compose default",
+  "config": {
+    "_comment": "Settings for scripts/log-volume.mjs: how many mock requests to put in the gateway's request log before each set of quota reads.",
+    "levels": [
+      0,
+      10000,
+      50000,
+      100000
+    ],
+    "sequentialReads": 200,
+    "concurrentReads": 50,
+    "fillConcurrency": 32,
+    "settleTimeoutSeconds": 300
+  },
+  "levels": [
+    {
+      "level": 0,
+      "logged": 0,
+      "fillFailures": 0,
+      "fillSeconds": 0,
+      "hostLoad1m": 46,
+      "sequential": {
+        "reads": 200,
+        "p50": 23.8,
+        "p95": 84.2,
+        "max": 101.5,
+        "failed": 0,
+        "errors": []
+      },
+      "concurrent": {
+        "reads": 50,
+        "p50": 396.8,
+        "p95": 597.5,
+        "max": 605.1,
+        "failed": 0,
+        "errors": [],
+        "wallMs": 606
+      },
+      "gatewayMemoryBeforeBurst": "329.2MiB / 768MiB",
+      "gatewayMemoryAfter": "318.7MiB / 768MiB",
+      "gatewayState": {
+        "status": "running",
+        "oomKilled": false,
+        "exitCode": 0,
+        "startedAt": "2026-11-21T11:23:51.113577287Z"
+      }
+    },
+    {
+      "level": 10000,
+      "logged": 10000,
+      "fillFailures": 0,
+      "fillSeconds": 136,
+      "hostLoad1m": 25,
+      "sequential": {
+        "reads": 200,
+        "p50": 200.1,
+        "p95": 290.1,
+        "max": 346,
+        "failed": 0,
+        "errors": []
+      },
+      "concurrent": {
+        "reads": 7,
+        "p50": 7393.4,
+        "p95": 9678.8,
+        "max": 9678.8,
+        "failed": 43,
+        "errors": [
+          "UND_ERR_SOCKET"
+        ],
+        "wallMs": 11207
+      },
+      "gatewayMemoryBeforeBurst": "474.2MiB / 768MiB",
+      "gatewayMemoryAfter": null,
+      "gatewayState": {
+        "status": "exited",
+        "oomKilled": true,
+        "exitCode": 137,
+        "startedAt": "2026-11-21T11:23:51.113577287Z"
+      }
+    }
+  ]
+}
