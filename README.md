@@ -5,7 +5,7 @@
 <p align="center"><a href="https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml"><img src="https://github.com/aimanmalib/bifrost-meter/actions/workflows/ci.yml/badge.svg" alt="CI"></a> <a href="https://open-vsx.org/extension/aimanmalib/bifrost-meter"><img src="https://img.shields.io/open-vsx/v/aimanmalib/bifrost-meter?label=Open%20VSX" alt="Open VSX"></a> <a href="https://github.com/aimanmalib/bifrost-meter/releases/latest"><img src="https://img.shields.io/github/v/release/aimanmalib/bifrost-meter" alt="Latest release"></a> <a href="https://github.com/aimanmalib/bifrost-meter/blob/main/LICENSE"><img src="https://img.shields.io/github/license/aimanmalib/bifrost-meter" alt="Licence: Apache-2.0"></a></p>
 
 <p align="center"><b>See what is left on your Bifrost virtual key without leaving the editor.</b> · <i>Lihat baki kunci maya Bifrost anda tanpa meninggalkan editor.</i><br>
-<a href="https://youtu.be/yDtBFdKZWcw"><b>&#9654;&#xFE0E; demo video, 79 s</b></a> · <a href="#already-run-bifrost-two-steps">install</a> · <a href="#no-gateway-yet-one-command">one-command demo</a> · <a href="https://aimanmalib.github.io/bifrost-meter/deck.pdf">slides, 12</a> · <a href="#documentation">documentation</a> · <a href="https://github.com/aimanmalib/bifrost-meter/blob/main/CHANGELOG.md">changelog</a> · Built in Malaysia by <a href="https://aimanmalib.com">Aiman Malib</a></p>
+<a href="https://youtu.be/yDtBFdKZWcw"><b>&#9654;&#xFE0E; demo video, 79 s</b></a> · <a href="#already-run-bifrost-two-steps">install</a> · <a href="#no-gateway-yet-one-command">one-command demo</a> · <a href="https://aimanmalib.github.io/bifrost-meter/deck.pdf">slides, 12</a> · <a href="#documentation">documentation</a> · <a href="https://github.com/aimanmalib/bifrost-meter/blob/main/CHANGELOG.md">changelog</a> · <a href="README.ms.md">Bahasa Melayu</a> · Built in Malaysia by <a href="https://aimanmalib.com">Aiman Malib</a></p>
 
 <p align="center">Coding agents with the meter's MCP tool followed the project budget rule in 30 of 36 runs; without the tool, 3 of 12 (<a href="docs/AGENT-EVAL.md">agent evaluation</a>).</p>
 
@@ -28,8 +28,6 @@ Building the meter showed two gaps in the quota response, and I sent both upstre
 Built for the Global AI Hackathon by Geek Room (November 2026), problem statement PS04, "Open-Source Bifrost Gateway".
 The narrated demo video is also attached to the [latest release](https://github.com/aimanmalib/bifrost-meter/releases/latest). It was recorded on version 0.1.4, when the suite had 391 unit tests; the numbers in this README are from the latest run.
 Slide deck, 12 slides: <https://aimanmalib.github.io/bifrost-meter/deck.pdf> (the same file as `docs/deck.pdf` in this repository).
-
-[Bahasa Melayu: README.ms.md](README.ms.md)
 
 | OK | Used up |
 | --- | --- |
